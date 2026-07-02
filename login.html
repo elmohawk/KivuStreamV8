@@ -1,1 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
 
+<title>KivuStream | Login</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <h1>Login</h1>
+
+    <input type="email" id="email" placeholder="Email">
+
+    <input type="password" id="password" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+
+    <p>No account? <a href="register.html">Sign up</a></p>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script src="js/supabase.js"></script>
+<script src="js/auth.js"></script>
+
+<script>
+function login(){
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    signIn(email, password);
+
+}
+</script>
+
+</body>
+</html>
