@@ -124,7 +124,7 @@
 
 </section>
 
-<!--================ TRENDING ================-->
+<!-- ================= TRENDING ================= -->
 
 <section class="section">
 
@@ -132,64 +132,17 @@
 
         <h2>🔥 Trending</h2>
 
-        <a href="#">View All</a>
+        <a href="movies.html?category=trending">View All</a>
 
     </div>
 
-   <div class="movies-row">
+    <div class="movies-row" id="trendingMovies">
 
-    <div class="movie-card">
-
-        <div class="movie-poster">
-
-            <img src="assets/images/poster.jpg">
-
-            <div class="movie-badges">
-
-                <span class="badge-quality">
-                    HD
-                </span>
-
-                <span class="badge-rating">
-                    ⭐ 8.9
-                </span>
-
-            </div>
-
-            <button class="favorite-btn">
-                <i class="ri-heart-line"></i>
-            </button>
-
-            <div class="movie-overlay">
-
-                <button class="card-watch">
-                    <i class="ri-play-fill"></i>
-                    Watch Now
-                </button>
-
-            </div>
-
-        </div>
-
-        <div class="movie-info">
-
-            <h3 class="movie-title">
-                Featured Movie
-            </h3>
-
-            <div class="movie-meta">
-
-                <span>2026</span>
-
-                <span>Action</span>
-
-            </div>
-
-        </div>
+        <!-- Trending movies will be loaded here by JavaScript -->
 
     </div>
 
-</div>
+</section>
 
 </section>
 
@@ -201,11 +154,15 @@
 
         <h2>🎬 Latest Movies</h2>
 
-        <a href="#">View All</a>
+        <a href="movies.html">View All</a>
 
     </div>
 
-    <div class="movies-row"></div>
+    <div class="movies-row" id="latestMovies">
+
+        <!-- Movies loaded dynamically -->
+
+    </div>
 
 </section>
 
@@ -217,14 +174,17 @@
 
         <h2>📺 TV Series</h2>
 
-        <a href="#">View All</a>
+        <a href="series.html">View All</a>
 
     </div>
 
-    <div class="movies-row"></div>
+    <div class="movies-row" id="latestSeries">
+
+        <!-- TV Series loaded dynamically -->
+
+    </div>
 
 </section>
-
 <!--================ TOP RATED ================-->
 
 <section class="section">
@@ -233,11 +193,15 @@
 
         <h2>⭐ Top Rated</h2>
 
-        <a href="#">View All</a>
+        <a href="movies.html?category=top-rated">View All</a>
 
     </div>
 
-    <div class="movies-row"></div>
+    <div class="movies-row" id="topRated">
+
+        <!-- Top rated movies loaded dynamically -->
+
+    </div>
 
 </section>
 
