@@ -21,7 +21,7 @@ html{
 }
 
 body{
-    font-family:'Poppins',sans-serif;
+    font-family:'Poppins',;
     background:#08111f;
     color:#fff;
     overflow-x:hidden;
@@ -780,5 +780,129 @@ ul{
     color:var(--text);
 
     font-size:14px;
+
+}
+/* ==========================================
+   HERO SLIDER
+========================================== */
+
+.hero-slider{
+
+    width:100%;
+    height:100%;
+
+    position:relative;
+
+}
+
+.hero-slide{
+
+    position:absolute;
+
+    inset:0;
+
+}
+
+.hero-bg{
+
+    position:absolute;
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    z-index:-3;
+
+}
+
+.slider-btn{
+
+    position:absolute;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    width:55px;
+
+    height:55px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.08);
+
+    backdrop-filter:blur(15px);
+
+    color:#fff;
+
+    font-size:26px;
+
+    transition:.3s;
+
+    z-index:100;
+
+}
+
+.slider-btn:hover{
+
+    background:var(--primary);
+
+}
+
+.prev{
+
+    left:25px;
+
+}
+
+.next{
+
+    right:25px;
+
+}
+
+/* Dots */
+
+.slider-dots{
+
+    position:absolute;
+
+    bottom:40px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    display:flex;
+
+    gap:12px;
+
+}
+
+.dot{
+
+    width:12px;
+
+    height:12px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.35);
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.dot.active{
+
+    width:40px;
+
+    border-radius:30px;
+
+    background:var(--primary);
 
 }
