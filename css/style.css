@@ -984,3 +984,30 @@ ul{
     font-size:12px;
     color:var(--text);
 }
+.admin-container{
+    padding:120px 6%;
+    color:#fff;
+}
+
+.admin-container input{
+    display:block;
+    margin:10px 0;
+    padding:10px;
+    width:300px;
+}
+
+.admin-container button{
+    padding:10px 15px;
+    margin-top:10px;
+    background:#e50914;
+    color:#fff;
+    border:none;
+    cursor:pointer;
+}
+
+.admin-movie{
+    background:#111;
+    padding:10px;
+    margin:10px 0;
+    border-radius:8px;
+}
