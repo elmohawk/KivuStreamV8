@@ -34,3 +34,17 @@ async function loadMovie(){
 }
 
 loadMovie();
+async function protectWatchPage(){
+
+    const { data } = await supabase.auth.getSession();
+
+    if(!data.session){
+
+        alert("Please login to watch movies");
+        window.location.href = "login.html";
+
+    }
+
+}
+
+protectWatchPage();
