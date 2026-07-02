@@ -98,3 +98,23 @@ if (slides.length > 1) {
     startSlider();
 
 }
+async function loadHomepage(){
+
+    const { data, error } = await supabase
+        .from("movies")
+        .select("*")
+        .order("created_at",{ascending:false});
+
+    if(error){
+
+        console.error(error);
+
+        return;
+
+    }
+
+    console.log(data);
+
+}
+
+loadHomepage();
