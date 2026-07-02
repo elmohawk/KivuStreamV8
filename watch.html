@@ -1,1 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KivuStream | Watch</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+
+    <a href="index.html" class="logo">
+        Kivu<span>Stream</span>
+    </a>
+
+</header>
+
+<!-- WATCH SECTION -->
+<section class="watch-container">
+
+    <!-- VIDEO PLAYER -->
+    <div class="player-box">
+
+        <video id="videoPlayer" controls>
+            <source src="" type="video/mp4">
+        </video>
+
+    </div>
+
+    <!-- DETAILS -->
+    <div class="watch-details">
+
+        <h1 id="movieTitle">Loading...</h1>
+
+        <div class="meta">
+
+            <span id="year"></span>
+            <span id="rating"></span>
+            <span id="runtime"></span>
+
+        </div>
+
+        <p id="overview"></p>
+
+        <div class="watch-buttons">
+
+            <button class="watch-btn">
+                <i class="ri-heart-line"></i>
+                Add to Favorites
+            </button>
+
+            <button class="info-btn">
+                <i class="ri-share-line"></i>
+                Share
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script src="js/supabase.js"></script>
+<script src="js/api.js"></script>
+<script src="js/watch.js"></script>
+
+</body>
+</html>
