@@ -1,1 +1,49 @@
+/* ==========================================
+   WATCH PAGE
+========================================== */
 
+.watch-container{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:30px;
+    padding:120px 6%;
+}
+
+.player-box{
+    width:100%;
+    background:#000;
+    border-radius:12px;
+    overflow:hidden;
+}
+
+.player-box video{
+    width:100%;
+    height:500px;
+}
+
+.watch-details{
+    color:#fff;
+}
+
+.watch-details h1{
+    font-size:32px;
+    margin-bottom:15px;
+}
+
+.meta{
+    display:flex;
+    gap:15px;
+    color:var(--text);
+    margin-bottom:20px;
+}
+
+.watch-details p{
+    color:var(--text);
+    line-height:1.6;
+    margin-bottom:25px;
+}
+
+.watch-buttons{
+    display:flex;
+    gap:15px;
+}
