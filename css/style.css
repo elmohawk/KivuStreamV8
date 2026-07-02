@@ -908,3 +908,79 @@ ul{
     background:var(--primary);
 
 }
+/* ==========================================
+   SEARCH SYSTEM
+========================================== */
+
+.search-box{
+    position:relative;
+    display:flex;
+    align-items:center;
+    background:rgba(255,255,255,.08);
+    padding:10px 15px;
+    border-radius:50px;
+    width:260px;
+    transition:.3s;
+}
+
+.search-box input{
+    width:100%;
+    background:transparent;
+    border:none;
+    outline:none;
+    color:#fff;
+    font-size:14px;
+    margin-left:10px;
+}
+
+.search-box i{
+    color:var(--text);
+    font-size:18px;
+}
+
+/* Dropdown */
+.search-results{
+    position:absolute;
+    top:55px;
+    left:0;
+    width:100%;
+    background:#0f1a2b;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;
+    overflow:hidden;
+    display:none;
+    max-height:350px;
+    overflow-y:auto;
+    z-index:999;
+}
+
+/* Result item */
+.search-item{
+    display:flex;
+    gap:10px;
+    padding:10px;
+    cursor:pointer;
+    transition:.2s;
+    align-items:center;
+}
+
+.search-item:hover{
+    background:rgba(255,255,255,.08);
+}
+
+.search-item img{
+    width:40px;
+    height:60px;
+    object-fit:cover;
+    border-radius:6px;
+}
+
+.search-info h4{
+    font-size:14px;
+    margin:0;
+}
+
+.search-info span{
+    font-size:12px;
+    color:var(--text);
+}
