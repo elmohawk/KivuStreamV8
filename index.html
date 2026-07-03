@@ -1,272 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>KivuStream | Watch Movies & TV Shows</title>
+<title>KivuStream | Watch Movies & TV Shows</title>
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- Remix Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
 
 </head>
 
 <body>
 
-<!--================ NAVBAR ================-->
+<!-- NAVBAR -->
+<header id="navbar"></header>
 
-<header class="navbar">
+<!-- HERO -->
+<section id="hero"></section>
 
-    <a href="#" class="logo">
-        Kivu<span>Stream</span>
-    </a>
-
-    <nav class="nav-links">
-
-        <a href="#" class="active">Home</a>
-        <a href="#">Movies</a>
-        <a href="#">TV Series</a>
-        <a href="#">Genres</a>
-
-    </nav>
-<div class="search-box">
-
-    <i class="ri-search-line"></i>
-
-    <input type="text" id="searchInput" placeholder="Search movies...">
-
-    <div class="search-results" id="searchResults"></div>
-
-</div>
-    <div class="nav-right">
-
-        <button class="icon-btn">
-            <i class="ri-search-line"></i>
-        </button>
-
-        <a href="login.html" class="login-btn">
-    Login
-</a>
-
-    </div>
-
-</header>
-
-<!--================ HERO SLIDER ================-->
-
-<section class="hero">
-
-    <div class="hero-slider">
-
-        <!-- Slide 1 -->
-        <div class="hero-slide active">
-
-            <img src="assets/images/hero.jpg" class="hero-bg">
-
-            <div class="hero-overlay"></div>
-
-            <div class="hero-content">
-
-                <span class="badge">
-                    Featured
-                </span>
-
-                <h1>
-                    Featured Movie
-                </h1>
-
-                <p>
-                    Experience thousands of movies and TV series in stunning HD quality with KivuStream.
-                </p>
-<div class="hero-rating">
-
-    <span class="imdb">
-
-        ⭐ 8.9 IMDb
-
-    </span>
-
-    <span class="quality">
-
-        4K UHD
-
-    </span>
-
-</div>
-
-<div class="hero-meta">
-
-    <span>2026</span>
-
-    <span>Action</span>
-
-    <span>Adventure</span>
-
-    <span>2h 42m</span>
-
-</div>
-              <div class="hero-buttons">
-
-    <button class="watch-btn">
-
-        <i class="ri-play-fill"></i>
-
-        Watch Now
-
-    </button>
-
-    <button class="info-btn">
-
-        <i class="ri-information-line"></i>
-
-        More Info
-
-    </button>
-
-    <button class="list-btn">
-
-        <i class="ri-add-line"></i>
-
-        My List
-
-    </button>
-
-</div>
-
-    <!-- Slider Controls -->
-
-    <button class="slider-btn prev">
-        <i class="ri-arrow-left-s-line"></i>
-    </button>
-
-    <button class="slider-btn next">
-        <i class="ri-arrow-right-s-line"></i>
-    </button>
-
-    <!-- Slider Dots -->
-
-    <div class="slider-dots">
-
-        <span class="dot active"></span>
-
-        <span class="dot"></span>
-
-        <span class="dot"></span>
-
-        <span class="dot"></span>
-
-    </div>
-
-</section>
-
-<!-- ================= TRENDING ================= -->
-
+<!-- TRENDING -->
 <section class="section">
 
-    <div class="section-title">
+    <div class="section-header">
 
         <h2>🔥 Trending</h2>
 
-        <a href="movies.html?category=trending">View All</a>
+        <a href="movies.html?category=trending">
+
+            View All
+
+        </a>
 
     </div>
 
-    <div class="movies-row" id="trendingMovies">
-
-        <!-- Trending movies will be loaded here by JavaScript -->
-
-    </div>
+    <div class="movie-slider" id="trendingMovies"></div>
 
 </section>
 
-</section>
-
-<!--================ LATEST MOVIES ================-->
+<!-- LATEST MOVIES -->
 
 <section class="section">
 
-    <div class="section-title">
+    <div class="section-header">
 
         <h2>🎬 Latest Movies</h2>
 
-        <a href="movies.html">View All</a>
+        <a href="movies.html">
+
+            View All
+
+        </a>
 
     </div>
 
-    <div class="movies-row" id="latestMovies">
-
-        <!-- Movies loaded dynamically -->
-
-    </div>
+    <div class="movie-slider" id="latestMovies"></div>
 
 </section>
 
-<!--================ TV SERIES ================-->
+<!-- TV SERIES -->
 
 <section class="section">
 
-    <div class="section-title">
+    <div class="section-header">
 
         <h2>📺 TV Series</h2>
 
-        <a href="series.html">View All</a>
+        <a href="series.html">
+
+            View All
+
+        </a>
 
     </div>
 
-    <div class="movies-row" id="latestSeries">
-
-        <!-- TV Series loaded dynamically -->
-
-    </div>
+    <div class="movie-slider" id="latestSeries"></div>
 
 </section>
-<!--================ TOP RATED ================-->
+
+<!-- TOP RATED -->
 
 <section class="section">
 
-    <div class="section-title">
+    <div class="section-header">
 
         <h2>⭐ Top Rated</h2>
 
-        <a href="movies.html?category=top-rated">View All</a>
+        <a href="movies.html?category=top-rated">
+
+            View All
+
+        </a>
 
     </div>
 
-    <div class="movies-row" id="topRated">
-
-        <!-- Top rated movies loaded dynamically -->
-
-    </div>
+    <div class="movie-slider" id="topRatedMovies"></div>
 
 </section>
 
-<!--================ FOOTER ================-->
+<!-- FOOTER -->
 
-<footer>
+<footer id="footer"></footer>
 
-    <h2>Kivu<span>Stream</span></h2>
+<!-- Supabase -->
 
-    <p>
-        Stream the latest movies and TV shows anytime, anywhere.
-    </p>
-
-    <p>
-        © 2026 KivuStream. .IT HAWK_RW.
-    </p>
-
-</footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-<script src="js/supabase.js"></script>
+<!-- JavaScript -->
 
-<script src="js/app.js"></script>
+<script src="js/supabase.js"></script>
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/home.js"></script>
 <script src="js/search.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+
 </body>
+
 </html>
