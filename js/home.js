@@ -98,19 +98,22 @@ if (slides.length > 1) {
     startSlider();
 
 }
-async function loadHomepage(){
+document.addEventListener("DOMContentLoaded", async () => {
 
-    const { data, error } = await supabase
-        .from("movies")
-        .select("*")
-        .order("created_at",{ascending:false});
+    try {
 
-    if(error){
-        console.error(error);
-        return;
+        await loadTrending();
+
+        await loadLatestMovies();
+
+        await loadSeries();
+
+        await loadTopRated();
+
+    } catch (error) {
+
+        console.error("Homepage error:", error);
+
     }
 
-    console.log(data);
-}
-
-loadHomepage();
+});
