@@ -89,41 +89,6 @@
 
 }
 
-/* SEARCH BOX */
-
-.search-box{
-
-    display:flex;
-    align-items:center;
-
-    background:var(--surface);
-
-    padding:8px 14px;
-
-    border-radius:50px;
-
-    border:1px solid var(--border);
-
-    gap:10px;
-
-}
-
-.search-box input{
-
-    background:transparent;
-    border:none;
-    color:white;
-
-    width:200px;
-
-}
-
-.search-box i{
-
-    color:var(--text-secondary);
-
-}
-
 /* RIGHT SECTION */
 
 .nav-right{
