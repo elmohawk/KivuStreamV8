@@ -167,3 +167,13 @@ async function getSeriesDetails(id){
     }
 
 }
+window.KivuAPI = {
+    getTrending,
+    getLatestMovies,
+    getLatestSeries,
+    getTopRated,
+    searchMovies,
+    getMovieDetails,
+    getSeriesDetails,
+    getImage
+};
