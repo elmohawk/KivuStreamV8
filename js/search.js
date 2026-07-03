@@ -1,75 +1,87 @@
-const searchInput = document.getElementById("searchInput");
-const searchResults = document.getElementById("searchResults");
+let searchTimeout;
+async function handleSearch(query){
 
-// LIVE SEARCH
-let timeout = null;
+    const resultsBox = document.getElementById("searchResults");
 
-searchInput.addEventListener("input", (e) => {
+    if(!query){
 
-    clearTimeout(timeout);
-
-    const query = e.target.value.trim();
-
-    if(query.length < 2){
-        searchResults.style.display = "none";
+        resultsBox.innerHTML = "";
+        resultsBox.style.display = "none";
         return;
+
     }
 
-    timeout = setTimeout(() => {
-        performSearch(query);
-    }, 400);
+    const results = await KivuAPI.searchMovies(query);
 
-});
+    if(!results || results.length === 0){
 
-async function performSearch(query){
-
-    const results = await searchMovies(query);
-
-    renderSearchResults(results);
-}
-
-function renderSearchResults(movies){
-
-    searchResults.innerHTML = "";
-
-    if(!movies || movies.length === 0){
-        searchResults.style.display = "none";
-        return;
-    }
-
-    movies.slice(0,8).forEach(movie => {
-
-        const item = document.createElement("div");
-
-        item.classList.add("search-item");
-
-        item.innerHTML = `
-            <img src="${getImage(movie.poster_path)}">
-            <div class="search-info">
-                <h4>${movie.title}</h4>
-                <span>${movie.release_date?.split("-")[0] || ""}</span>
+        resultsBox.innerHTML = `
+            <div class="search-item">
+                No results found
             </div>
         `;
 
-        item.addEventListener("click", () => {
+        resultsBox.style.display = "block";
 
-            // later we will redirect to watch page
-            window.location.href = `watch.html?id=${movie.id}`;
+        return;
 
-        });
-
-        searchResults.appendChild(item);
-
-    });
-
-    searchResults.style.display = "block";
-}
-
-// CLOSE WHEN CLICK OUTSIDE
-document.addEventListener("click", (e) => {
-
-    if(!e.target.closest(".search-box")){
-        searchResults.style.display = "none";
     }
+
+    resultsBox.innerHTML = results.slice(0,8).map(movie => `
+
+        <div class="search-item" data-id="${movie.id}">
+
+            <img src="${KivuAPI.getImage(movie.poster_path)}">
+
+            <div>
+
+                <h4>${movie.title}</h4>
+
+                <span>${movie.release_date?.slice(0,4) || "--"}</span>
+
+            </div>
+
+        </div>
+
+    `).join("");
+
+    resultsBox.style.display = "block";
+
+}
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("input", (e)=>{
+
+    clearTimeout(searchTimeout);
+
+    searchTimeout = setTimeout(()=>{
+
+        handleSearch(e.target.value.trim());
+
+    }, 400);
+
+});
+document.addEventListener("click", (e)=>{
+
+    const box = document.getElementById("searchResults");
+
+    const input = document.getElementById("searchInput");
+
+    if(!box.contains(e.target) && e.target !== input){
+
+        box.style.display = "none";
+
+    }
+
+});
+document.addEventListener("click", (e)=>{
+
+    const item = e.target.closest(".search-item");
+
+    if(!item) return;
+
+    const movieId = item.dataset.id;
+
+    window.location.href = `watch.html?id=${movieId}`;
 
 });
