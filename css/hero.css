@@ -1,1 +1,44 @@
+.hero-title{
+    font-size: clamp(40px, 5vw, 72px);
+    font-weight: 800;
+    line-height: 1.1;
+}
 
+.hero-content p{
+    max-width: 650px;
+    line-height: 1.8;
+    color: #d9d9d9;
+}
+
+.hero::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(to right, #07101d 20%, transparent 70%),
+        linear-gradient(to top, #07101d 8%, transparent);
+}
+
+.dot{
+    width: 14px;
+    height: 14px;
+}
+
+.dot.active{
+    width: 36px;
+}
+
+.hero-content{
+    animation: fadeUp .8s ease;
+}
+
+@keyframes fadeUp{
+    from{
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
