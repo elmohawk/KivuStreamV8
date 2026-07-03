@@ -79,3 +79,62 @@
     font-weight:500;
 
 }
+.list-btn{
+
+    height:56px;
+
+    padding:0 28px;
+
+    border-radius:50px;
+
+    background:rgba(255,255,255,.12);
+
+    color:white;
+
+    border:1px solid rgba(255,255,255,.15);
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.list-btn:hover{
+
+    background:#12b7f5;
+
+}
+.hero-content{
+
+    max-width:650px;
+
+    position:relative;
+
+    z-index:2;
+
+}
+.hero-slide.active .hero-content{
+
+    animation:heroFade .9s ease;
+
+}
+
+@keyframes heroFade{
+
+0%{
+
+opacity:0;
+
+transform:translateY(50px);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
