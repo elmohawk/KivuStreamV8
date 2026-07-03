@@ -50,17 +50,21 @@ async function handleSearch(query){
 }
 const searchInput = document.getElementById("searchInput");
 
-searchInput.addEventListener("input", (e)=>{
+if (searchInput) {
 
-    clearTimeout(searchTimeout);
+    searchInput.addEventListener("input", (e) => {
 
-    searchTimeout = setTimeout(()=>{
+        clearTimeout(searchTimeout);
 
-        handleSearch(e.target.value.trim());
+        searchTimeout = setTimeout(() => {
 
-    }, 400);
+            handleSearch(e.target.value.trim());
 
-});
+        }, 400);
+
+    });
+
+}
 document.addEventListener("click", (e)=>{
 
     const box = document.getElementById("searchResults");
