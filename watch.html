@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -7,73 +8,83 @@
 
 <title>KivuStream | Watch</title>
 
-<link rel="stylesheet" href="css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
 
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<header class="navbar">
+<header id="navbar"></header>
 
-    <a href="index.html" class="logo">
-        Kivu<span>Stream</span>
-    </a>
+<main class="watch-page">
 
-</header>
+    <section class="watch-player">
 
-<!-- WATCH SECTION -->
-<section class="watch-container">
+        <div class="player-container">
 
-    <!-- VIDEO PLAYER -->
-    <div class="player-box">
-
-        <video id="videoPlayer" controls>
-            <source src="" type="video/mp4">
-        </video>
-
-    </div>
-
-    <!-- DETAILS -->
-    <div class="watch-details">
-
-        <h1 id="movieTitle">Loading...</h1>
-
-        <div class="meta">
-
-            <span id="year"></span>
-            <span id="rating"></span>
-            <span id="runtime"></span>
+            <iframe
+                id="videoPlayer"
+                allowfullscreen
+                frameborder="0">
+            </iframe>
 
         </div>
 
-        <p id="overview"></p>
+    </section>
 
-        <div class="watch-buttons">
+    <section class="watch-info">
 
-            <button class="watch-btn" onclick="addToFavorites(movieId)">
-    <i class="ri-heart-line"></i>
-    Add to Favorites
-</button>
+        <h1 id="movieTitle"></h1>
 
-            <button class="info-btn">
+        <div class="watch-meta" id="movieMeta"></div>
+
+        <p id="movieOverview"></p>
+
+        <div class="watch-actions">
+
+            <button id="favoriteBtn">
+                <i class="ri-heart-line"></i>
+                My List
+            </button>
+
+            <button id="shareBtn">
                 <i class="ri-share-line"></i>
                 Share
             </button>
 
         </div>
 
-    </div>
+    </section>
 
-</section>
+    <section class="section">
+
+        <div class="section-header">
+
+            <h2>More Like This</h2>
+
+        </div>
+
+        <div class="movies-row" id="relatedMovies"></div>
+
+    </section>
+
+</main>
+
+<footer id="footer"></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script src="js/supabase.js"></script>
 <script src="js/api.js"></script>
+<script src="js/ui.js"></script>
 <script src="js/watch.js"></script>
 
 </body>
+
 </html>
