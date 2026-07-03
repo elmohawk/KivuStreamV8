@@ -3,110 +3,22 @@
 // KIVUSTREAM - TMDB API LAYER
 // ===========================================
 
-// BASE CONFIG
 const TMDB_API_KEY = "8b8937bf3e114fa3502358a4f090c0df";
-
 const TMDB_BASE = "https://api.themoviedb.org/3";
+const IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
 
-const IMAGE_BASE = "https://image.tmdb.org/t/p/original";
-
-
-// ===========================================
-// GET MOVIE DETAILS
-// ===========================================
-async function getMovieDetails(tmdbId){
-
-    try {
-
-        const res = await fetch(
-            `${TMDB_BASE}/movie/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`
-        );
-
-        const data = await res.json();
-
-        return data;
-
-    } catch (error) {
-
-        console.error("Movie fetch error:", error);
-
-        return null;
-
-    }
-
-}
-
-
-// ===========================================
-// GET SERIES DETAILS
-// ===========================================
-async function getSeriesDetails(tmdbId){
-
-    try {
-
-        const res = await fetch(
-            `${TMDB_BASE}/tv/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`
-        );
-
-        const data = await res.json();
-
-        return data;
-
-    } catch (error) {
-
-        console.error("Series fetch error:", error);
-
-        return null;
-
-    }
-
-}
-
-
-// ===========================================
-// IMAGE HELPER
-// ===========================================
 function getImage(path){
 
-    if(!path) return "assets/images/poster.jpg";
-
-    return `${IMAGE_BASE}${path}`;
-
-}
-
-
-// ===========================================
-// SEARCH MOVIES
-// ===========================================
-async function searchMovies(query){
-
-    try {
-
-        const res = await fetch(
-            `${TMDB_BASE}/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`
-        );
-
-        const data = await res.json();
-
-        return data.results || [];
-
-    } catch (error) {
-
-        console.error("Search error:", error);
-
-        return [];
-
+    if(!path){
+        return "assets/images/poster.jpg";
     }
 
+    return `${IMAGE_BASE}${path}`;
 }
 
-
-// ===========================================
-// TRENDING MOVIES
-// ===========================================
 async function getTrending(){
 
-    try {
+    try{
 
         const res = await fetch(
             `${TMDB_BASE}/trending/movie/week?api_key=${TMDB_API_KEY}`
@@ -116,9 +28,9 @@ async function getTrending(){
 
         return data.results || [];
 
-    } catch (error) {
+    }catch(err){
 
-        console.error("Trending error:", error);
+        console.error("Trending error:", err);
 
         return [];
 
@@ -126,13 +38,53 @@ async function getTrending(){
 
 }
 
+async function getLatestMovies(){
 
-// ===========================================
-// TOP RATED MOVIES
-// ===========================================
+    try{
+
+        const res = await fetch(
+            `${TMDB_BASE}/movie/now_playing?api_key=${TMDB_API_KEY}`
+        );
+
+        const data = await res.json();
+
+        return data.results || [];
+
+    }catch(err){
+
+        console.error("Latest movies error:", err);
+
+        return [];
+
+    }
+
+}
+
+async function getLatestSeries(){
+
+    try{
+
+        const res = await fetch(
+            `${TMDB_BASE}/tv/popular?api_key=${TMDB_API_KEY}`
+        );
+
+        const data = await res.json();
+
+        return data.results || [];
+
+    }catch(err){
+
+        console.error("Series error:", err);
+
+        return [];
+
+    }
+
+}
+
 async function getTopRated(){
 
-    try {
+    try{
 
         const res = await fetch(
             `${TMDB_BASE}/movie/top_rated?api_key=${TMDB_API_KEY}`
@@ -142,9 +94,9 @@ async function getTopRated(){
 
         return data.results || [];
 
-    } catch (error) {
+    }catch(err){
 
-        console.error("Top Rated error:", error);
+        console.error("Top rated error:", err);
 
         return [];
 
@@ -152,27 +104,65 @@ async function getTopRated(){
 
 }
 
+async function searchMovies(query){
 
-// ===========================================
-// POPULAR MOVIES
-// ===========================================
-async function getPopular(){
+    if(!query) return [];
 
-    try {
+    try{
 
         const res = await fetch(
-            `${TMDB_BASE}/movie/popular?api_key=${TMDB_API_KEY}`
+            `${TMDB_BASE}/search/movie?api_key=${TMDB_API_KEY}&query=${query}`
         );
 
         const data = await res.json();
 
         return data.results || [];
 
-    } catch (error) {
+    }catch(err){
 
-        console.error("Popular error:", error);
+        console.error("Search error:", err);
 
         return [];
+
+    }
+
+}
+
+async function getMovieDetails(id){
+
+    try{
+
+        const res = await fetch(
+            `${TMDB_BASE}/movie/${id}?api_key=${TMDB_API_KEY}&language=en-US`
+        );
+
+        return await res.json();
+
+    }catch(err){
+
+        console.error("Movie details error:", err);
+
+        return null;
+
+    }
+
+}
+
+async function getSeriesDetails(id){
+
+    try{
+
+        const res = await fetch(
+            `${TMDB_BASE}/tv/${id}?api_key=${TMDB_API_KEY}&language=en-US`
+        );
+
+        return await res.json();
+
+    }catch(err){
+
+        console.error("Series details error:", err);
+
+        return null;
 
     }
 
