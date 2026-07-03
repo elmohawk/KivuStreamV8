@@ -1,50 +1,55 @@
-// GET ID FROM URL
-const urlParams = new URLSearchParams(window.location.search);
-const movieId = urlParams.get("id");
+const params = new URLSearchParams(window.location.search);
 
-// DOM ELEMENTS
-const titleEl = document.getElementById("movieTitle");
-const yearEl = document.getElementById("year");
-const ratingEl = document.getElementById("rating");
-const runtimeEl = document.getElementById("runtime");
-const overviewEl = document.getElementById("overview");
-const videoPlayer = document.getElementById("videoPlayer");
+const movieId = params.get("id");
 
-// LOAD MOVIE
-async function loadMovie(){
+async function loadWatchPage(){
 
-    if(!movieId) return;
+    if(!movieId){
 
-    const res = await fetch(
-        `${TMDB_BASE}/movie/${movieId}?api_key=${TMDB_API_KEY}&language=en-US`
-    );
+        window.location.href = "index.html";
 
-    const movie = await res.json();
-
-    // SET UI
-    titleEl.textContent = movie.title;
-    yearEl.textContent = movie.release_date?.split("-")[0];
-    ratingEl.textContent = "⭐ " + movie.vote_average;
-    runtimeEl.textContent = movie.runtime + " min";
-    overviewEl.textContent = movie.overview;
-
-    // TEMP VIDEO (replace later with Supabase storage)
-    videoPlayer.src = "assets/sample.mp4";
-
-}
-
-loadMovie();
-async function protectWatchPage(){
-
-    const { data } = await supabase.auth.getSession();
-
-    if(!data.session){
-
-        alert("Please login to watch movies");
-        window.location.href = "login.html";
+        return;
 
     }
 
+    const movie = await KivuAPI.getMovieDetails(movieId);
+
+    if(!movie){
+
+        alert("Movie not found.");
+
+        return;
+
+    }
+
+    document.getElementById("movieTitle").textContent = movie.title;
+
+    document.getElementById("movieOverview").textContent = movie.overview;
+
+    document.getElementById("movieMeta").innerHTML = `
+
+        <span>⭐ ${movie.vote_average.toFixed(1)}</span>
+
+        <span>${movie.release_date}</span>
+
+        <span>${movie.runtime} min</span>
+
+        <span>${movie.genres.map(g=>g.name).join(", ")}</span>
+
+    `;
+
+    /*
+      Replace this with your own streaming URL
+      from Supabase later.
+    */
+
+    document.getElementById("videoPlayer").src =
+        "https://www.youtube.com/embed/dQw4w9WgXcQ";
+
+    const related = await KivuAPI.getTrending();
+
+    renderMovies("relatedMovies", related.slice(0,8));
+
 }
 
-protectWatchPage();
+loadWatchPage();
