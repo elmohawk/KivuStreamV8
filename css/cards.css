@@ -1,1 +1,245 @@
+/*=====================================
+PREMIUM MOVIE CARD
+=====================================*/
 
+.movie-card{
+
+    position:relative;
+
+    transition:.35s;
+
+    cursor:pointer;
+
+}
+
+.movie-card:hover{
+
+    transform:translateY(-10px);
+
+}
+
+.movie-poster{
+
+    position:relative;
+
+    overflow:hidden;
+
+    border-radius:18px;
+
+    aspect-ratio:2/3;
+
+    background:#162238;
+
+}
+
+.movie-poster img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    transition:.4s;
+
+}
+
+.movie-card:hover img{
+
+    transform:scale(1.08);
+
+}
+.poster-gradient{
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+    linear-gradient(
+    transparent,
+    rgba(0,0,0,.15),
+    rgba(0,0,0,.85)
+    );
+
+}
+.movie-top{
+
+    position:absolute;
+
+    top:12px;
+
+    left:12px;
+
+    right:12px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+}
+
+.quality{
+
+    background:#08b8ff;
+
+    padding:5px 10px;
+
+    border-radius:50px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+}
+
+.favorite-btn{
+
+    width:40px;
+
+    height:40px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:rgba(0,0,0,.5);
+
+    color:white;
+
+    cursor:pointer;
+
+    backdrop-filter:blur(10px);
+
+}
+.movie-overlay{
+
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    opacity:0;
+
+    transition:.3s;
+
+}
+
+.movie-card:hover .movie-overlay{
+
+    opacity:1;
+
+}
+
+.play-btn{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:50%;
+
+    border:none;
+
+    background:#12b7f5;
+
+    color:white;
+
+    font-size:28px;
+
+    cursor:pointer;
+
+}
+.movie-rating{
+
+    position:absolute;
+
+    bottom:14px;
+
+    right:14px;
+
+    background:rgba(0,0,0,.65);
+
+    padding:6px 12px;
+
+    border-radius:50px;
+
+    font-size:13px;
+
+    backdrop-filter:blur(10px);
+
+}
+.movie-info{
+
+    padding-top:14px;
+
+}
+
+.movie-info h3{
+
+    font-size:18px;
+
+    margin-bottom:8px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+}
+
+.movie-meta{
+
+    display:flex;
+
+    gap:12px;
+
+    color:#9fb2c7;
+
+    font-size:14px;
+
+    flex-wrap:wrap;
+
+}
+.movies-row{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fill,minmax(210px,1fr));
+
+    gap:24px;
+
+}
+.movie-card{
+
+    animation:fadeCard .6s ease;
+
+}
+
+@keyframes fadeCard{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(40px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+
+    }
+
+}
