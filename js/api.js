@@ -44,6 +44,12 @@ const getUpcomingMovies = () =>
 const getPopularSeries = () =>
     request("/tv/popular");
 
+/* =========================
+   MOVIE DETAILS
+========================= */
+
+const getMovieDetails = (id) =>
+    request(`/movie/${id}`, "&append_to_response=videos,credits,recommendations");
 
 /* =========================
    SEARCH
