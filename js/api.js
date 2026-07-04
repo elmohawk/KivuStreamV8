@@ -61,3 +61,11 @@ const getMovieVideos = (id) =>
 
 const getMovieRecommendations = (id) =>
     request(`/movie/${id}/recommendations`);
+const getPopularMoviesPage = (page = 1) =>
+    request("/movie/popular", `&page=${page}`);
+
+const searchMoviesPage = (query, page = 1) =>
+    request(
+        "/search/movie",
+        `&query=${encodeURIComponent(query)}&page=${page}`
+    );
