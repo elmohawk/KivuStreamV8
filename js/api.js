@@ -1,4 +1,3 @@
-// js/api.js
 
 const API_KEY = CONFIG.TMDB_API_KEY;
 const BASE_URL = CONFIG.TMDB_BASE_URL;
@@ -58,3 +57,17 @@ const searchMoviesPage = (query, page = 1) =>
 
 const getPopularMoviesPage = (page = 1) =>
     request("/movie/popular", `&page=${page}`);
+const getSeriesDetails = (id) =>
+    request(`/tv/${id}`);
+
+const getPopularSeriesPage = (page = 1) =>
+    request("/tv/popular", `&page=${page}`);
+
+const searchSeries = (query) =>
+    request("/search/tv", `&query=${encodeURIComponent(query)}`);
+
+const searchSeriesPage = (query, page = 1) =>
+    request("/search/tv", `&query=${encodeURIComponent(query)}&page=${page}`);
+
+const getSeriesRecommendations = (id) =>
+    request(`/tv/${id}/recommendations`);
