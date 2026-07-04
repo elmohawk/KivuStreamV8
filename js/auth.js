@@ -1,11 +1,11 @@
 
 async function getCurrentUser() {
-    const { data } = await supabase.auth.getUser();
+    const { data } = await supabaseClient.auth.getUser();
     return data?.user;
 }
 async function register(name, email, password) {
 
-    const { data, error } = await supabase.auth.signUp({
+    const { data, error } = await supabaseClient.auth.signUp({
         email,
         password,
         options: {
@@ -35,7 +35,7 @@ async function register(name, email, password) {
 }
 async function login(email, password) {
 
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
         email,
         password
     });
@@ -45,13 +45,13 @@ async function login(email, password) {
 
 async function logout() {
 
-    await supabase.auth.signOut();
+    await supabaseClient.auth.signOut();
 
     window.location.href = "index.html";
 }
 
 
 async function requireAuth() {
-  const { data } = await supabase.auth.getUser();
+  const { data } = await supabaseClient.auth.getUser();
   return data?.user || null;
 }
