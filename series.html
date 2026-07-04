@@ -1,1 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>KivuStream | Series</title>
+
+    <link rel="icon" href="assets/favicon.ico">
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="stylesheet" href="css/search.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+
+<div id="navbar"></div>
+
+<main class="container section">
+
+    <h1 class="section-title">📺 TV Series</h1>
+
+    <!-- Search -->
+    <div class="search-container">
+
+        <input
+            type="text"
+            id="seriesSearchBox"
+            placeholder="Search series..."
+        >
+
+        <button id="seriesSearchBtn" class="btn btn-primary">
+            Search
+        </button>
+
+    </div>
+
+    <!-- Grid -->
+    <div id="seriesGrid" class="movie-grid"></div>
+
+    <!-- Load more -->
+    <div class="load-more">
+        <button id="loadMoreSeriesBtn" class="btn btn-secondary">
+            Load More
+        </button>
+    </div>
+
+</main>
+
+<div id="footer"></div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/config.js"></script>
+<script src="js/supabase.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/user.js"></script>
+
+<script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+
+<script src="js/series.js"></script>
+
+</body>
+</html>
