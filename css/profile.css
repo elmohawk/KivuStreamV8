@@ -1,0 +1,43 @@
+.profile-card{
+
+max-width:500px;
+
+margin:100px auto;
+
+padding:40px;
+
+background:#101827;
+
+border-radius:12px;
+
+text-align:center;
+
+}
+
+.profile-card img{
+
+width:140px;
+
+height:140px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+margin:20px auto;
+
+}
+
+.profile-card h2{
+
+margin:15px 0;
+
+}
+
+.profile-card p{
+
+margin-bottom:30px;
+
+color:#bbb;
+
+}
