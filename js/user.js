@@ -84,3 +84,15 @@ async function addWatchlist(movieId) {
     return true;
 
 }
+function getWatchlist() {
+  return JSON.parse(localStorage.getItem("watchlist")) || [];
+}
+
+function isInWatchlist(id) {
+  return getWatchlist().includes(id);
+}
+
+function removeWatchlist(id) {
+  let list = getWatchlist().filter(x => x !== id);
+  localStorage.setItem("watchlist", JSON.stringify(list));
+}
