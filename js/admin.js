@@ -1,3 +1,9 @@
+document.addEventListener("DOMContentLoaded", async () => {
+    await requireAuth();
+
+    // Later we'll also check if the user is an administrator
+    loadAdminDashboard();
+});
 async function protectAdmin(){
 
     const { data } = await supabase.auth.getUser();
