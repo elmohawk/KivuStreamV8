@@ -61,13 +61,6 @@ async function getCurrentUser() {
 }
 
 async function requireAuth() {
-
-    const user = await getCurrentUser();
-
-    if (!user) {
-        window.location.href = "login.html";
-        return null;
-    }
-
-    return user;
+  const { data } = await supabase.auth.getUser();
+  return data?.user || null;
 }
