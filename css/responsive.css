@@ -1,1 +1,27 @@
+@media(max-width:900px){
 
+.nav-links{
+    display:none;
+}
+
+.search-box{
+    display:none;
+}
+
+.menu-btn{
+    display:block;
+}
+
+.hero h1{
+    font-size:2.5rem;
+}
+
+.hero p{
+    font-size:1rem;
+}
+
+.movie-grid{
+    grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+}
+
+}
