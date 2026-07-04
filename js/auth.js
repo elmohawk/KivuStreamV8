@@ -30,11 +30,11 @@ async function login(email,password){
     return {data,error};
 
 }
-async function logout(){
+async function logout() {
 
     await supabase.auth.signOut();
 
-    window.location="login.html";
+    window.location.href = "index.html";
 
 }
 async function getCurrentUser(){
