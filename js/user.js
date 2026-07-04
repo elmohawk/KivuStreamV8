@@ -84,8 +84,3 @@ async function addWatchlist(movieId) {
     return true;
 
 }
-removeWatchlist()
-
-getWatchlist()
-
-isInWatchlist()
