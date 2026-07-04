@@ -20,52 +20,52 @@ async function request(endpoint, params = "") {
     } catch (error) {
 
         console.error("TMDB Error:", error);
-
         return null;
+
     }
 }
 
-// Home
-const getTrendingMovies = () => request("/trending/movie/week");
+/* =========================
+   HOME
+========================= */
 
-const getPopularMovies = () => request("/movie/popular");
+const getTrendingMovies = () =>
+    request("/trending/movie/week");
 
-const getTopRatedMovies = () => request("/movie/top_rated");
+const getPopularMovies = () =>
+    request("/movie/popular");
 
-const getUpcomingMovies = () => request("/movie/upcoming");
+const getTopRatedMovies = () =>
+    request("/movie/top_rated");
 
-const getPopularSeries = () => request("/tv/popular");
+const getUpcomingMovies = () =>
+    request("/movie/upcoming");
 
-// Movies
-const getMovie = (id) => request(`/movie/${id}`);
+const getPopularSeries = () =>
+    request("/tv/popular");
 
-const getMovieCredits = (id) =>
-    request(`/movie/${id}/credits`);
+/* =========================
+   MOVIE DETAILS
+========================= */
 
-const getMovieVideos = (id) =>
-    request(`/movie/${id}/videos`);
+const getMovieDetails = (id) =>
+    request(`/movie/${id}`, "&append_to_response=videos,credits,recommendations");
 
-const getRecommendations = (id) =>
-    request(`/movie/${id}/recommendations`);
+/* =========================
+   SEARCH
+========================= */
 
 const searchMovies = (query) =>
-    request(`/search/movie`, `&query=${encodeURIComponent(query)}`);
-const getMovieDetails = (id) =>
-    request(`/movie/${id}`);
-
-const getMovieCredits = (id) =>
-    request(`/movie/${id}/credits`);
-
-const getMovieVideos = (id) =>
-    request(`/movie/${id}/videos`);
-
-const getMovieRecommendations = (id) =>
-    request(`/movie/${id}/recommendations`);
-const getPopularMoviesPage = (page = 1) =>
-    request("/movie/popular", `&page=${page}`);
+    request("/search/movie", `&query=${encodeURIComponent(query)}`);
 
 const searchMoviesPage = (query, page = 1) =>
-    request(
-        "/search/movie",
+    request("/search/movie",
         `&query=${encodeURIComponent(query)}&page=${page}`
     );
+
+/* =========================
+   PAGINATION
+========================= */
+
+const getPopularMoviesPage = (page = 1) =>
+    request("/movie/popular", `&page=${page}`);
