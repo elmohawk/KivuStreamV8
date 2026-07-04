@@ -71,10 +71,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Listen for authentication changes
-    if (typeof supabase !== "undefined") {
-        supabase.auth.onAuthStateChange(() => {
-            updateNavbar();
-        });
-    }
+  if (typeof supabaseClient !== "undefined") {
+    supabaseClient.auth.onAuthStateChange(() => {
+        updateNavbar();
+    });
+}
 
 });
