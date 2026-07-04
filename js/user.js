@@ -1,56 +1,29 @@
-async function getCurrentUser(){
+async function addFavorite(movieId) {
 
-    const { data } = await supabase.auth.getUser();
+    const user = await requireAuth();
 
-    return data.user;
-}
-async function addToFavorites(movieId){
-
-    const user = await getCurrentUser();
-
-    if(!user){
-        alert("Please login first");
-        window.location.href = "login.html";
-        return;
-    }
+    if (!user) return false;
 
     const { error } = await supabase
         .from("favorites")
-        .insert([
-            {
-                user_id: user.id,
-                movie_id: movieId
-            }
-        ]);
+        .insert({
+            user_id: user.id,
+            movie_id: movieId
+        });
 
-    if(error){
+    if (error) {
         console.error(error);
-        return;
+        return false;
     }
 
-    alert("Added to favorites ❤️");
+    return true;
 }
-async function getFavorites(){
 
-    const user = await getCurrentUser();
+async function removeFavorite(movieId) {
 
-    if(!user) return [];
+    const user = await requireAuth();
 
-    const { data, error } = await supabase
-        .from("favorites")
-        .select("*")
-        .eq("user_id", user.id);
-
-    if(error){
-        console.error(error);
-        return [];
-    }
-
-    return data;
-}
-async function removeFavorite(movieId){
-
-    const user = await getCurrentUser();
+    if (!user) return false;
 
     const { error } = await supabase
         .from("favorites")
@@ -58,43 +31,26 @@ async function removeFavorite(movieId){
         .eq("user_id", user.id)
         .eq("movie_id", movieId);
 
-    if(error){
+    if (error) {
         console.error(error);
-        return;
+        return false;
     }
 
-    alert("Removed from favorites");
+    return true;
 }
-async function saveWatchProgress(movieId, progress, duration){
 
-    const user = await getCurrentUser();
+async function getFavorites() {
 
-    if(!user) return;
+    const user = await requireAuth();
 
-    await supabase
-        .from("watch_history")
-        .upsert([
-            {
-                user_id: user.id,
-                movie_id: movieId,
-                progress,
-                duration,
-                updated_at: new Date()
-            }
-        ]);
-}
-async function getWatchHistory(){
-
-    const user = await getCurrentUser();
-
-    if(!user) return [];
+    if (!user) return [];
 
     const { data, error } = await supabase
-        .from("watch_history")
-        .select("*")
+        .from("favorites")
+        .select("movie_id")
         .eq("user_id", user.id);
 
-    if(error){
+    if (error) {
         console.error(error);
         return [];
     }
