@@ -1,57 +1,52 @@
-async function register(name,email,password){
+async function register(name, email, password) {
 
-    const {data,error}=await supabase.auth.signUp({
-
+    const { data, error } = await supabase.auth.signUp({
         email,
-
         password,
-
-        options:{
-            data:{
-                full_name:name
+        options: {
+            data: {
+                full_name: name
             }
         }
-
     });
 
-    return {data,error};
-
+    return { data, error };
 }
-async function login(email,password){
 
-    const {data,error}=await supabase.auth.signInWithPassword({
+async function login(email, password) {
 
+    const { data, error } = await supabase.auth.signInWithPassword({
         email,
-
         password
-
     });
 
-    return {data,error};
-
+    return { data, error };
 }
+
 async function logout() {
 
     await supabase.auth.signOut();
 
     window.location.href = "index.html";
-
 }
-async function getCurrentUser(){
 
-    const {data}=await supabase.auth.getUser();
+async function getCurrentUser() {
 
-    return data.user;
+    const {
+        data: { user }
+    } = await supabase.auth.getUser();
 
+    return user;
 }
-async function requireAuth(){
 
-    const user=await getCurrentUser();
+async function requireAuth() {
 
-    if(!user){
+    const user = await getCurrentUser();
 
-        location.href="login.html";
-
+    if (!user) {
+        window.location.href = "login.html";
+        return null;
     }
 
+    return user;
 }
