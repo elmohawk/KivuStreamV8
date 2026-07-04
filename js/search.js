@@ -1,91 +1,53 @@
-let searchTimeout;
-async function handleSearch(query){
+let currentPage = 1;
+let currentQuery = "";
 
-    const resultsBox = document.getElementById("searchResults");
+document.addEventListener("DOMContentLoaded", () => {
 
-    if(!query){
+    loadMovies();
 
-        resultsBox.innerHTML = "";
-        resultsBox.style.display = "none";
-        return;
+    document
+        .getElementById("searchBtn")
+        .addEventListener("click", search);
 
-    }
-
-    const results = await KivuAPI.searchMovies(query);
-
-    if(!results || results.length === 0){
-
-        resultsBox.innerHTML = `
-            <div class="search-item">
-                No results found
-            </div>
-        `;
-
-        resultsBox.style.display = "block";
-
-        return;
-
-    }
-
-    resultsBox.innerHTML = results.slice(0,8).map(movie => `
-
-        <div class="search-item" data-id="${movie.id}">
-
-            <img src="${KivuAPI.getImage(movie.poster_path)}">
-
-            <div>
-
-                <h4>${movie.title}</h4>
-
-                <span>${movie.release_date?.slice(0,4) || "--"}</span>
-
-            </div>
-
-        </div>
-
-    `).join("");
-
-    resultsBox.style.display = "block";
-
-}
-const searchInput = document.getElementById("searchInput");
-
-if (searchInput) {
-
-    searchInput.addEventListener("input", (e) => {
-
-        clearTimeout(searchTimeout);
-
-        searchTimeout = setTimeout(() => {
-
-            handleSearch(e.target.value.trim());
-
-        }, 400);
-
-    });
-
-}
-document.addEventListener("click", (e)=>{
-
-    const box = document.getElementById("searchResults");
-
-    const input = document.getElementById("searchInput");
-
-    if(!box.contains(e.target) && e.target !== input){
-
-        box.style.display = "none";
-
-    }
+    document
+        .getElementById("loadMoreBtn")
+        .addEventListener("click", loadMore);
 
 });
-document.addEventListener("click", (e)=>{
+async function loadMovies() {
 
-    const item = e.target.closest(".search-item");
+    const data = currentQuery
+        ? await searchMoviesPage(currentQuery, currentPage)
+        : await getPopularMoviesPage(currentPage);
 
-    if(!item) return;
+    if (!data) return;
 
-    const movieId = item.dataset.id;
+    const grid = document.getElementById("moviesGrid");
 
-    window.location.href = `watch.html?id=${movieId}`;
+    if (currentPage === 1)
+        grid.innerHTML = "";
 
-});
+    grid.innerHTML += data.results
+        .map(createMovieCard)
+        .join("");
+
+}
+function search() {
+
+    currentQuery =
+        document.getElementById("searchBox")
+        .value
+        .trim();
+
+    currentPage = 1;
+
+    loadMovies();
+
+}
+function loadMore() {
+
+    currentPage++;
+
+    loadMovies();
+
+}
