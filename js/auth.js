@@ -50,14 +50,6 @@ async function logout() {
     window.location.href = "index.html";
 }
 
-async function getCurrentUser() {
-
-    const {
-        data: { user }
-    } = await supabase.auth.getUser();
-
-    return user;
-}
 
 async function requireAuth() {
   const { data } = await supabase.auth.getUser();
