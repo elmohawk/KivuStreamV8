@@ -14,7 +14,6 @@ async function init() {
     }
 
     await loadMovie(movieId);
-
     await loadRecommendations(movieId);
 
 }
@@ -22,15 +21,15 @@ async function init() {
 async function loadMovie(id) {
 
     const movie = await getMovieDetails(id);
-
     const credits = await getMovieCredits(id);
-
     const videos = await getMovieVideos(id);
 
     renderMovie(movie, credits, videos);
-    setupMovieActions(movie.id);
+
+    setupMovieActions(id); // use id directly
 
 }
+
 function setupMovieActions(movieId) {
 
     const favoriteBtn =
@@ -41,61 +40,38 @@ function setupMovieActions(movieId) {
 
     if (favoriteBtn) {
 
-        favoriteBtn.addEventListener(
-            "click",
-            async () => {
+        favoriteBtn.addEventListener("click", async () => {
 
-                const success =
-                    await addFavorite(movieId);
+            const success = await addFavorite(movieId);
 
-                if (success) {
+            if (success) {
 
-                    favoriteBtn.textContent =
-                        "❤️ Added";
-
-                }
+                favoriteBtn.textContent = "❤️ Added to My List";
 
             }
-        );
+
+        });
 
     }
 
     if (watchLaterBtn) {
 
-        watchLaterBtn.addEventListener(
-            "click",
-            async () => {
+        watchLaterBtn.addEventListener("click", async () => {
 
-                const success =
-                    await addWatchlist(movieId);
+            const success = await addWatchlist(movieId);
 
-                if (success) {
+            if (success) {
 
-                    watchLaterBtn.textContent =
-                        "✔ Added";
-
-                }
+                watchLaterBtn.textContent = "✔ Added to Watchlist";
 
             }
-        );
+
+        });
 
     }
 
 }
-const favoriteBtn = document.getElementById("favoriteBtn");
 
-favoriteBtn.addEventListener("click", async () => {
-
-    const success = await addFavorite(movieId);
-
-    if (success) {
-
-        favoriteBtn.textContent =
-            "❤️ Added to My List";
-
-    }
-
-});
 async function loadRecommendations(id) {
 
     const data = await getMovieRecommendations(id);
