@@ -50,3 +50,14 @@ const getRecommendations = (id) =>
 
 const searchMovies = (query) =>
     request(`/search/movie`, `&query=${encodeURIComponent(query)}`);
+const getMovieDetails = (id) =>
+    request(`/movie/${id}`);
+
+const getMovieCredits = (id) =>
+    request(`/movie/${id}/credits`);
+
+const getMovieVideos = (id) =>
+    request(`/movie/${id}/videos`);
+
+const getMovieRecommendations = (id) =>
+    request(`/movie/${id}/recommendations`);
