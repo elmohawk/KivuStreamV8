@@ -1,8 +1,7 @@
 
-
-export async function getCurrentUser() {
-  const { data, error } = await supabase.auth.getUser();
-  return data?.user;
+async function getCurrentUser() {
+    const { data } = await supabase.auth.getUser();
+    return data?.user;
 }
 async function register(name, email, password) {
 
