@@ -1,16 +1,7 @@
-:root{
-    --primary:#E50914;
-    --secondary:#141414;
-    --dark:#000;
-    --card:#1f1f1f;
-    --white:#fff;
-    --gray:#b3b3b3;
-
-    --radius:10px;
-
-    --transition:.3s ease;
-
-    --shadow:0 10px 30px rgba(0,0,0,.4);
-
-    --container:1300px;
+:root {
+  --bg-dark: #0B192C;       /* Deep Midnight Blue */
+  --bg-navy: #1E3E62;       /* Secondary Slate Blue */
+  --accent-blue: #008DDA;   /* Pop Accent Blue */
+  --text-white: #FFFFFF;    /* Clean White */
+  --text-gray: #A0AEC0;    /* Muted Gray */
 }
