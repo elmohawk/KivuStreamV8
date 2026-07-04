@@ -1,3 +1,9 @@
+import { supabase } from "./supabase.js";
+
+export async function getCurrentUser() {
+  const { data, error } = await supabase.auth.getUser();
+  return data?.user;
+}
 async function register(name, email, password) {
 
     const { data, error } = await supabase.auth.signUp({
