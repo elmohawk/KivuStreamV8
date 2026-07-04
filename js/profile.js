@@ -1,3 +1,24 @@
+await loadFavorites();
+async function loadFavorites() {
+
+    const favorites = await getFavorites();
+
+    const container =
+        document.getElementById("favoriteMovies");
+
+    container.innerHTML = "";
+
+    for (const item of favorites) {
+
+        const movie =
+            await getMovieDetails(item.movie_id);
+
+        container.innerHTML +=
+            createMovieCard(movie);
+
+    }
+
+}
 document.addEventListener("DOMContentLoaded", init);
 
 async function init() {
