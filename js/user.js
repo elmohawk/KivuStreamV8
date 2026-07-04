@@ -57,3 +57,32 @@ async function getFavorites() {
 
     return data;
 }
+async function addWatchlist(movieId) {
+
+    const user = await requireAuth();
+
+    if (!user) return false;
+
+    const { error } = await supabase
+        .from("watchlist")
+        .insert({
+            user_id: user.id,
+            movie_id: movieId
+        });
+
+    if (error) {
+
+        console.error(error);
+
+        return false;
+
+    }
+
+    return true;
+
+}
+removeWatchlist()
+
+getWatchlist()
+
+isInWatchlist()
