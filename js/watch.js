@@ -30,7 +30,20 @@ async function loadMovie(id) {
     renderMovie(movie, credits, videos);
 
 }
+const favoriteBtn = document.getElementById("favoriteBtn");
 
+favoriteBtn.addEventListener("click", async () => {
+
+    const success = await addFavorite(movieId);
+
+    if (success) {
+
+        favoriteBtn.textContent =
+            "❤️ Added to My List";
+
+    }
+
+});
 async function loadRecommendations(id) {
 
     const data = await getMovieRecommendations(id);
