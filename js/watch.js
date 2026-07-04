@@ -28,6 +28,58 @@ async function loadMovie(id) {
     const videos = await getMovieVideos(id);
 
     renderMovie(movie, credits, videos);
+    setupMovieActions(movie.id);
+
+}
+function setupMovieActions(movieId) {
+
+    const favoriteBtn =
+        document.getElementById("favoriteBtn");
+
+    const watchLaterBtn =
+        document.getElementById("watchLaterBtn");
+
+    if (favoriteBtn) {
+
+        favoriteBtn.addEventListener(
+            "click",
+            async () => {
+
+                const success =
+                    await addFavorite(movieId);
+
+                if (success) {
+
+                    favoriteBtn.textContent =
+                        "❤️ Added";
+
+                }
+
+            }
+        );
+
+    }
+
+    if (watchLaterBtn) {
+
+        watchLaterBtn.addEventListener(
+            "click",
+            async () => {
+
+                const success =
+                    await addWatchlist(movieId);
+
+                if (success) {
+
+                    watchLaterBtn.textContent =
+                        "✔ Added";
+
+                }
+
+            }
+        );
+
+    }
 
 }
 const favoriteBtn = document.getElementById("favoriteBtn");
