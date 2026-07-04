@@ -1,34 +1,30 @@
+/* =========================
+   RESET
+========================= */
+
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
 }
 
 html{
-    scroll-behavior:smooth;
+  scroll-behavior:smooth;
 }
 
 body{
-    font-family:Arial,Helvetica,;
-    background:#000;
-    color:#fff;
-}
 
-img{
-    max-width:100%;
-    display:block;
-}
+  background:
+  linear-gradient(to bottom,#040816,#07111f);
 
-a{
-    text-decoration:none;
-    color:inherit;
-}
+  color:var(--text);
 
-button{
-    border:none;
-    cursor:pointer;
-}
+  font-family:'Poppins',;
 
-ul{
-    list-style:none;
+  overflow-x:hidden;
+
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+
 }
