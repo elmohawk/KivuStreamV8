@@ -21,13 +21,10 @@ async function request(endpoint, params = "") {
 
         console.error("TMDB Error:", error);
         return null;
-
     }
 }
 
-/* =========================
-   HOME
-========================= */
+/* ================= HOME ================= */
 
 const getTrendingMovies = () =>
     request("/trending/movie/week");
@@ -44,28 +41,20 @@ const getUpcomingMovies = () =>
 const getPopularSeries = () =>
     request("/tv/popular");
 
-/* =========================
-   MOVIE DETAILS
-========================= */
+/* ================= MOVIE ================= */
 
 const getMovieDetails = (id) =>
     request(`/movie/${id}`, "&append_to_response=videos,credits,recommendations");
 
-/* =========================
-   SEARCH
-========================= */
+/* ================= SEARCH ================= */
 
 const searchMovies = (query) =>
     request("/search/movie", `&query=${encodeURIComponent(query)}`);
 
 const searchMoviesPage = (query, page = 1) =>
-    request("/search/movie",
-        `&query=${encodeURIComponent(query)}&page=${page}`
-    );
+    request("/search/movie", `&query=${encodeURIComponent(query)}&page=${page}`);
 
-/* =========================
-   PAGINATION
-========================= */
+/* ================= PAGINATION ================= */
 
 const getPopularMoviesPage = (page = 1) =>
     request("/movie/popular", `&page=${page}`);
