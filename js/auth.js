@@ -10,9 +10,24 @@ async function register(name, email, password) {
         }
     });
 
-    return { data, error };
-}
+    if (error) {
+        return { data, error };
+    }
 
+    if (data.user) {
+
+        await supabase
+            .from("profiles")
+            .insert({
+                id: data.user.id,
+                full_name: name
+            });
+
+    }
+
+    return { data, error };
+
+}
 async function login(email, password) {
 
     const { data, error } = await supabase.auth.signInWithPassword({
