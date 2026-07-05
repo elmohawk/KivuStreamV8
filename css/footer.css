@@ -22,8 +22,8 @@
 }
 
 .footer-logo{
-  font-size:26px;
-  font-weight:800;
+  font-size:12px;
+  font-weight:500;
   letter-spacing:.5px;
 }
 
@@ -48,7 +48,7 @@
    EXPLORE LINKS (SMALL GRID TILES)
 ========================= */
 .footer-links h3{
-  font-size:16px;
+  font-size:8px;
   margin-bottom:15px;
   color:#fff;
 }
@@ -69,14 +69,14 @@
   border:1px solid rgba(255,255,255,.05);
   color:#aaa;
   text-decoration:none;
-  font-size:13px;
-  font-weight:600;
+  font-size:6px;
+  font-weight:400;
   transition:0.3s;
 }
 
 .footer-link .icon{
-  width:28px;
-  height:28px;
+  width:6px;
+  height:6px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -186,8 +186,8 @@
    BOTTOM LINKS
 ========================= */
 .footer-bottom-links{
-  margin-top:25px;
-  padding-top:15px;
+  margin-top:6px;
+  padding-top:6px;
   border-top:1px solid rgba(255,255,255,.06);
   display:flex;
   flex-wrap:wrap;
@@ -197,12 +197,12 @@
 }
 
 .footer-bottom-links .copyright{
-  font-size:12px;
+  font-size:6px;
   color:#777;
 }
 
 .footer-bottom-links a{
-  font-size:12px;
+  font-size:6px;
   color:#aaa;
   text-decoration:none;
   padding:6px 10px;
