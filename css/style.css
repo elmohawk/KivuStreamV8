@@ -69,3 +69,6 @@ body{
     font-weight:700;
 
 }
+.admin-link {
+    display: none;
+}
