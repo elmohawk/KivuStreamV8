@@ -32,3 +32,40 @@
     background:#fff;
     color:#000;
 }
+body{
+
+    background:
+        radial-gradient(circle at top,
+        #17203d 0%,
+        #090d17 35%,
+        #040507 100%);
+
+    color:white;
+
+    font-family:"Poppins",sans-serif;
+
+}
+
+.section{
+
+    padding:70px 0;
+
+}
+
+.container{
+
+    width:min(92%,1450px);
+
+    margin:auto;
+
+}
+
+.section-title{
+
+    font-size:34px;
+
+    margin-bottom:35px;
+
+    font-weight:700;
+
+}
