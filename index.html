@@ -29,29 +29,50 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     <div id="navbar"></div>
 
     <!-- Hero Section -->
-    <header class="hero">
-        <div class="overlay">
-            <div class="container hero-content">
-                <h1>Welcome to <span>KivuStream</span></h1>
+ <header class="hero">
 
-                <p>
-                    Discover thousands of movies and TV series in one place.
-                    Stream your favorites anytime, anywhere, on any device.
-                </p>
+    <!-- Background -->
+    <div id="heroBackdrop" class="hero-backdrop"></div>
 
-                <div class="hero-buttons">
-                    <a href="movies.html" class="btn btn-primary">
-                        🎬 Browse Movies
-                    </a>
+    <!-- Overlay -->
+    <div class="hero-overlay"></div>
 
-                    <a href="series.html" class="btn btn-secondary">
-                        📺 Explore Series
-                    </a>
-                </div>
-            </div>
+    <!-- Content -->
+    <div class="hero-content container">
+
+        <span id="heroBadge" class="hero-badge">
+            🔥 Featured Today
+        </span>
+
+        <h1 id="heroTitle"></h1>
+
+        <div class="hero-meta">
+
+            <span id="heroRating"></span>
+
+            <span id="heroYear"></span>
+
+            <span id="heroLanguage"></span>
+
         </div>
-    </header>
 
+        <p id="heroOverview"></p>
+
+        <div class="hero-buttons">
+
+            <button id="watchNow" class="btn-primary">
+                ▶ Watch Now
+            </button>
+
+            <button id="watchTrailer" class="btn-outline">
+                🎬 Trailer
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
     <!-- Trending Movies -->
     <section class="section">
         <div class="container">
