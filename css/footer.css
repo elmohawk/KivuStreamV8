@@ -145,8 +145,8 @@
 
 /* ICON CIRCLE */
 .social-pro .icon{
-  width:28px;
-  height:28px;
+  width:20px;
+  height:20px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -186,8 +186,8 @@
    BOTTOM LINKS
 ========================= */
 .footer-bottom-links{
-  margin-top:4px;
-  padding-top:4px;
+  margin-top:6px;
+  padding-top:6px;
   border-top:1px solid rgba(255,255,255,.06);
   display:flex;
   flex-wrap:wrap;
@@ -197,15 +197,15 @@
 }
 
 .footer-bottom-links .copyright{
-  font-size:4px;
+  font-size:8px;
   color:#777;
 }
 
 .footer-bottom-links a{
-  font-size:4px;
+  font-size:6px;
   color:#aaa;
   text-decoration:none;
-  padding:4px 6px;
+  padding:8px 16px;
   border-radius:10px;
   background:#111;
   transition:0.3s;
