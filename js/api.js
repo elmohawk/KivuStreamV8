@@ -71,3 +71,17 @@ const searchSeriesPage = (query, page = 1) =>
 
 const getSeriesRecommendations = (id) =>
     request(`/tv/${id}/recommendations`);
+async function getTmdbDetails(tmdbId, category = "movie") {
+
+    const endpoint =
+        category === "series"
+            ? `/tv/${tmdbId}`
+            : `/movie/${tmdbId}`;
+
+    const data = await request(
+        endpoint,
+        "&append_to_response=videos,credits"
+    );
+
+    return data;
+}
