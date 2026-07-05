@@ -21,12 +21,12 @@ async function register(name, email, password) {
 
     if (data.user) {
 
-        await supabase
-            .from("profiles")
-            .insert({
-                id: data.user.id,
-                full_name: name
-            });
+      await supabaseClient
+    .from("profiles")
+    .insert({
+        id: data.user.id,
+        full_name: name
+    });
 
     }
 
