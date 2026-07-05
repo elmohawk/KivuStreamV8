@@ -1,14 +1,12 @@
 document.addEventListener("DOMContentLoaded", async () => {
 
-    await loadTrending();
-
+    await loadFeatured();
     await loadPopular();
-
     await loadTopRated();
-
     await loadSeries();
 
 });
+
 async function loadFeatured(){
 
     const { data, error } = await supabaseClient
@@ -16,30 +14,69 @@ async function loadFeatured(){
         .select("*")
         .eq("featured", true);
 
-    renderSupabaseMovies(data);
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    renderMovies("trendingMovies", {
+        results: data
+    });
 
 }
+
 async function loadPopular() {
 
-    const data = await getPopularMovies();
+    const { data, error } = await supabaseClient
+        .from("movies")
+        .select("*")
+        .eq("type", "movie")
+        .order("created_at", { ascending: false });
 
-    renderMovies("popularMovies", data);
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    renderMovies("popularMovies", {
+        results: data
+    });
 
 }
-
 async function loadTopRated() {
 
-    const data = await getTopRatedMovies();
+    const { data, error } = await supabaseClient
+        .from("movies")
+        .select("*")
+        .order("vote_average", { ascending: false });
 
-    renderMovies("topRatedMovies", data);
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    renderMovies("topRatedMovies", {
+        results: data
+    });
 
 }
 
 async function loadSeries() {
 
-    const data = await getPopularSeries();
+    const { data, error } = await supabaseClient
+        .from("movies")
+        .select("*")
+        .eq("type", "series")
+        .order("created_at", { ascending: false });
 
-    renderMovies("popularSeries", data);
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    renderMovies("popularSeries", {
+        results: data
+    });
 
 }
 
@@ -55,27 +92,5 @@ function renderMovies(id, data) {
         .slice(0, 12)
         .map(createMovieCard)
         .join("");
-
-}
-function renderSupabaseMovies(movies){
-
-    const container =
-        document.getElementById("trendingMovies");
-
-    container.innerHTML = movies.map(movie => `
-
-        <div class="movie-card">
-
-            <img src="${movie.poster}">
-
-            <h3>${movie.title}</h3>
-
-            <a href="watch.html?id=${movie.id}">
-                Watch
-            </a>
-
-        </div>
-
-    `).join("");
 
 }
