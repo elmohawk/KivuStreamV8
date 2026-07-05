@@ -9,15 +9,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadSeries();
 
 });
+async function loadFeatured(){
 
-async function loadTrending() {
+    const { data, error } = await supabaseClient
+        .from("movies")
+        .select("*")
+        .eq("featured", true);
 
-    const data = await getTrendingMovies();
-
-    renderMovies("trendingMovies", data);
+    renderSupabaseMovies(data);
 
 }
-
 async function loadPopular() {
 
     const data = await getPopularMovies();
@@ -54,5 +55,27 @@ function renderMovies(id, data) {
         .slice(0, 12)
         .map(createMovieCard)
         .join("");
+
+}
+function renderSupabaseMovies(movies){
+
+    const container =
+        document.getElementById("trendingMovies");
+
+    container.innerHTML = movies.map(movie => `
+
+        <div class="movie-card">
+
+            <img src="${movie.poster}">
+
+            <h3>${movie.title}</h3>
+
+            <a href="watch.html?id=${movie.id}">
+                Watch
+            </a>
+
+        </div>
+
+    `).join("");
 
 }
