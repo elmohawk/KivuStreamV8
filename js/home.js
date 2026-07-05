@@ -30,7 +30,7 @@ async function loadPopular() {
     const { data, error } = await supabaseClient
         .from("movies")
         .select("*")
-        .eq("type", "movie")
+        .eq("category", "movie")
         .order("created_at", { ascending: false });
 
     if (error) {
@@ -66,7 +66,7 @@ async function loadSeries() {
     const { data, error } = await supabaseClient
         .from("movies")
         .select("*")
-        .eq("type", "series")
+       .eq("category", "series")
         .order("created_at", { ascending: false });
 
     if (error) {
