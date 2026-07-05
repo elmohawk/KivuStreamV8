@@ -1,14 +1,13 @@
 const CONFIG = {
+    TMDB_API_KEY: "8b8937bf3e114fa3502358a4f090c0df",
 
-    TMDB_API_KEY:"8b8937bf3e114fa3502358a4f090c0df",
+    TMDB_BASE_URL: "https://api.themoviedb.org/3",
 
-    TMDB_BASE_URL:"https://api.themoviedb.org/3",
+    TMDB_IMAGE_URL: "https://image.tmdb.org/t/p/w500",
 
-    TMDB_IMAGE_URL:"https://image.tmdb.org/t/p/w500",
+    SUPABASE_URL: "https://exjgejujfxejjlbfizgz.supabase.co",
 
-   window.SUPABASE_URL =
-    "https://exjgejujfxejjlbfizgz.supabase.co";
-
-window.SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4amdlanVqZnhlampsYmZpemd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MTQzMTQsImV4cCI6MjA5NDA5MDMxNH0.CWUYLk4qJfriIYXWScB7wcHHVTCuz0SGDhWUV3tMR1Y";
+    SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4amdlanVqZnhlampsYmZpemd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MTQzMTQsImV4cCI6MjA5NDA5MDMxNH0.CWUYLk4qJfriIYXWScB7wcHHVTCuz0SGDhWUV3tMR1Y"
 };
+
+window.CONFIG = CONFIG;
