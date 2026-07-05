@@ -26,19 +26,28 @@ async function init() {
 
 async function loadMovie(id) {
 
-    const { data: movie, error } = await supabaseClient
+    // 1. Get your data from Supabase
+    const { data: movie } = await supabaseClient
         .from("movies")
         .select("*")
         .eq("id", id)
         .single();
 
-    if (error || !movie) {
-        console.error(error);
-        return;
-    }
+    if (!movie) return;
 
-    renderMovie(movie);
-    setupMovieActions(id);
+    // 2. Get TMDB details
+    const tmdb = await getTmdbDetails(
+        movie.tmdb_id,
+        movie.category
+    );
+
+    // 3. Merge data
+    const fullData = {
+        ...tmdb,
+        ...movie
+    };
+
+    renderMovie(fullData);
 }
 
 // =====================================
