@@ -186,8 +186,8 @@
    BOTTOM LINKS
 ========================= */
 .footer-bottom-links{
-  margin-top:6px;
-  padding-top:6px;
+  margin-top:4px;
+  padding-top:4px;
   border-top:1px solid rgba(255,255,255,.06);
   display:flex;
   flex-wrap:wrap;
@@ -197,15 +197,15 @@
 }
 
 .footer-bottom-links .copyright{
-  font-size:6px;
+  font-size:4px;
   color:#777;
 }
 
 .footer-bottom-links a{
-  font-size:6px;
+  font-size:4px;
   color:#aaa;
   text-decoration:none;
-  padding:6px 10px;
+  padding:4px 6px;
   border-radius:10px;
   background:#111;
   transition:0.3s;
@@ -237,8 +237,8 @@ z-index:9999;
 }
 
 .loader{
-width:70px;
-height:70px;
+width:50px;
+height:50px;
 border:5px solid #222;
 border-top:5px solid #00d4ff;
 border-radius:50%;
@@ -261,7 +261,7 @@ margin-top:20px;
 
 .stat{
 background:rgba(255,255,255,.08);
-padding:10px 16px;
+padding:6px 13px;
 border-radius:30px;
 backdrop-filter:blur(20px);
 }
@@ -269,17 +269,17 @@ backdrop-filter:blur(20px);
 .meta{
     display:flex;
     flex-wrap:wrap;
-    gap:10px;
-    margin:15px 0;
+    gap:5px;
+    margin:9px 0;
 }
 
 .meta span{
     background:rgba(255,255,255,.1);
     border:1px solid rgba(255,255,255,.15);
     backdrop-filter:blur(15px);
-    padding:8px 14px;
+    padding:6px 12px;
     border-radius:50px;
     color:#fff;
-    font-size:.9rem;
-    font-weight:600;
+    font-size:.6rem;
+    font-weight:400;
 }
