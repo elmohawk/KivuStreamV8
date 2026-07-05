@@ -26,52 +26,16 @@ async function addMovie() {
 
     const tmdbId = document.getElementById("tmdbId").value.trim();
     const featured = document.getElementById("featured").checked;
-    const videoUrl = document.getElementById("videoUrl").value.trim();
+    const category = document.getElementById("category").value || "movie";
 
     if (!tmdbId) {
         alert("Enter TMDB ID");
         return;
     }
 
-    // Fetch movie from TMDB
-    const movie = await getMovieDetails(tmdbId);
-
-    if (!movie) {
-        alert("Movie not found on TMDB");
-        return;
-    }
-
-    const trailer =
-        movie.videos?.results?.find(
-            v => v.site === "YouTube" && v.type === "Trailer"
-        );
-
-    const { error } = await supabaseClient
-        .from("movies")
-        .insert([{
-            tmdb_id: movie.id,
-            title: movie.title,
-            overview: movie.overview,
-            poster_path: movie.poster_path,
-            backdrop_path: movie.backdrop_path,
-            vote_average: movie.vote_average,
-            release_date: movie.release_date,
-            runtime: movie.runtime,
-            genres: movie.genres,
-            featured: featured,
-            trailer_key: trailer?.key || null,
-            video_url: videoUrl,
-            is_active: true
-        }]);
-
-    if (error) {
-        console.error(error);
-        alert(error.message);
-        return;
-    }
-
-    alert("Movie added successfully!");
+    await importFromTMDB(tmdbId, category, featured);
     loadMovies();
+}
 }
 // LOAD ALL MOVIES
 async function loadMovies() {
@@ -136,3 +100,54 @@ await supabaseClient
 
 // INIT
 loadMovies();
+async function importFromTMDB(tmdbId, category = "movie", featured = false) {
+
+    // 1. Fetch from TMDB
+    const tmdb = await getTmdbDetails(tmdbId, category);
+
+    if (!tmdb) {
+        alert("TMDB not found");
+        return;
+    }
+
+    // 2. Prepare data for Supabase
+    const movieData = {
+        tmdb_id: tmdb.id,
+        title: tmdb.title || tmdb.name,
+        overview: tmdb.overview,
+        poster_path: tmdb.poster_path,
+        backdrop_path: tmdb.backdrop_path,
+        vote_average: tmdb.vote_average,
+        release_date: tmdb.release_date || tmdb.first_air_date,
+        runtime: tmdb.runtime || null,
+        genres: tmdb.genres,
+        category: category,
+        featured: featured,
+        is_active: true
+    };
+
+    // 3. Check if already exists (avoid duplicates)
+    const { data: existing } = await supabaseClient
+        .from("movies")
+        .select("id")
+        .eq("tmdb_id", tmdbId)
+        .maybeSingle();
+
+    if (existing) {
+        alert("Movie already exists in database");
+        return;
+    }
+
+    // 4. Insert into Supabase
+    const { error } = await supabaseClient
+        .from("movies")
+        .insert([movieData]);
+
+    if (error) {
+        console.error(error);
+        alert("Failed to import movie");
+        return;
+    }
+
+    alert("Movie imported successfully!");
+}
