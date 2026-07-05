@@ -1,95 +1,141 @@
+// =====================================
+// HOME.JS (SUPABASE VERSION)
+// =====================================
+
 document.addEventListener("DOMContentLoaded", async () => {
 
-    await loadFeatured();
-    await loadPopular();
-    await loadTopRated();
-    await loadSeries();
+    await Promise.all([
+        loadFeatured(),
+        loadPopularMovies(),
+        loadTopRated(),
+        loadSeries()
+    ]);
 
 });
 
-async function loadFeatured(){
+// =====================================
+// Generic Loader
+// =====================================
 
-    const { data, error } = await supabaseClient
+async function loadSection(containerId, options = {}) {
+
+    let query = supabaseClient
         .from("movies")
         .select("*")
-        .eq("featured", true);
+        .eq("is_active", true);
+
+    if (options.featured !== undefined) {
+        query = query.eq("featured", options.featured);
+    }
+
+    if (options.category) {
+        query = query.eq("category", options.category);
+    }
+
+    if (options.orderBy) {
+        query = query.order(
+            options.orderBy,
+            { ascending: options.ascending ?? false }
+        );
+    }
+
+    if (options.limit) {
+        query = query.limit(options.limit);
+    }
+
+    const { data, error } = await query;
 
     if (error) {
-        console.error(error);
+        console.error(`${containerId}:`, error);
         return;
     }
 
-    renderMovies("trendingMovies", {
-        results: data
+    renderMovies(containerId, data);
+
+}
+
+// =====================================
+// Featured
+// =====================================
+
+async function loadFeatured() {
+
+    await loadSection("trendingMovies", {
+        featured: true,
+        orderBy: "featured_order",
+        ascending: true,
+        limit: 12
     });
 
 }
 
-async function loadPopular() {
+// =====================================
+// Latest Movies
+// =====================================
 
-    const { data, error } = await supabaseClient
-        .from("movies")
-        .select("*")
-        .eq("category", "movie")
-        .order("created_at", { ascending: false });
+async function loadPopularMovies() {
 
-    if (error) {
-        console.error(error);
-        return;
-    }
-
-    renderMovies("popularMovies", {
-        results: data
+    await loadSection("popularMovies", {
+        category: "movie",
+        orderBy: "created_at",
+        ascending: false,
+        limit: 12
     });
 
 }
+
+// =====================================
+// Top Rated
+// =====================================
+
 async function loadTopRated() {
 
-    const { data, error } = await supabaseClient
-        .from("movies")
-        .select("*")
-        .order("vote_average", { ascending: false });
-
-    if (error) {
-        console.error(error);
-        return;
-    }
-
-    renderMovies("topRatedMovies", {
-        results: data
+    await loadSection("topRatedMovies", {
+        orderBy: "vote_average",
+        ascending: false,
+        limit: 12
     });
 
 }
+
+// =====================================
+// Series
+// =====================================
 
 async function loadSeries() {
 
-    const { data, error } = await supabaseClient
-        .from("movies")
-        .select("*")
-       .eq("category", "series")
-        .order("created_at", { ascending: false });
-
-    if (error) {
-        console.error(error);
-        return;
-    }
-
-    renderMovies("popularSeries", {
-        results: data
+    await loadSection("popularSeries", {
+        category: "series",
+        orderBy: "created_at",
+        ascending: false,
+        limit: 12
     });
 
 }
 
-function renderMovies(id, data) {
+// =====================================
+// Render Cards
+// =====================================
 
-    if (!data) return;
+function renderMovies(containerId, movies) {
 
-    const container = document.getElementById(id);
+    const container = document.getElementById(containerId);
 
     if (!container) return;
 
-    container.innerHTML = data.results
-        .slice(0, 12)
+    if (!movies || movies.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty-state">
+                <h3>No content available.</h3>
+            </div>
+        `;
+
+        return;
+
+    }
+
+    container.innerHTML = movies
         .map(createMovieCard)
         .join("");
 
