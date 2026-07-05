@@ -114,3 +114,17 @@ function loadMore() {
     loadMovies();
 
 }
+async function searchTMDB(query, category = "movie") {
+
+    const endpoint =
+        category === "series"
+            ? "/search/tv"
+            : "/search/movie";
+
+    const data = await request(
+        endpoint,
+        `&query=${encodeURIComponent(query)}`
+    );
+
+    return data?.results || [];
+}
