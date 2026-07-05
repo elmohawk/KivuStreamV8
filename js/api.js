@@ -71,17 +71,20 @@ const searchSeriesPage = (query, page = 1) =>
 
 const getSeriesRecommendations = (id) =>
     request(`/tv/${id}/recommendations`);
-async function getTmdbDetails(tmdbId, category = "movie") {
+async function getTmdbDetails(id, type = "movie") {
+
+    if (!id) {
+        console.warn("Missing TMDB ID");
+        return null;
+    }
 
     const endpoint =
-        category === "series"
-            ? `/tv/${tmdbId}`
-            : `/movie/${tmdbId}`;
+        type === "series"
+            ? `/tv/${id}`
+            : `/movie/${id}`;
 
-    const data = await request(
+    return await request(
         endpoint,
         "&append_to_response=videos,credits"
     );
-
-    return data;
 }
