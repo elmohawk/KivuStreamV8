@@ -20,7 +20,13 @@ async function init() {
 
 async function loadMovie(id) {
 
-    const movie = await getMovieDetails(id);
+  const { data } = await supabaseClient
+.from("movies")
+.select("*")
+.eq("id", id)
+.single();
+
+renderMovie(data);
     const credits = await getMovieCredits(id);
     const videos = await getMovieVideos(id);
 
