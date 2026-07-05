@@ -1,45 +1,56 @@
 function createMovieCard(movie) {
 
-    const poster = movie.poster_path
-        ? `${CONFIG.TMDB_IMAGE_URL}${movie.poster_path}`
-        : "assets/images/no-image.png";
+    const title = movie.title || movie.name;
 
-    const title = movie.title || movie.name || "Untitled";
-
-    const date = movie.release_date || movie.first_air_date || "Coming Soon";
+    const year = (movie.release_date || movie.first_air_date || "")
+        .substring(0, 4);
 
     const rating = movie.vote_average
         ? movie.vote_average.toFixed(1)
         : "N/A";
 
+    const poster = movie.poster_path
+        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+        : "assets/poster.jpg";
+
     return `
-        <div class="movie-card">
 
-            <a href="watch.html?id=${movie.id}">
+    <a href="watch.html?id=${movie.id}" class="movie-card">
 
-                <img
-                    src="${poster}"
-                    alt="${title}"
-                    loading="lazy"
-                >
+        <div class="poster">
 
-                <div class="movie-info">
+            <img src="${poster}" alt="${title}">
 
-                    <h3>${title}</h3>
+            <div class="card-overlay">
 
-                    <p class="rating">
-                        ⭐ ${rating}
-                    </p>
+                <div class="play-btn">
 
-                    <small>
-                        ${date}
-                    </small>
+                    <i class="fa-solid fa-play"></i>
 
                 </div>
 
-            </a>
+            </div>
+
+            <span class="rating">
+                ⭐ ${rating}
+            </span>
+
+            <span class="quality">
+                HD
+            </span>
 
         </div>
+
+        <div class="card-info">
+
+            <h3>${title}</h3>
+
+            <p>${year}</p>
+
+        </div>
+
+    </a>
+
     `;
 }
 function renderMovie(movie, credits = {}, videos = {}) {
