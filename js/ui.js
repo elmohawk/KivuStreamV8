@@ -1,29 +1,19 @@
 
-async function createMovieCard(movie) {
+function createMovieCard(movie) {
 
-    // 1. Fetch TMDB details using stored ID
-    const tmdb = await getTmdbDetails(
-        movie.tmdb_id,
-        movie.category
-    );
+    const title = movie.title || "Untitled";
 
-    if (!tmdb) return "";
-
-    // 2. Extract data safely
-    const title = tmdb.title || tmdb.name || movie.title;
-
-    const year = (tmdb.release_date || tmdb.first_air_date || "")
+    const year = (movie.release_date || "")
         .substring(0, 4);
 
-    const rating = tmdb.vote_average
-        ? tmdb.vote_average.toFixed(1)
+    const rating = movie.vote_average
+        ? movie.vote_average.toFixed(1)
         : "N/A";
 
-    const poster = tmdb.poster_path
-        ? `https://image.tmdb.org/t/p/w500${tmdb.poster_path}`
+    const poster = movie.poster_path
+        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
         : "assets/poster.jpg";
 
-    // 3. Return card
     return `
         <a href="watch.html?id=${movie.id}" class="movie-card">
 
