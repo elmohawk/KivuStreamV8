@@ -151,3 +151,121 @@ async function importFromTMDB(tmdbId, category = "movie", featured = false) {
 
     alert("Movie imported successfully!");
 }
+
+async function searchTMDBAdmin() {
+
+    const query = document.getElementById("tmdbSearchInput").value.trim();
+
+    if (!query) return;
+
+    const movies = await searchMovies(query); // from your api.js
+    const series = await searchSeries(query);
+
+    const results = [
+        ...(movies?.results || []),
+        ...(series?.results || [])
+    ];
+
+    const container = document.getElementById("tmdbResults");
+
+    container.innerHTML = results.map(item => {
+
+        const title = item.title || item.name;
+        const poster = item.poster_path
+            ? `https://image.tmdb.org/t/p/w200${item.poster_path}`
+            : "assets/poster.jpg";
+
+        return `
+            <div class="tmdb-item">
+
+                <img src="${poster}" />
+
+                <div>
+                    <h4>${title}</h4>
+                    <button onclick="previewTMDB(${item.id}, '${item.media_type || 'movie'}')">
+                        Preview
+                    </button>
+
+                    <button onclick="importTMDB(${item.id}, '${item.media_type || 'movie'}')">
+                        Import
+                    </button>
+                </div>
+
+            </div>
+        `;
+    }).join("");
+}
+
+async function previewTMDB(id, type = "movie") {
+
+    const data = await getTmdbDetails(id, type);
+
+    const container = document.getElementById("tmdbPreview");
+
+    container.innerHTML = `
+        <div class="preview-box">
+
+            <h2>${data.title || data.name}</h2>
+
+            <img src="https://image.tmdb.org/t/p/w300${data.poster_path}" />
+
+            <p>${data.overview}</p>
+
+            <p>⭐ ${data.vote_average}</p>
+            <p>📅 ${data.release_date || data.first_air_date}</p>
+
+        </div>
+    `;
+}
+
+async function importTMDB(id, type = "movie") {
+
+    const featured = false;
+
+    // 1. Fetch full TMDB data
+    const tmdb = await getTmdbDetails(id, type);
+
+    if (!tmdb) {
+        alert("Failed to fetch TMDB data");
+        return;
+    }
+
+    // 2. Build Supabase object
+    const movieData = {
+        tmdb_id: tmdb.id,
+        title: tmdb.title || tmdb.name,
+        overview: tmdb.overview,
+        poster_path: tmdb.poster_path,
+        backdrop_path: tmdb.backdrop_path,
+        vote_average: tmdb.vote_average,
+        release_date: tmdb.release_date || tmdb.first_air_date,
+        category: type === "tv" ? "series" : "movie",
+        featured: featured,
+        is_active: true
+    };
+
+    // 3. Prevent duplicates
+    const { data: existing } = await supabaseClient
+        .from("movies")
+        .select("id")
+        .eq("tmdb_id", id)
+        .maybeSingle();
+
+    if (existing) {
+        alert("Already imported");
+        return;
+    }
+
+    // 4. Insert into Supabase
+    const { error } = await supabaseClient
+        .from("movies")
+        .insert([movieData]);
+
+    if (error) {
+        console.error(error);
+        alert("Import failed");
+        return;
+    }
+
+    alert("Imported successfully!");
+}
