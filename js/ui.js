@@ -1,56 +1,53 @@
-function createMovieCard(movie) {
 
-    const title = movie.title || movie.name;
+async function createMovieCard(movie) {
 
-    const year = (movie.release_date || movie.first_air_date || "")
+    // 1. Fetch TMDB details using stored ID
+    const tmdb = await getTmdbDetails(
+        movie.tmdb_id,
+        movie.category
+    );
+
+    if (!tmdb) return "";
+
+    // 2. Extract data safely
+    const title = tmdb.title || tmdb.name || movie.title;
+
+    const year = (tmdb.release_date || tmdb.first_air_date || "")
         .substring(0, 4);
 
-    const rating = movie.vote_average
-        ? movie.vote_average.toFixed(1)
+    const rating = tmdb.vote_average
+        ? tmdb.vote_average.toFixed(1)
         : "N/A";
 
-    const poster = movie.poster_path
-        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+    const poster = tmdb.poster_path
+        ? `https://image.tmdb.org/t/p/w500${tmdb.poster_path}`
         : "assets/poster.jpg";
 
+    // 3. Return card
     return `
+        <a href="watch.html?id=${movie.id}" class="movie-card">
 
-    <a href="watch.html?id=${movie.id}" class="movie-card">
+            <div class="poster">
 
-        <div class="poster">
+                <img src="${poster}" alt="${title}">
 
-            <img src="${poster}" alt="${title}">
-
-            <div class="card-overlay">
-
-                <div class="play-btn">
-
-                    <i class="fa-solid fa-play"></i>
-
+                <div class="card-overlay">
+                    <div class="play-btn">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
                 </div>
+
+                <span class="rating">⭐ ${rating}</span>
+                <span class="quality">HD</span>
 
             </div>
 
-            <span class="rating">
-                ⭐ ${rating}
-            </span>
+            <div class="card-info">
+                <h3>${title}</h3>
+                <p>${year}</p>
+            </div>
 
-            <span class="quality">
-                HD
-            </span>
-
-        </div>
-
-        <div class="card-info">
-
-            <h3>${title}</h3>
-
-            <p>${year}</p>
-
-        </div>
-
-    </a>
-
+        </a>
     `;
 }
 function renderMovie(movie, credits = {}, videos = {}) {
