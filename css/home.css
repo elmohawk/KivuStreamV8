@@ -7,7 +7,7 @@ KIVUSTREAM HOME PAGE
 .content-section,
 .translator-section,
 .section{
-position:relative;
+position;
 }
 
 .content-section{
@@ -17,29 +17,29 @@ padding:50px 0;
 /* SECTION HEADERS */
 
 .section-title-row{
-display:flex;
-align-items:center;
-justify-content:space-between;
+display;
+align-items;
+justify-content;
 margin-bottom:25px;
 }
 
 .view-all{
-color:var(--primary);
+color(--primary);
 font-weight:600;
-text-decoration:none;
-transition:var(--normal);
+text-decoration;
+transition(--normal);
 }
 
-.view-all:hover
+.view-all
 
 /* SECTION DIVIDER */
 
-.section:not(:last-child)::after{
+.section()::after{
 content:"";
-position:absolute;
+position;
 bottom:0;
 left:50%;
-transform:translateX(-50%);
+transform(-50%);
 width:92%;
 height:1px;
 background:
@@ -54,21 +54,20 @@ transparent
 /* HERO ENHANCEMENT */
 
 #heroBanner{
-background-size:cover;
-background-position:center;
-background-repeat:no-repeat;
-transition:background-image .6s ease;
+background-size;
+background-position;
+background-repeat;
+transition .6s ease;
 }
 
 /* MOVIE ROW FADE */
 
 .movie-grid,
 .movie-slider{
-animation:fadeIn .45s ease;
+animation .45s ease;
 }
 
 @keyframes fadeIn{
-
 
 from{
     opacity:0;
@@ -80,31 +79,30 @@ to{
     transform:translateY(0);
 }
 
-
 }
 
 /* LATEST RELEASES */
 
-#latestMovies .movie-card:hover{
-filter:brightness(1.05);
+#latestMovies .movie-card{
+filter(1.05);
 }
 
 /* TRENDING SECTION */
 
-#trendingMovies .movie-card:hover{
-transform:translateY(-12px);
+#trendingMovies .movie-card{
+transform(-12px);
 }
 
 /* TOP RATED */
 
 #topRatedMovies .movie-info p{
-color:var(--imdb);
+color(--imdb);
 }
 
 /* SERIES */
 
 #popularSeries .movie-info p{
-color:var(--secondary);
+color(--secondary);
 }
 
 /* SKELETON */
@@ -118,11 +116,9 @@ linear-gradient(
 #111 75%
 );
 
-```
 background-size:200% 100%;
 
 animation:shimmer 1.5s infinite;
-```
 
 }
 
@@ -139,7 +135,6 @@ width:60%;
 
 @keyframes shimmer{
 
-```
 0%{
     background-position:200% 0;
 }
@@ -147,7 +142,6 @@ width:60%;
 100%{
     background-position:-200% 0;
 }
-```
 
 }
 
@@ -155,7 +149,6 @@ width:60%;
 
 .view-all-btn{
 
-```
 width:100%;
 
 margin-top:20px;
@@ -175,17 +168,14 @@ color:#fff;
 font-weight:700;
 
 transition:var(--normal);
-```
 
 }
 
-.view-all-btn:hover{
+.view-all-btn{
 
-```
 transform:translateY(-3px);
 
 box-shadow:var(--shadow-green);
-```
 
 }
 
@@ -193,7 +183,6 @@ box-shadow:var(--shadow-green);
 
 .empty{
 
-```
 width:100%;
 
 text-align:center;
@@ -201,7 +190,6 @@ text-align:center;
 padding:40px;
 
 color:var(--text-muted);
-```
 
 }
 
@@ -209,7 +197,6 @@ color:var(--text-muted);
 
 @media(max-width:768px){
 
-```
 .section-title-row{
     flex-direction:column;
     align-items:flex-start;
@@ -221,4 +208,3 @@ color:var(--text-muted);
 }
 
 }
-
