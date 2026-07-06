@@ -159,7 +159,49 @@ function loadHero(items){
     renderHero(hero);
 
 }
+const heroTrailer = document.getElementById("heroTrailer");
 
+function loadHero(movie) {
+
+    document.getElementById("heroTitle").textContent = movie.title;
+    document.getElementById("heroOverview").textContent = movie.description;
+
+    document.getElementById("watchNowBtn").href =
+        `watch.html?id=${movie.id}`;
+
+    // TRAILER SYSTEM
+    if (heroTrailer && movie.trailer) {
+
+        heroTrailer.src = movie.trailer;
+
+        heroTrailer.muted = true;
+        heroTrailer.loop = true;
+        heroTrailer.playsInline = true;
+
+        const playPromise = heroTrailer.play();
+
+        if (playPromise !== undefined) {
+            playPromise
+                .then(() => {
+                    heroTrailer.classList.add("active");
+                })
+                .catch(() => {
+                    console.log("Autoplay blocked");
+                });
+        }
+
+    }
+}
+if (!movie.trailer) {
+
+    heroTrailer.style.display = "none";
+
+    document.getElementById("heroBanner").style.backgroundImage =
+        `url(${movie.image})`;
+
+    document.getElementById("heroBanner").style.backgroundSize = "cover";
+
+}
 /* ===========================================
    HOMEPAGE SECTIONS
 =========================================== */
