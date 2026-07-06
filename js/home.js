@@ -240,3 +240,43 @@ await loadTranslators();
         data.map(createMovieCard).join("");
 
 }
+async function loadCategories(){
+
+const {data}=await supabaseClient
+
+.from("movies")
+
+.select("category");
+
+const categories=[
+
+...new Set(
+
+data
+.map(i=>i.category)
+.filter(Boolean)
+
+)
+
+];
+
+document
+.getElementById("categoryList")
+.innerHTML=
+
+categories
+.map(category=>`
+
+<a
+class="category-card"
+href="movies.html?category=${category}">
+
+${category}
+
+</a>
+
+`)
+
+.join("");
+
+}
