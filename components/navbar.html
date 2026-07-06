@@ -10,22 +10,97 @@
 
         <!-- Navigation -->
         <ul class="nav-links">
-            <li><a href="index.html" class="active">Home</a></li>
-            <li><a href="movies.html">Movies</a></li>
-            <li><a href="series.html">Series</a></li>
-            <a href="admin.html" class="admin-link">Admin</a>
-            <li><a href="#">My List</a></li>
+
+            <li>
+                <a href="index.html" class="active">Home</a>
+            </li>
+
+            <li>
+                <a href="movies.html">Movies</a>
+            </li>
+
+            <li>
+                <a href="series.html">Series</a>
+            </li>
+
+            <!-- Browse -->
+            <li class="dropdown">
+
+                <a href="#">
+                    Browse
+                    <i class="fa-solid fa-chevron-down"></i>
+                </a>
+
+                <ul id="browseMenu" class="dropdown-menu">
+
+                    <li class="loading">
+                        Loading...
+                    </li>
+
+                </ul>
+
+            </li>
+
+            <!-- Countries -->
+            <li class="dropdown">
+
+                <a href="#">
+                    Countries
+                    <i class="fa-solid fa-chevron-down"></i>
+                </a>
+
+                <ul id="countryMenu" class="dropdown-menu">
+
+                    <li class="loading">
+                        Loading...
+                    </li>
+
+                </ul>
+
+            </li>
+
+            <!-- Translators -->
+            <li class="dropdown">
+
+                <a href="#">
+                    Translators
+                    <i class="fa-solid fa-chevron-down"></i>
+                </a>
+
+                <ul id="translatorMenu" class="dropdown-menu">
+
+                    <li class="loading">
+                        Loading...
+                    </li>
+
+                </ul>
+
+            </li>
+
+            <li>
+                <a href="#">My List</a>
+            </li>
+
+            <li>
+                <a href="admin.html" class="admin-link">
+                    Admin
+                </a>
+            </li>
+
         </ul>
 
         <!-- Right Side -->
         <div class="nav-right">
 
             <div class="search-box">
+
                 <i class="fa-solid fa-magnifying-glass"></i>
+
                 <input
+                    id="searchInput"
                     type="text"
-                    placeholder="Search movies..."
-                    id="searchInput">
+                    placeholder="Search movies...">
+
             </div>
 
             <div id="authMenu"></div>
