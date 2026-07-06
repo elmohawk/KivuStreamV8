@@ -192,3 +192,162 @@ body::before{
 
     border-radius:20px;
 }
+/* ==========================================
+   FLOATING BUTTONS
+========================================== */
+
+.floating-actions{
+
+    position:fixed;
+
+    right:25px;
+    bottom:25px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+    z-index:99999;
+}
+
+/* BUTTON */
+
+.float-btn{
+
+    position:relative;
+
+    width:65px;
+    height:65px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    text-decoration:none;
+
+    color:#fff;
+
+    overflow:visible;
+
+    transition:.35s ease;
+}
+
+.float-btn i{
+
+    font-size:30px;
+
+    position:relative;
+
+    z-index:10;
+}
+
+.float-btn:hover{
+
+    transform:
+    translateY(-5px)
+    scale(1.08);
+}
+
+/* ==========================================
+   WHATSAPP
+========================================== */
+
+.whatsapp-float{
+
+    background:#25d366;
+
+    box-shadow:
+    0 10px 30px rgba(37,211,102,.35);
+}
+
+/* ==========================================
+   CALL
+========================================== */
+
+.call-float{
+
+    background:#0ea5e9;
+
+    box-shadow:
+    0 10px 30px rgba(14,165,233,.35);
+}
+
+/* ==========================================
+   WAVES
+========================================== */
+
+.wave{
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:50%;
+
+    border:2px solid currentColor;
+
+    opacity:.6;
+
+    animation:pulseWave 2.5s infinite;
+}
+
+.wave2{
+
+    animation-delay:1s;
+}
+
+.whatsapp-float .wave{
+
+    border-color:#25d366;
+}
+
+.call-float .wave{
+
+    border-color:#0ea5e9;
+}
+
+@keyframes pulseWave{
+
+    0%{
+
+        transform:scale(1);
+
+        opacity:.7;
+    }
+
+    100%{
+
+        transform:scale(2.2);
+
+        opacity:0;
+    }
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media(max-width:768px){
+
+    .floating-actions{
+
+        right:18px;
+        bottom:18px;
+    }
+
+    .float-btn{
+
+        width:58px;
+        height:58px;
+    }
+
+    .float-btn i{
+
+        font-size:26px;
+    }
+}
