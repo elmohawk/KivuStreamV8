@@ -72,3 +72,99 @@ body{
 .admin-link {
     display: none;
 }
+.translator-section{
+
+    padding:50px 60px;
+
+}
+
+.section-header{
+
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+
+}
+
+.live-badge{
+
+    background:#00d26a;
+    color:#fff;
+    padding:4px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+
+}
+
+.translator-slider{
+
+    display:flex;
+    gap:22px;
+
+    overflow-x:auto;
+
+    scrollbar-width:none;
+
+    scroll-behavior:smooth;
+
+}
+
+.translator-slider::-webkit-scrollbar{
+
+    display:none;
+
+}
+
+.translator-card{
+
+    min-width:120px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+}
+
+.translator-avatar{
+
+    width:90px;
+    height:90px;
+
+    border-radius:50%;
+
+    border:3px solid #00d26a;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:34px;
+    font-weight:bold;
+
+    margin:auto;
+
+    background:#111;
+
+    transition:.3s;
+
+}
+
+.translator-card:hover .translator-avatar{
+
+    transform:scale(1.08);
+
+    box-shadow:0 0 25px #00d26a;
+
+}
+
+.translator-name{
+
+    margin-top:12px;
+
+    font-size:14px;
+
+    color:#ddd;
+
+}
