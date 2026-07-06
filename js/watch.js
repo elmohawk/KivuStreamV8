@@ -23,7 +23,7 @@ async function init() {
 // =====================================
 // LOAD MOVIE
 // =====================================
-async function loadMovie(id) {
+async function loadMovie(id){
 
     const { data, error } = await supabaseClient
         .from("movies")
@@ -31,9 +31,9 @@ async function loadMovie(id) {
         .eq("id", id)
         .single();
 
-    if (error || !data) {
+    if(error){
 
-        alert("Movie not found");
+        console.error(error);
 
         return;
 
