@@ -66,44 +66,30 @@
 /* =========================
    LOGO
 ========================= */
-
 .logo{
 
-    display:flex;
+    transition:var(--normal);
 
-    align-items:center;
+}
 
-    gap:12px;
+.logo:hover{
 
-    flex-shrink:0;
+    transform:translateY(-2px);
 
 }
 
 .logo img{
 
-    width:48px;
-
-    height:48px;
-
-    object-fit:contain;
+    transition:var(--normal);
 
 }
 
-.logo span{
+.logo:hover img{
 
-    font-size:1.4rem;
-
-    font-weight:700;
-
-    color:#fff;
-
-    letter-spacing:.5px;
-
-}
-
-.logo span strong{
-
-    color:var(--primary);
+    filter:drop-shadow(
+        0 0 15px
+        rgba(0,210,106,.45)
+    );
 
 }
 
@@ -146,8 +132,11 @@
     color:#fff;
 
 }
-
 .nav-links a.active::after{
+
+    box-shadow:
+    0 0 15px
+    rgba(0,210,106,.45);
 
     content:"";
 
@@ -185,8 +174,8 @@
 ========================= */
 
 .search-box{
-
-    width:320px;
+    width:380px;
+    max-width:40vw;
 
     height:46px;
 
@@ -280,17 +269,16 @@
 
 }
 
-.profile-btn img{
+.profile-btn img:hover{
 
-    width:42px;
+    box-shadow:
+    0 0 25px
+    rgba(0,210,106,.35);
 
-    height:42px;
+}
+.navbar.scrolled{
 
-    border-radius:50%;
-
-    object-fit:cover;
-
-    border:2px solid var(--primary);
+    backdrop-filter:blur(25px);
 
 }
 
@@ -468,5 +456,74 @@
         display:none;
 
     }
+
+}
+.navbar::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    top:0;
+
+    width:100%;
+    height:1px;
+
+    background:
+    linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.15),
+        transparent
+    );
+
+}
+.nav-badge{
+
+    position:absolute;
+
+    top:-4px;
+
+    right:-4px;
+
+    min-width:18px;
+
+    height:18px;
+
+    padding:0 5px;
+
+    border-radius:50px;
+
+    background:var(--danger);
+
+    color:#fff;
+
+    font-size:10px;
+
+    font-weight:700;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+.mobile-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.6);
+
+    backdrop-filter:blur(4px);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.3s;
 
 }
