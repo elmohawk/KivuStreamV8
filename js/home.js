@@ -218,3 +218,24 @@ async function loadTranslators() {
 
 }
 await loadTranslators();
+
+    async function loadLatestMovies(){
+
+    const { data, error } = await supabaseClient
+        .from("movies")
+        .select("*")
+        .eq("is_active", true)
+        .order("created_at",{ascending:false})
+        .limit(20);
+
+    if(error){
+
+        console.error(error);
+        return;
+
+    }
+
+    document.getElementById("latestMovies").innerHTML =
+        data.map(createMovieCard).join("");
+
+}
