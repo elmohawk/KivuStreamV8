@@ -1,6 +1,12 @@
-const supabaseClient = supabase.createClient(
-    CONFIG.SUPABASE_URL,
-    CONFIG.SUPABASE_ANON_KEY
-);
+import { createClient } from
+"https://esm.sh/@supabase/supabase-js";
 
-window.supabaseClient = supabaseClient;
+import { SUPABASE } from "./config.js";
+
+export const supabase = createClient(
+
+    SUPABASE.URL,
+
+    SUPABASE.KEY
+
+);
