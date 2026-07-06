@@ -1,1 +1,224 @@
+/* =====================================================
+KIVUSTREAM HOME PAGE
+===================================================== */
+
+/* SECTION SPACING */
+
+.content-section,
+.translator-section,
+.section{
+position:relative;
+}
+
+.content-section{
+padding:50px 0;
+}
+
+/* SECTION HEADERS */
+
+.section-title-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:25px;
+}
+
+.view-all{
+color:var(--primary);
+font-weight:600;
+text-decoration:none;
+transition:var(--normal);
+}
+
+.view-all:hover
+
+/* SECTION DIVIDER */
+
+.section:not(:last-child)::after{
+content:"";
+position:absolute;
+bottom:0;
+left:50%;
+transform:translateX(-50%);
+width:92%;
+height:1px;
+background:
+linear-gradient(
+90deg,
+transparent,
+rgba(255,255,255,.08),
+transparent
+);
+}
+
+/* HERO ENHANCEMENT */
+
+#heroBanner{
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+transition:background-image .6s ease;
+}
+
+/* MOVIE ROW FADE */
+
+.movie-grid,
+.movie-slider{
+animation:fadeIn .45s ease;
+}
+
+@keyframes fadeIn{
+
+
+from{
+    opacity:0;
+    transform:translateY(15px);
+}
+
+to{
+    opacity:1;
+    transform:translateY(0);
+}
+
+
+}
+
+/* LATEST RELEASES */
+
+#latestMovies .movie-card:hover{
+filter:brightness(1.05);
+}
+
+/* TRENDING SECTION */
+
+#trendingMovies .movie-card:hover{
+transform:translateY(-12px);
+}
+
+/* TOP RATED */
+
+#topRatedMovies .movie-info p{
+color:var(--imdb);
+}
+
+/* SERIES */
+
+#popularSeries .movie-info p{
+color:var(--secondary);
+}
+
+/* SKELETON */
+
+.skeleton .movie-poster{
+background:
+linear-gradient(
+90deg,
+#111 25%,
+#1d1d1d 50%,
+#111 75%
+);
+
+```
+background-size:200% 100%;
+
+animation:shimmer 1.5s infinite;
+```
+
+}
+
+.skeleton .line{
+height:12px;
+border-radius:8px;
+background:#1c1c1c;
+margin-top:10px;
+}
+
+.skeleton .line.short{
+width:60%;
+}
+
+@keyframes shimmer{
+
+```
+0%{
+    background-position:200% 0;
+}
+
+100%{
+    background-position:-200% 0;
+}
+```
+
+}
+
+/* VIEW ALL BUTTON */
+
+.view-all-btn{
+
+```
+width:100%;
+
+margin-top:20px;
+
+padding:14px;
+
+border:none;
+
+border-radius:14px;
+
+cursor:pointer;
+
+background:var(--gradient-primary);
+
+color:#fff;
+
+font-weight:700;
+
+transition:var(--normal);
+```
+
+}
+
+.view-all-btn:hover{
+
+```
+transform:translateY(-3px);
+
+box-shadow:var(--shadow-green);
+```
+
+}
+
+/* EMPTY STATE */
+
+.empty{
+
+```
+width:100%;
+
+text-align:center;
+
+padding:40px;
+
+color:var(--text-muted);
+```
+
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+```
+.section-title-row{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+}
+
+.content-section{
+    padding:35px 0;
+}
+
+}
 
