@@ -5,11 +5,14 @@
 document.addEventListener("DOMContentLoaded", async () => {
 
     await Promise.all([
+        loadHero(),
         loadFeatured(),
         loadPopularMovies(),
         loadTopRated(),
         loadSeries(),
-        loadLatestMovies()
+        loadLatestMovies(),
+        loadTranslators(),
+        loadCategories()
     ]);
 
 });
@@ -140,6 +143,10 @@ function renderMovies(containerId, movies) {
         .join("");
 
 }
+// =====================================
+// Hero
+// =====================================
+
 async function loadHero() {
 
     const { data, error } = await supabaseClient
@@ -152,22 +159,17 @@ async function loadHero() {
 
     if (error || !data) return;
 
-    document.getElementById("heroTitle").textContent =
-        data.title;
-
-    document.getElementById("heroOverview").textContent =
-        data.overview;
-
+    document.getElementById("heroTitle").textContent = data.title;
+    document.getElementById("heroOverview").textContent = data.overview;
     document.getElementById("heroBanner").style.backgroundImage =
         `url(https://image.tmdb.org/t/p/original${data.backdrop_path})`;
-
     document.getElementById("watchNowBtn").href =
         `watch.html?id=${data.id}`;
 }
-document.addEventListener("DOMContentLoaded", async () => {
 
-    await loadHero();
-
+// =====================================
+// Translators
+// =====================================
 
 async function loadTranslators() {
 
@@ -176,13 +178,10 @@ async function loadTranslators() {
         .select("translator");
 
     if (error) {
-
         console.error(error);
         return;
-
     }
 
-    // Remove duplicates and empty values
     const translators = [...new Set(
         data
             .map(item => item.translator)
@@ -191,91 +190,84 @@ async function loadTranslators() {
 
     const container = document.getElementById("translatorSlider");
 
+    if (!container) return;
+
     container.innerHTML = translators.map(name => {
 
         const initials = name
             .split(" ")
             .map(word => word[0])
             .join("")
-            .substring(0,2)
+            .substring(0, 2)
             .toUpperCase();
 
         return `
             <div class="translator-card">
-
-                <div class="translator-avatar">
-                    ${initials}
-                </div>
-
-                <div class="translator-name">
-                    ${name}
-                </div>
-
+                <div class="translator-avatar">${initials}</div>
+                <div class="translator-name">${name}</div>
             </div>
         `;
 
     }).join("");
 
 }
-await loadTranslators();
 
-    async function loadLatestMovies(){
+// =====================================
+// Latest Movies
+// =====================================
+
+async function loadLatestMovies() {
 
     const { data, error } = await supabaseClient
         .from("movies")
         .select("*")
         .eq("is_active", true)
-        .order("created_at",{ascending:false})
+        .order("created_at", { ascending: false })
         .limit(20);
 
-    if(error){
-
+    if (error) {
         console.error(error);
         return;
-
     }
 
-    document.getElementById("latestMovies").innerHTML =
-        data.map(createMovieCard).join("");
+    const container = document.getElementById("latestMovies");
+
+    if (!container) return;
+
+    container.innerHTML = data.map(createMovieCard).join("");
 
 }
-async function loadCategories(){
 
-const {data}=await supabaseClient
+// =====================================
+// Categories
+// =====================================
 
-.from("movies")
+async function loadCategories() {
 
-.select("category");
+    const { data, error } = await supabaseClient
+        .from("movies")
+        .select("category");
 
-const categories=[
+    if (error) {
+        console.error(error);
+        return;
+    }
 
-...new Set(
+    const container = document.getElementById("categoryList");
 
-data
-.map(i=>i.category)
-.filter(Boolean)
+    if (!container) return;
 
-)
+    const categories = [...new Set(
+        data
+            .map(item => item.category)
+            .filter(Boolean)
+    )];
 
-];
-
-document
-.getElementById("categoryList")
-.innerHTML=
-
-categories
-.map(category=>`
-
-<a
-class="category-card"
-href="movies.html?category=${category}">
-
-${category}
-
-</a>
-
-`)
-
-.join("");
+    container.innerHTML = categories.map(category => `
+        <a class="category-card"
+           href="movies.html?category=${encodeURIComponent(category)}">
+            ${category}
+        </a>
+    `).join("");
 
 }
