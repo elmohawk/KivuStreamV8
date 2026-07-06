@@ -168,10 +168,53 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     await loadHero();
 
-    await loadFeatured();
 
-    await loadPopular();
+async function loadTranslators() {
 
-    await loadSeries();
+    const { data, error } = await supabaseClient
+        .from("movies")
+        .select("translator");
 
-});
+    if (error) {
+
+        console.error(error);
+        return;
+
+    }
+
+    // Remove duplicates and empty values
+    const translators = [...new Set(
+        data
+            .map(item => item.translator)
+            .filter(Boolean)
+    )];
+
+    const container = document.getElementById("translatorSlider");
+
+    container.innerHTML = translators.map(name => {
+
+        const initials = name
+            .split(" ")
+            .map(word => word[0])
+            .join("")
+            .substring(0,2)
+            .toUpperCase();
+
+        return `
+            <div class="translator-card">
+
+                <div class="translator-avatar">
+                    ${initials}
+                </div>
+
+                <div class="translator-name">
+                    ${name}
+                </div>
+
+            </div>
+        `;
+
+    }).join("");
+
+}
+await loadTranslators();
