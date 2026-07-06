@@ -76,18 +76,18 @@
 
     z-index:2;
 
-    width:min(50%,1450px);
+    width:min(30%,1450px);
 
     margin:auto;
 
     display:grid;
 
     grid-template-columns:
-    1.4fr
     1fr
-    1.3fr;
+    1fr
+    1fr;
 
-    gap:60px;
+    gap:90px;
 }
 
 /* ===================================
