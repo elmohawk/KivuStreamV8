@@ -57,9 +57,7 @@ async function getFavorites() {
 
     return data;
 }
-function removeWatchlist(id) {
-  console.log("Removing from watchlist:", id);
-}
+
 async function addWatchlist(movieId) {
 
     const user = await requireAuth();
