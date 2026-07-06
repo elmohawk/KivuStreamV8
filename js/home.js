@@ -140,3 +140,38 @@ function renderMovies(containerId, movies) {
         .join("");
 
 }
+async function loadHero() {
+
+    const { data, error } = await supabaseClient
+        .from("movies")
+        .select("*")
+        .eq("featured", true)
+        .eq("is_active", true)
+        .limit(1)
+        .single();
+
+    if (error || !data) return;
+
+    document.getElementById("heroTitle").textContent =
+        data.title;
+
+    document.getElementById("heroOverview").textContent =
+        data.overview;
+
+    document.getElementById("heroBanner").style.backgroundImage =
+        `url(https://image.tmdb.org/t/p/original${data.backdrop_path})`;
+
+    document.getElementById("watchNowBtn").href =
+        `watch.html?id=${data.id}`;
+}
+document.addEventListener("DOMContentLoaded", async () => {
+
+    await loadHero();
+
+    await loadFeatured();
+
+    await loadPopular();
+
+    await loadSeries();
+
+});
