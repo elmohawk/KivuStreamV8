@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -8,60 +9,173 @@
 <title>KivuStream | Admin Panel</title>
 
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 </head>
 
 <body>
 
-<div class="admin-panel">
-
-    <h2>TMDB Import System</h2>
-
-    <input id="tmdbSearchInput" placeholder="Search movies or series..." />
-    <button onclick="searchTMDBAdmin()">Search</button>
-
-    <div id="tmdbResults"></div>
-
-    <div id="tmdbPreview"></div>
-
-</div>
 <header class="navbar">
 
     <div class="logo">
-        KivuStream Admin
+        🎬 KivuStream Admin
     </div>
 
-    <button onclick="logout()">Logout</button>
+    <button onclick="logout()" class="btn">
+        Logout
+    </button>
 
 </header>
 
-<section class="admin-container">
+<main class="admin-container">
 
-    <h2>Add Movie</h2>
+<h1>Movie & Series Import</h1>
 
-    <input type="text" id="tmdbId" placeholder="TMDB Movie ID">
+<!-- SEARCH -->
 
-    <label>
-        <input type="checkbox" id="featured">
-        Featured (Hero Slider)
-    </label>
+<div class="admin-card">
 
-    <button onclick="addMovie()">Add Movie</button>
+    <h2>Search TMDB</h2>
 
-    <hr>
+    <input
+        id="tmdbSearchInput"
+        type="text"
+        placeholder="Search movie or series..."
+    >
 
-    <h2>Movie List</h2>
+    <button
+        id="searchBtn"
+        class="btn btn-primary">
 
-    <div id="movieList"></div>
+        <i class="fa fa-search"></i>
+
+        Search
+
+    </button>
+
+</div>
+
+<!-- RESULTS -->
+
+<div
+    id="tmdbResults"
+    class="search-results">
+</div>
+
+<!-- PREVIEW -->
+
+<div
+    id="tmdbPreview"
+    class="preview-card"
+    style="display:none">
+
+    <div class="preview-left">
+
+        <img id="previewPoster">
+
+    </div>
+
+    <div class="preview-right">
+
+        <h2 id="previewTitle"></h2>
+
+        <p id="previewOverview"></p>
+
+        <p id="previewInfo"></p>
+
+        <hr>
+
+        <label>Category</label>
+
+        <select id="category">
+
+            <option value="movie">
+                Movie
+            </option>
+
+            <option value="series">
+                Series
+            </option>
+
+        </select>
+
+        <label>Translator</label>
+
+        <input id="translator">
+
+        <label>Country</label>
+
+        <input id="country">
+
+        <label>Quality</label>
+
+        <select id="quality">
+
+            <option>1080p</option>
+            <option>720p</option>
+            <option>480p</option>
+
+        </select>
+
+        <label>Worker URL</label>
+
+        <input id="workerUrl">
+
+        <label>Download Links (JSON)</label>
+
+        <textarea
+            id="downloadLinks"
+            rows="6"
+            placeholder='{"1080p":"https://...","720p":"https://..."}'>
+        </textarea>
+
+        <br>
+
+        <label>
+
+            <input
+                type="checkbox"
+                id="featured">
+
+            Featured
+
+        </label>
+
+        <br><br>
+
+        <button
+            id="saveMovieBtn"
+            class="btn btn-success">
+
+            💾 Save To Supabase
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- YOUR LIBRARY -->
+
+<section class="admin-library">
+
+<h2>Your Uploaded Contents</h2>
+
+<div id="movieList"></div>
 
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+</main>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/config.js"></script>
 <script src="js/supabase.js"></script>
 <script src="js/api.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/admin.js"></script>
 
 </body>
+
 </html>
