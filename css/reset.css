@@ -1,26 +1,457 @@
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
+/* =====================================================
+   KIVUSTREAM RESET & GLOBAL STYLES
+   ===================================================== */
+
+/* =========================
+   RESET
+========================= */
+
+*,
+*::before,
+*::after{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
+
+/* =========================
+   HTML
+========================= */
+
+html{
+    scroll-behavior:smooth;
+    -webkit-text-size-adjust:100%;
+}
+
+/* =========================
+   BODY
+========================= */
 
 body{
-background:var(--bg);
-color:var(--text);
-font-family:Inter,sans-serif;
-overflow-x:hidden;
+
+    font-family:
+    "Inter",
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    overflow-x:hidden;
+
+    min-height:100vh;
+
+    line-height:1.6;
+
+    text-rendering:optimizeLegibility;
+
+    -webkit-font-smoothing:antialiased;
+
+    -moz-osx-font-smoothing:grayscale;
+
 }
+
+/* =========================
+   SELECTION
+========================= */
+
+::selection{
+
+    background:var(--primary);
+
+    color:#fff;
+
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+    height:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#101010;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#333;
+
+    border-radius:50px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:var(--primary);
+
+}
+
+/* Firefox */
+
+*{
+
+    scrollbar-color:#333 #101010;
+
+    scrollbar-width:thin;
+
+}
+
+/* =========================
+   IMAGES
+========================= */
 
 img{
-display:block;
-width:100%;
+
+    display:block;
+
+    max-width:100%;
+
+    height:auto;
+
+    user-select:none;
+
+    -webkit-user-drag:none;
+
 }
 
-button{
-cursor:pointer;
+/* =========================
+   VIDEO
+========================= */
+
+video{
+
+    width:100%;
+
+    display:block;
+
 }
+
+/* =========================
+   LINKS
+========================= */
 
 a{
-text-decoration:none;
-color:inherit;
+
+    color:inherit;
+
+    text-decoration:none;
+
+    transition:var(--normal);
+
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+button{
+
+    font:inherit;
+
+    border:none;
+
+    outline:none;
+
+    cursor:pointer;
+
+    background:none;
+
+    transition:var(--normal);
+
+}
+
+button:disabled{
+
+    cursor:not-allowed;
+
+    opacity:.6;
+
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input,
+textarea,
+select{
+
+    font:inherit;
+
+    outline:none;
+
+    border:none;
+
+    background:transparent;
+
+}
+
+textarea{
+
+    resize:vertical;
+
+}
+
+/* =========================
+   LIST
+========================= */
+
+ul,
+ol{
+
+    list-style:none;
+
+}
+
+/* =========================
+   TABLE
+========================= */
+
+table{
+
+    border-collapse:collapse;
+
+    width:100%;
+
+}
+
+/* =========================
+   HEADINGS
+========================= */
+
+h1{
+
+    font-size:var(--font-3xl);
+
+    font-weight:var(--fw-black);
+
+}
+
+h2{
+
+    font-size:var(--font-2xl);
+
+    font-weight:var(--fw-bold);
+
+}
+
+h3{
+
+    font-size:var(--font-xl);
+
+    font-weight:var(--fw-bold);
+
+}
+
+h4{
+
+    font-size:var(--font-lg);
+
+}
+
+h5{
+
+    font-size:var(--font-md);
+
+}
+
+h6{
+
+    font-size:var(--font-base);
+
+}
+
+/* =========================
+   PARAGRAPH
+========================= */
+
+p{
+
+    color:var(--text-light);
+
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.container{
+
+    width:min(
+        100% - 40px,
+        var(--container)
+    );
+
+    margin-inline:auto;
+
+}
+
+/* =========================
+   SECTION
+========================= */
+
+section{
+
+    margin-top:60px;
+
+}
+
+/* =========================
+   UTILITIES
+========================= */
+
+.hidden{
+
+    display:none !important;
+
+}
+
+.flex{
+
+    display:flex;
+
+}
+
+.grid{
+
+    display:grid;
+
+}
+
+.center{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.text-center{
+
+    text-align:center;
+
+}
+
+.full-width{
+
+    width:100%;
+
+}
+
+.round{
+
+    border-radius:50%;
+
+}
+
+/* =========================
+   FADE IN
+========================= */
+
+.fade-in{
+
+    animation:fadeIn .5s ease;
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(15px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+
+    }
+
+}
+
+/* =========================
+   LOADER
+========================= */
+
+#loader{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#000;
+
+    z-index:var(--z-loader);
+
+    transition:.4s;
+
+}
+
+#loader.hide{
+
+    opacity:0;
+
+    visibility:hidden;
+
+}
+
+/* =========================
+   APP
+========================= */
+
+#app{
+
+    min-height:100vh;
+
+}
+
+/* =========================
+   FOCUS ACCESSIBILITY
+========================= */
+
+:focus-visible{
+
+    outline:2px solid var(--primary);
+
+    outline-offset:3px;
+
+}
+
+/* =========================
+   SMOOTH TRANSITIONS
+========================= */
+
+a,
+button,
+input,
+textarea,
+select,
+img{
+
+    transition:var(--normal);
+
 }
