@@ -1,210 +1,461 @@
-/* =====================================================
-KIVUSTREAM HOME PAGE
-===================================================== */
+/* ==========================================
+   KIVUSTREAM HOME PAGE
+========================================== */
 
-/* SECTION SPACING */
+/* HERO SECTION */
 
-.content-section,
-.translator-section,
-.section{
-position;
+.hero-section{
+    position:relative;
+    min-height:80vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    overflow:hidden;
+    padding:120px 20px;
 }
+
+.hero-section::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:
+    linear-gradient(
+        rgba(0,0,0,.55),
+        rgba(0,0,0,.85)
+    );
+
+    z-index:1;
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+    max-width:900px;
+}
+
+.hero-title{
+    font-size:4rem;
+    font-weight:900;
+    line-height:1.1;
+    margin-bottom:20px;
+}
+
+.hero-title span{
+    color:var(--primary);
+}
+
+.hero-subtitle{
+    color:var(--text-muted);
+    font-size:1.1rem;
+    line-height:1.8;
+    margin-bottom:35px;
+}
+
+/* HERO SEARCH */
+
+.hero-search{
+    max-width:700px;
+    margin:auto;
+    display:flex;
+    overflow:hidden;
+
+    background:
+    rgba(255,255,255,.05);
+
+    border:2px solid var(--primary);
+
+    border-radius:60px;
+
+    backdrop-filter:blur(20px);
+}
+
+.hero-search input{
+    flex:1;
+    height:65px;
+
+    background:none;
+
+    border:none;
+
+    outline:none;
+
+    color:white;
+
+    padding:0 25px;
+
+    font-size:1rem;
+}
+
+.hero-search button{
+    width:80px;
+
+    border:none;
+
+    background:var(--primary);
+
+    color:#000;
+
+    cursor:pointer;
+
+    font-size:1.2rem;
+
+    font-weight:700;
+}
+
+/* ==========================================
+   CONTENT SECTIONS
+========================================== */
 
 .content-section{
-padding:50px 0;
+    padding:70px 0;
 }
 
-/* SECTION HEADERS */
-
 .section-title-row{
-display;
-align-items;
-justify-content;
-margin-bottom:25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.section-title{
+    font-size:2rem;
+    font-weight:800;
 }
 
 .view-all{
-color(--primary);
-font-weight:600;
-text-decoration;
-transition(--normal);
+    color:var(--primary);
+    text-decoration:none;
+    font-weight:700;
+    transition:.3s;
 }
 
-.view-all
-
-/* SECTION DIVIDER */
-
-.section()::after{
-content:"";
-position;
-bottom:0;
-left:50%;
-transform(-50%);
-width:92%;
-height:1px;
-background:
-linear-gradient(
-90deg,
-transparent,
-rgba(255,255,255,.08),
-transparent
-);
+.view-all:hover{
+    opacity:.8;
 }
 
-/* HERO ENHANCEMENT */
+/* ==========================================
+   MOVIE GRID
+========================================== */
 
-#heroBanner{
-background-size;
-background-position;
-background-repeat;
-transition .6s ease;
+.movie-grid{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fill,minmax(220px,1fr));
+
+    gap:24px;
 }
 
-/* MOVIE ROW FADE */
+/* ==========================================
+   HORIZONTAL SLIDER
+========================================== */
 
-.movie-grid,
 .movie-slider{
-animation .45s ease;
+    display:flex;
+    gap:20px;
+
+    overflow-x:auto;
+
+    scroll-behavior:smooth;
+
+    scrollbar-width:none;
 }
 
-@keyframes fadeIn{
-
-from{
-    opacity:0;
-    transform:translateY(15px);
+.movie-slider::-webkit-scrollbar{
+    display:none;
 }
 
-to{
-    opacity:1;
-    transform:translateY(0);
+/* ==========================================
+   MOVIE CARD
+========================================== */
+
+.movie-card{
+    position:relative;
+
+    min-width:220px;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    background:#111827;
+
+    border:1px solid rgba(255,255,255,.06);
+
+    transition:.35s ease;
+
+    cursor:pointer;
 }
 
+.movie-card:hover{
+    transform:
+    translateY(-8px)
+    scale(1.03);
+
+    box-shadow:
+    0 20px 40px rgba(0,0,0,.4);
 }
 
-/* LATEST RELEASES */
+.movie-card img{
+    width:100%;
+    height:320px;
+    object-fit:cover;
+    display:block;
 
-#latestMovies .movie-card{
-filter(1.05);
+    transition:.5s;
 }
 
-/* TRENDING SECTION */
-
-#trendingMovies .movie-card{
-transform(-12px);
+.movie-card:hover img{
+    transform:scale(1.08);
 }
 
-/* TOP RATED */
+.movie-card::after{
+    content:"";
+    position:absolute;
+    inset:0;
 
-#topRatedMovies .movie-info p{
-color(--imdb);
+    background:
+    linear-gradient(
+        to top,
+        rgba(0,0,0,.95),
+        transparent 60%
+    );
 }
 
-/* SERIES */
+/* MOVIE INFO */
 
-#popularSeries .movie-info p{
-color(--secondary);
+.movie-info{
+    position:absolute;
+
+    bottom:0;
+    left:0;
+    right:0;
+
+    z-index:2;
+
+    padding:18px;
 }
 
-/* SKELETON */
-
-.skeleton .movie-poster{
-background:
-linear-gradient(
-90deg,
-#111 25%,
-#1d1d1d 50%,
-#111 75%
-);
-
-background-size:200% 100%;
-
-animation:shimmer 1.5s infinite;
-
+.movie-info h3{
+    font-size:15px;
+    font-weight:700;
+    margin-bottom:8px;
 }
 
-.skeleton .line{
-height:12px;
-border-radius:8px;
-background:#1c1c1c;
-margin-top:10px;
+.movie-info p{
+    font-size:13px;
+    color:#d1d5db;
 }
 
-.skeleton .line.short{
-width:60%;
+/* BADGES */
+
+.genre-badge{
+    position:absolute;
+    top:12px;
+    left:12px;
+
+    background:var(--primary);
+
+    color:#000;
+
+    font-size:11px;
+
+    font-weight:700;
+
+    padding:6px 10px;
+
+    border-radius:30px;
+
+    z-index:5;
+}
+
+.episode-badge{
+    position:absolute;
+    top:12px;
+    right:12px;
+
+    background:var(--primary);
+
+    color:#000;
+
+    font-size:11px;
+
+    font-weight:700;
+
+    padding:6px 10px;
+
+    border-radius:30px;
+
+    z-index:5;
+}
+
+/* ==========================================
+   TRANSLATORS
+========================================== */
+
+.translator-section{
+    padding:70px 0;
+}
+
+.translator-slider{
+    display:flex;
+    gap:20px;
+
+    overflow-x:auto;
+
+    scrollbar-width:none;
+}
+
+.translator-slider::-webkit-scrollbar{
+    display:none;
+}
+
+.translator-card{
+    min-width:120px;
+    text-align:center;
+}
+
+.translator-avatar{
+
+    width:90px;
+    height:90px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#111827;
+
+    border:3px solid var(--primary);
+
+    font-size:30px;
+
+    transition:.3s;
+}
+
+.translator-card:hover .translator-avatar{
+
+    transform:scale(1.1);
+
+    box-shadow:
+    0 0 25px rgba(22,242,194,.5);
+}
+
+.translator-name{
+    margin-top:12px;
+    color:#d1d5db;
+    font-size:14px;
+}
+
+/* ==========================================
+   SKELETON LOADING
+========================================== */
+
+.skeleton{
+    border-radius:22px;
+
+    background:
+    linear-gradient(
+        90deg,
+        #111 25%,
+        #222 50%,
+        #111 75%
+    );
+
+    background-size:200% 100%;
+
+    animation:shimmer 1.4s infinite;
 }
 
 @keyframes shimmer{
 
-0%{
-    background-position:200% 0;
+    from{
+        background-position:200% 0;
+    }
+
+    to{
+        background-position:-200% 0;
+    }
 }
 
-100%{
-    background-position:-200% 0;
+/* ==========================================
+   FADE ANIMATION
+========================================== */
+
+.fade-in{
+    animation:fadeIn .4s ease;
 }
 
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }
 
-/* VIEW ALL BUTTON */
+/* ==========================================
+   RESPONSIVE
+========================================== */
 
-.view-all-btn{
+@media(max-width:992px){
 
-width:100%;
+    .hero-title{
+        font-size:3rem;
+    }
 
-margin-top:20px;
-
-padding:14px;
-
-border:none;
-
-border-radius:14px;
-
-cursor:pointer;
-
-background:var(--gradient-primary);
-
-color:#fff;
-
-font-weight:700;
-
-transition:var(--normal);
-
+    .section-title-row{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
 }
-
-.view-all-btn{
-
-transform:translateY(-3px);
-
-box-shadow:var(--shadow-green);
-
-}
-
-/* EMPTY STATE */
-
-.empty{
-
-width:100%;
-
-text-align:center;
-
-padding:40px;
-
-color:var(--text-muted);
-
-}
-
-/* RESPONSIVE */
 
 @media(max-width:768px){
 
-.section-title-row{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:10px;
+    .movie-grid{
+        grid-template-columns:
+        repeat(2,1fr);
+    }
+
+    .hero-title{
+        font-size:2.5rem;
+    }
+
+    .hero-search{
+        flex-direction:row;
+    }
+
+    .movie-card img{
+        height:260px;
+    }
 }
 
-.content-section{
-    padding:35px 0;
-}
+@media(max-width:480px){
 
+    .hero-title{
+        font-size:2rem;
+    }
+
+    .hero-subtitle{
+        font-size:.95rem;
+    }
+
+    .movie-grid{
+        gap:16px;
+    }
+
+    .movie-card img{
+        height:230px;
+    }
 }
