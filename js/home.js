@@ -11,9 +11,7 @@ await Promise.all([
     loadSeries(),
     loadLatestMovies()
 ]);
-
-});
-
+}    
 // =====================================
 // Generic Loader
 // =====================================
