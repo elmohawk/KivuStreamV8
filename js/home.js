@@ -1,281 +1,371 @@
-// =====================================
-// HOME.JS (SUPABASE VERSION)
-// =====================================
+/* ===========================================
+   KIVUSTREAM PRO HOME
+=========================================== */
 
-document.addEventListener("DOMContentLoaded", async () => {
+import { getMovies, getSeries } from "./database.js";
 
-    await Promise.all([
-        loadHero(),
-        loadFeatured(),
-        loadPopularMovies(),
-        loadTopRated(),
-        loadSeries(),
-        loadLatestMovies(),
-        loadTranslators(),
-        loadCategories()
-    ]);
+import { enrichAll } from "./api.js";
 
-});
-// =====================================
-// Generic Loader
-// =====================================
+import {
 
-async function loadSection(containerId, options = {}) {
+    renderHero,
 
-    let query = supabaseClient
-        .from("movies")
-        .select("*")
-        .eq("is_active", true);
+    renderSection,
 
-    if (options.featured !== undefined) {
-        query = query.eq("featured", options.featured);
+    renderSkeleton,
+
+    showLoader,
+
+    hideLoader,
+
+    toast
+
+} from "./ui.js";
+
+import {
+
+    HOME_SECTIONS
+
+} from "./config.js";
+
+/* ===========================================
+   GLOBAL
+=========================================== */
+
+window.allMovies = [];
+
+window.heroMovies = [];
+
+/* ===========================================
+   LOAD HOME
+=========================================== */
+
+document.addEventListener(
+
+    "DOMContentLoaded",
+
+    loadHome
+
+);
+
+/* ===========================================
+   HOME LOADER
+=========================================== */
+
+async function loadHome(){
+
+    try{
+
+        showLoader();
+
+        renderLoading();
+
+        /* Load database */
+
+        const [
+
+            movies,
+
+            series
+
+        ]=await Promise.all([
+
+            getMovies(),
+
+            getSeries()
+
+        ]);
+
+        /* Merge */
+
+        const merged=[
+
+            ...(movies||[]),
+
+            ...(series||[]).map(item=>({
+
+                ...item,
+
+                type:"series"
+
+            }))
+
+        ];
+
+        /* TMDB */
+
+        const enriched=
+
+            await enrichAll(merged);
+
+        window.allMovies=enriched;
+
+        /* Hero */
+
+        loadHero(enriched);
+
+        /* Homepage */
+
+        loadSections(enriched);
+
+        hideLoader();
+
     }
 
-    if (options.category) {
-        query = query.eq("category", options.category);
+    catch(err){
+
+        console.error(err);
+
+        hideLoader();
+
+        toast("Failed loading homepage");
+
     }
 
-    if (options.orderBy) {
-        query = query.order(
-            options.orderBy,
-            { ascending: options.ascending ?? false }
+}
+
+/* ===========================================
+   HERO
+=========================================== */
+
+function loadHero(items){
+
+    const hero=
+
+        items
+
+        .filter(
+
+            movie=>
+
+            movie.banner
+
+        )
+
+        .sort(
+
+            (a,b)=>
+
+            (b.rating||0)-
+
+            (a.rating||0)
+
+        )
+
+        .slice(0,8);
+
+    window.heroMovies=hero;
+
+    renderHero(hero);
+
+}
+
+/* ===========================================
+   HOMEPAGE SECTIONS
+=========================================== */
+
+function loadSections(items){
+
+    HOME_SECTIONS.forEach(section=>{
+
+        let results=[];
+
+        switch(section.type){
+
+            case "featured":
+
+                results=
+
+                items
+
+                .filter(
+
+                    m=>m.featured
+
+                );
+
+                break;
+
+            case "movie":
+
+                results=
+
+                items
+
+                .filter(
+
+                    m=>
+
+                    m.type!=="series"
+
+                );
+
+                break;
+
+            case "series":
+
+                results=
+
+                items
+
+                .filter(
+
+                    m=>
+
+                    m.type==="series"
+
+                );
+
+                break;
+
+            default:
+
+                results=
+
+                items
+
+                .filter(
+
+                    movie=>
+
+                    movie.category===
+
+                    section.category
+
+                );
+
+        }
+
+        renderSection(
+
+            section.id,
+
+            results,
+
+            section.title
+
         );
-    }
 
-    if (options.limit) {
-        query = query.limit(options.limit);
-    }
-
-    const { data, error } = await query;
-
-    if (error) {
-        console.error(`${containerId}:`, error);
-        return;
-    }
-
-    renderMovies(containerId, data);
-
-}
-
-// =====================================
-// Featured
-// =====================================
-
-async function loadFeatured() {
-
-    await loadSection("trendingMovies", {
-        featured: true,
-        orderBy: "featured_order",
-        ascending: true,
-        limit: 12
     });
 
 }
 
-// =====================================
-// Latest Movies
-// =====================================
+/* ===========================================
+   SKELETON
+=========================================== */
 
-async function loadPopularMovies() {
+function renderLoading(){
 
-    await loadSection("popularMovies", {
-        category: "movie",
-        orderBy: "created_at",
-        ascending: false,
-        limit: 12
+    HOME_SECTIONS.forEach(section=>{
+
+        renderSkeleton(
+
+            section.id,
+
+            12
+
+        );
+
     });
 
 }
 
-// =====================================
-// Top Rated
-// =====================================
+/* ===========================================
+   SEARCH SUPPORT
+=========================================== */
 
-async function loadTopRated() {
+window.searchHome=function(keyword){
 
-    await loadSection("topRatedMovies", {
-        orderBy: "vote_average",
-        ascending: false,
-        limit: 12
-    });
+    keyword=
 
-}
+        keyword
 
-// =====================================
-// Series
-// =====================================
+        .toLowerCase()
 
-async function loadSeries() {
+        .trim();
 
-    await loadSection("popularSeries", {
-        category: "series",
-        orderBy: "created_at",
-        ascending: false,
-        limit: 12
-    });
+    if(!keyword){
 
-}
+        loadSections(
 
-// =====================================
-// Render Cards
-// =====================================
+            window.allMovies
 
-function renderMovies(containerId, movies) {
-
-    const container = document.getElementById(containerId);
-
-    if (!container) return;
-
-    if (!movies || movies.length === 0) {
-
-        container.innerHTML = `
-            <div class="empty-state">
-                <h3>No content available.</h3>
-            </div>
-        `;
+        );
 
         return;
 
     }
 
-    container.innerHTML = movies
-        .map(createMovieCard)
-        .join("");
+    const filtered=
 
-}
-// =====================================
-// Hero
-// =====================================
+        window.allMovies.filter(movie=>{
 
-async function loadHero() {
+            return(
 
-   const { data, error } = await supabaseClient
-  .from("movies")
-  .select("*")
-  .eq("id", id)
-  .maybeSingle();
+                movie.title
 
-if (error) {
-    console.error(error);
-    return;
-}
+                ?.toLowerCase()
 
-if (!data) {
-    console.warn("Movie not found");
-    return;
-}
+                .includes(keyword)
 
-    if (error || !data) return;
+                ||
 
-    document.getElementById("heroTitle").textContent = data.title;
-    document.getElementById("heroOverview").textContent = data.overview;
-    document.getElementById("heroBanner").style.backgroundImage =
-        `url(https://image.tmdb.org/t/p/original${data.backdrop_path})`;
-    document.getElementById("watchNowBtn").href =
-        `watch.html?id=${data.id}`;
-}
+                movie.category
 
-// =====================================
-// Translators
-// =====================================
+                ?.toLowerCase()
 
-async function loadTranslators() {
+                .includes(keyword)
 
-    const { data, error } = await supabaseClient
-        .from("movies")
-        .select("translator");
+                ||
 
-    if (error) {
-        console.error(error);
-        return;
-    }
+                movie.description
 
-    const translators = [...new Set(
-        data
-            .map(item => item.translator)
-            .filter(Boolean)
-    )];
+                ?.toLowerCase()
 
-    const container = document.getElementById("translatorSlider");
+                .includes(keyword)
 
-    if (!container) return;
+            );
 
-    container.innerHTML = translators.map(name => {
+        });
 
-        const initials = name
-            .split(" ")
-            .map(word => word[0])
-            .join("")
-            .substring(0, 2)
-            .toUpperCase();
+    loadSections(filtered);
 
-        return `
-            <div class="translator-card">
-                <div class="translator-avatar">${initials}</div>
-                <div class="translator-name">${name}</div>
-            </div>
-        `;
+};
 
-    }).join("");
+/* ===========================================
+   VIEW ALL
+=========================================== */
 
-}
+window.openCategory=function(category){
 
-// =====================================
-// Latest Movies
-// =====================================
+    const data=
 
-async function loadLatestMovies() {
+        window.allMovies.filter(
 
-    const { data, error } = await supabaseClient
-        .from("movies")
-        .select("*")
-        .eq("is_active", true)
-        .order("created_at", { ascending: false })
-        .limit(20);
+            movie=>
 
-    if (error) {
-        console.error(error);
-        return;
-    }
+            movie.category===category
 
-    const container = document.getElementById("latestMovies");
+        );
 
-    if (!container) return;
+    localStorage.setItem(
 
-    container.innerHTML = data.map(createMovieCard).join("");
+        "viewAll",
 
-}
+        JSON.stringify(data)
 
-// =====================================
-// Categories
-// =====================================
+    );
 
-async function loadCategories() {
+    location.href=
 
-    const { data, error } = await supabaseClient
-        .from("movies")
-        .select("category");
+    "viewall.html";
 
-    if (error) {
-        console.error(error);
-        return;
-    }
+};
 
-    const container = document.getElementById("categoryList");
+/* ===========================================
+   REFRESH
+=========================================== */
 
-    if (!container) return;
+window.refreshHome=
 
-    const categories = [...new Set(
-        data
-            .map(item => item.category)
-            .filter(Boolean)
-    )];
-
-    container.innerHTML = categories.map(category => `
-        <a class="category-card"
-           href="movies.html?category=${encodeURIComponent(category)}">
-            ${category}
-        </a>
-    `).join("");
-
-}
+loadHome;
