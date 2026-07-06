@@ -1,33 +1,71 @@
-/* ================= NAVBAR ================= */
+/* =====================================================
+   KIVUSTREAM PRO NAVBAR
+   ===================================================== */
+
+/* =========================
+   NAVBAR
+========================= */
 
 .navbar{
+
     position:fixed;
+
     top:0;
     left:0;
+
     width:100%;
-    z-index:1000;
 
-    background:rgba(8,10,20,.75);
-    backdrop-filter:blur(18px);
-
-    border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-.nav-container{
-
-    max-width:1450px;
-
-    margin:auto;
-
-    padding:18px 40px;
+    height:var(--navbar-height);
 
     display:flex;
 
+    align-items:center;
+
     justify-content:space-between;
+
+    padding:0 40px;
+
+    background:rgba(10,10,10,.72);
+
+    backdrop-filter:blur(18px);
+
+    -webkit-backdrop-filter:blur(18px);
+
+    border-bottom:1px solid rgba(255,255,255,.05);
+
+    z-index:var(--z-navbar);
+
+    transition:var(--normal);
+
+}
+
+/* Navbar after scrolling */
+
+.navbar.scrolled{
+
+    background:rgba(0,0,0,.92);
+
+    box-shadow:var(--shadow);
+
+}
+
+/* =========================
+   LEFT
+========================= */
+
+.nav-left{
+
+    display:flex;
 
     align-items:center;
 
+    gap:40px;
+
 }
+
+/* =========================
+   LOGO
+========================= */
 
 .logo{
 
@@ -37,7 +75,7 @@
 
     gap:12px;
 
-    text-decoration:none;
+    flex-shrink:0;
 
 }
 
@@ -53,39 +91,47 @@
 
 .logo span{
 
-    color:#fff;
-
-    font-size:28px;
+    font-size:1.4rem;
 
     font-weight:700;
+
+    color:#fff;
 
     letter-spacing:.5px;
 
 }
 
+.logo span strong{
+
+    color:var(--primary);
+
+}
+
+/* =========================
+   MENU
+========================= */
+
 .nav-links{
 
     display:flex;
 
-    gap:35px;
+    align-items:center;
 
-    list-style:none;
+    gap:28px;
 
 }
 
 .nav-links a{
 
-    color:#ddd;
+    color:var(--text-light);
 
-    text-decoration:none;
-
-    font-size:16px;
+    font-size:.96rem;
 
     font-weight:500;
 
-    transition:.3s;
-
     position:relative;
+
+    transition:var(--normal);
 
 }
 
@@ -95,32 +141,34 @@
 
 }
 
-.nav-links a::after{
+.nav-links a.active{
+
+    color:#fff;
+
+}
+
+.nav-links a.active::after{
 
     content:"";
 
     position:absolute;
 
     left:0;
-
     bottom:-8px;
-
-    width:0;
-
-    height:2px;
-
-    background:#ff2f6d;
-
-    transition:.3s;
-
-}
-
-.nav-links a:hover::after,
-.nav-links .active::after{
 
     width:100%;
 
+    height:3px;
+
+    border-radius:30px;
+
+    background:var(--primary);
+
 }
+
+/* =========================
+   RIGHT
+========================= */
 
 .nav-right{
 
@@ -132,7 +180,95 @@
 
 }
 
+/* =========================
+   SEARCH
+========================= */
+
 .search-box{
+
+    width:320px;
+
+    height:46px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:0 16px;
+
+    border-radius:50px;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.search-box input{
+
+    flex:1;
+
+    color:#fff;
+
+    background:none;
+
+}
+
+.search-box input::placeholder{
+
+    color:var(--text-muted);
+
+}
+
+.search-box i{
+
+    color:var(--text-muted);
+
+    font-size:18px;
+
+}
+
+/* =========================
+   ICON BUTTONS
+========================= */
+
+.nav-icon{
+
+    width:44px;
+
+    height:44px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.05);
+
+    color:#fff;
+
+    transition:var(--normal);
+
+}
+
+.nav-icon:hover{
+
+    background:var(--primary);
+
+    transform:translateY(-2px);
+
+}
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile-btn{
 
     display:flex;
 
@@ -140,152 +276,197 @@
 
     gap:10px;
 
-    padding:10px 18px;
-
-    border-radius:50px;
-
-    background:rgba(255,255,255,.08);
+    cursor:pointer;
 
 }
 
-.search-box input{
+.profile-btn img{
 
-    border:none;
+    width:42px;
 
-    outline:none;
+    height:42px;
 
-    background:none;
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:2px solid var(--primary);
+
+}
+
+.profile-btn span{
 
     color:#fff;
-
-    width:220px;
-
-}
-
-.search-box i{
-
-    color:#bbb;
-
-}
-
-.login-btn,
-.btn-secondary{
-
-    padding:12px 22px;
-
-    border-radius:50px;
-
-    text-decoration:none;
 
     font-weight:600;
 
-    transition:.3s;
-
 }
 
-.login-btn{
+/* =========================
+   MOBILE MENU BUTTON
+========================= */
 
-    color:#fff;
-
-}
-
-.btn-secondary{
-
-    background:#ff2f6d;
-
-    color:#fff;
-
-}
-
-.btn-secondary:hover{
-
-    transform:translateY(-2px);
-
-    box-shadow:0 10px 25px rgba(255,47,109,.35);
-
-}
-/* ==========================
-   DROPDOWN
-========================== */
-
-.dropdown{
-
-    position:relative;
-
-}
-
-.dropdown>a{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:6px;
-
-}
-
-.dropdown-menu{
-
-    position:absolute;
-
-    top:100%;
-
-    left:0;
-
-    min-width:220px;
-
-    background:#141414;
-
-    border-radius:12px;
-
-    padding:8px 0;
+.menu-toggle{
 
     display:none;
 
-    box-shadow:0 15px 40px rgba(0,0,0,.45);
+    width:46px;
 
-    z-index:9999;
+    height:46px;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,.05);
+
+    color:#fff;
+
+    font-size:22px;
 
 }
 
-.dropdown:hover .dropdown-menu{
+/* =========================
+   MOBILE MENU
+========================= */
+
+.mobile-menu{
+
+    position:fixed;
+
+    top:var(--navbar-height);
+
+    left:-100%;
+
+    width:280px;
+
+    height:calc(100vh - var(--navbar-height));
+
+    background:#111;
+
+    padding:30px;
+
+    transition:.35s ease;
+
+    z-index:999;
+
+    overflow-y:auto;
+
+}
+
+.mobile-menu.show{
+
+    left:0;
+
+}
+
+.mobile-menu a{
 
     display:block;
 
-}
+    padding:14px 0;
 
-.dropdown-menu li{
+    color:#ddd;
 
-    list-style:none;
-
-}
-
-.dropdown-menu a{
-
-    display:block;
-
-    color:white;
-
-    text-decoration:none;
-
-    padding:12px 18px;
-
-    transition:.3s;
+    border-bottom:1px solid rgba(255,255,255,.05);
 
 }
 
-.dropdown-menu a:hover{
+.mobile-menu a:hover{
 
-    background:#e50914;
-
-    padding-left:25px;
+    color:var(--primary);
 
 }
 
-.loading{
+/* =========================
+   NAV SPACER
+========================= */
 
-    color:#888;
+.nav-spacer{
 
-    padding:12px 18px;
+    height:var(--navbar-height);
+
+}
+
+/* =========================
+   HOVER EFFECT
+========================= */
+
+.nav-links a,
+.mobile-menu a{
+
+    transition:color .25s ease;
+
+}
+
+/* =========================
+   SEARCH FOCUS
+========================= */
+
+.search-box:focus-within{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 20px rgba(0,210,106,.25);
+
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1100px){
+
+    .search-box{
+
+        width:220px;
+
+    }
+
+}
+
+@media(max-width:900px){
+
+    .nav-links{
+
+        display:none;
+
+    }
+
+    .search-box{
+
+        display:none;
+
+    }
+
+    .menu-toggle{
+
+        display:flex;
+
+    }
+
+}
+
+@media(max-width:600px){
+
+    .navbar{
+
+        padding:0 18px;
+
+    }
+
+    .logo span{
+
+        display:none;
+
+    }
+
+    .profile-btn span{
+
+        display:none;
+
+    }
 
 }
