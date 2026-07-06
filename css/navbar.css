@@ -204,3 +204,88 @@
     box-shadow:0 10px 25px rgba(255,47,109,.35);
 
 }
+/* ==========================
+   DROPDOWN
+========================== */
+
+.dropdown{
+
+    position:relative;
+
+}
+
+.dropdown>a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+}
+
+.dropdown-menu{
+
+    position:absolute;
+
+    top:100%;
+
+    left:0;
+
+    min-width:220px;
+
+    background:#141414;
+
+    border-radius:12px;
+
+    padding:8px 0;
+
+    display:none;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.45);
+
+    z-index:9999;
+
+}
+
+.dropdown:hover .dropdown-menu{
+
+    display:block;
+
+}
+
+.dropdown-menu li{
+
+    list-style:none;
+
+}
+
+.dropdown-menu a{
+
+    display:block;
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:12px 18px;
+
+    transition:.3s;
+
+}
+
+.dropdown-menu a:hover{
+
+    background:#e50914;
+
+    padding-left:25px;
+
+}
+
+.loading{
+
+    color:#888;
+
+    padding:12px 18px;
+
+}
