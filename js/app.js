@@ -1,3 +1,5 @@
+import { supabase } from "./supabase.js";
+import { getCurrentUser, logout } from "./auth.js";
 // Load HTML components (navbar, footer)
 async function loadComponent(id, file) {
     const element = document.getElementById(id);
@@ -71,10 +73,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Listen for authentication changes
-  if (typeof supabaseClient !== "undefined") {
-    supabaseClient.auth.onAuthStateChange(() => {
-        updateNavbar();
-    });
-}
-
+ supabase.auth.onAuthStateChange(() => {
+    updateNavbar();
 });
+}
+);
