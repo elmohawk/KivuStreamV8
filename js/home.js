@@ -4,14 +4,15 @@
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-await Promise.all([
-    loadFeatured(),
-    loadPopularMovies(),
-    loadTopRated(),
-    loadSeries(),
-    loadLatestMovies()
-]);
-}    
+    await Promise.all([
+        loadFeatured(),
+        loadPopularMovies(),
+        loadTopRated(),
+        loadSeries(),
+        loadLatestMovies()
+    ]);
+
+});
 // =====================================
 // Generic Loader
 // =====================================
