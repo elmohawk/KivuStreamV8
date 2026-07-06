@@ -1,85 +1,120 @@
 // ======================================
-// SEARCH.JS (SUPABASE VERSION)
+// KivuStream Search & Filters
 // ======================================
 
-const PAGE_SIZE = 24;
-
-let currentPage = 0;
-let currentQuery = "";
+let currentPage = 1;
+const pageSize = 24;
 
 document.addEventListener("DOMContentLoaded", () => {
 
     loadMovies();
 
-    document
-        .getElementById("searchBtn")
-        .addEventListener("click", search);
-
-    document
-        .getElementById("loadMoreBtn")
-        .addEventListener("click", loadMore);
-
-    document
-        .getElementById("searchBox")
-        .addEventListener("keypress", (e) => {
-
-            if (e.key === "Enter") {
-                search();
-            }
-
+    const searchBtn = document.getElementById("searchBtn");
+    if (searchBtn) {
+        searchBtn.addEventListener("click", () => {
+            currentPage = 1;
+            loadMovies();
         });
+    }
+
+    const searchBox = document.getElementById("searchBox");
+    if (searchBox) {
+        searchBox.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                currentPage = 1;
+                loadMovies();
+            }
+        });
+    }
+
+    const loadMoreBtn = document.getElementById("loadMoreBtn");
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener("click", () => {
+            currentPage++;
+            loadMovies(true);
+        });
+    }
 
 });
 
-async function loadMovies() {
+// ======================================
+// LOAD MOVIES
+// ======================================
+
+async function loadMovies(append = false) {
 
     let query = supabaseClient
         .from("movies")
         .select("*")
-        .eq("is_active", true)
-        .order("created_at", { ascending: false });
+        .eq("is_active", true);
 
-    if (currentQuery !== "") {
+    // URL Filters
+    const params = new URLSearchParams(window.location.search);
 
-        query = query.ilike("title", `%${currentQuery}%`);
+    const category = params.get("category");
+    const country = params.get("country");
+    const translator = params.get("translator");
+
+    if (category)
+        query = query.eq("category", category);
+
+    if (country)
+        query = query.eq("country", country);
+
+    if (translator)
+        query = query.eq("translator", translator);
+
+    // Search
+    const searchInput = document.getElementById("searchBox");
+
+    if (searchInput) {
+
+        const keyword = searchInput.value.trim();
+
+        if (keyword !== "") {
+
+            query = query.ilike("title", `%${keyword}%`);
+
+        }
 
     }
 
-    query = query.range(
-        currentPage * PAGE_SIZE,
-        (currentPage * PAGE_SIZE) + PAGE_SIZE - 1
-    );
+    // Pagination
+    const from = (currentPage - 1) * pageSize;
+    const to = from + pageSize - 1;
+
+    query = query
+        .order("created_at", { ascending: false })
+        .range(from, to);
 
     const { data, error } = await query;
 
     if (error) {
 
-        console.error("Supabase Error:", error);
+        console.error(error);
         return;
 
     }
 
     const grid = document.getElementById("moviesGrid");
 
-    if (currentPage === 0) {
+    if (!grid) return;
 
+    if (!append)
         grid.innerHTML = "";
 
-    }
+    if (!data.length && !append) {
 
-    if (!data || data.length === 0) {
+        grid.innerHTML = `
 
-        if (currentPage === 0) {
+        <div class="empty-state">
 
-            grid.innerHTML = `
-                <div class="empty-state">
-                    <h2>No movies found.</h2>
-                </div>
-            `;
+            <h2>No movies found.</h2>
 
-        }
+        </div>
 
-        document.getElementById("loadMoreBtn").style.display = "none";
+        `;
+
         return;
 
     }
@@ -88,43 +123,4 @@ async function loadMovies() {
         .map(createMovieCard)
         .join("");
 
-    // Hide Load More if fewer than PAGE_SIZE returned
-    document.getElementById("loadMoreBtn").style.display =
-        data.length < PAGE_SIZE ? "none" : "inline-block";
-
-}
-
-function search() {
-
-    currentQuery = document
-        .getElementById("searchBox")
-        .value
-        .trim();
-
-    currentPage = 0;
-
-    loadMovies();
-
-}
-
-function loadMore() {
-
-    currentPage++;
-
-    loadMovies();
-
-}
-async function searchTMDB(query, category = "movie") {
-
-    const endpoint =
-        category === "series"
-            ? "/search/tv"
-            : "/search/movie";
-
-    const data = await request(
-        endpoint,
-        `&query=${encodeURIComponent(query)}`
-    );
-
-    return data?.results || [];
 }
