@@ -56,97 +56,188 @@ function createMovieCard(movie){
 `;
 
 }
-function renderMovie(movie, credits = {}, videos = {}) {
+function renderMovie(movie) {
 
     const hero = document.getElementById("movieHero");
 
     const backdrop = movie.backdrop_path
         ? `${CONFIG.TMDB_IMAGE_URL}${movie.backdrop_path}`
-        : "assets/images/no-image.png";
+        : "assets/poster.jpg";
 
-    const trailer = videos?.results?.find(
-        video => video.site === "YouTube" && video.type === "Trailer"
-    );
+    const poster = movie.poster_path
+        ? `${CONFIG.TMDB_IMAGE_URL}${movie.poster_path}`
+        : "assets/poster.jpg";
 
-    const cast = credits?.cast
-        ? credits.cast.slice(0, 6).map(a => a.name).join(", ")
-        : "Unknown";
-
-    const title = movie.title || movie.name || "Untitled";
+    const title = movie.title || "Untitled";
 
     const overview = movie.overview || "No description available.";
 
     const rating = movie.vote_average
-        ? movie.vote_average.toFixed(1)
+        ? Number(movie.vote_average).toFixed(1)
         : "N/A";
 
-    const date = movie.release_date || movie.first_air_date || "Unknown";
+    const date = movie.release_date || "Unknown";
 
-    const runtime = movie.runtime || movie.episode_run_time?.[0] || "N/A";
+    const runtime = movie.runtime || "N/A";
 
-    const genres = movie.genres
-        ? movie.genres.map(g => g.name).join(", ")
-        : "N/A";
+    const genres = movie.genres || "Unknown";
+
+    const translator = movie.translator || "Unknown";
+
+    const quality = movie.quality || "HD";
+
+    const trailer = movie.trailer_key
+        ? `
+        <div class="trailer-section">
+            <h2>🎬 Trailer</h2>
+
+            <iframe
+                width="100%"
+                height="500"
+                src="https://www.youtube.com/embed/${movie.trailer_key}"
+                allowfullscreen>
+            </iframe>
+        </div>
+        `
+        : "";
 
     hero.innerHTML = `
-        <section class="watch-hero"
-            style="background-image:url('${backdrop}')">
+<section class="watch-hero"
+style="background-image:url('${backdrop}')">
 
-            <div class="watch-overlay">
+<div class="watch-overlay">
 
-                <div class="container">
+<div class="container">
 
-                    <h1>${title}</h1>
+<div class="watch-content">
 
-                    <p>${overview}</p>
+<div class="watch-poster">
 
-                    <p>
-                        ⭐ ${rating}
-                        • 📅 ${date}
-                        • ⏱ ${runtime} min
-                    </p>
+<img src="${poster}" alt="${title}">
 
-                    <p>
-                        <strong>Genres:</strong> ${genres}
-                    </p>
+</div>
 
-                    <p>
-                        <strong>Cast:</strong> ${cast}
-                    </p>
+<div class="watch-details">
 
-                    <div class="watch-buttons">
+<h1>${title}</h1>
 
-                        <button id="favoriteBtn" class="btn btn-primary">
-                            ❤️ Add to Favorites
-                        </button>
+<p class="overview">
+${overview}
+</p>
 
-                        <button id="watchLaterBtn" class="btn btn-secondary">
-                            ➕ Watch Later
-                        </button>
+<div class="movie-meta">
 
-                    </div>
+<span>⭐ ${rating}</span>
 
-                    ${
-                        trailer
-                        ? `
-                            <iframe
-                                width="100%"
-                                height="500"
-                                src="https://www.youtube.com/embed/${trailer.key}"
-                                allowfullscreen>
-                            </iframe>
-                        `
-                        : ""
-                    }
+<span>📅 ${date}</span>
 
-                </div>
+<span>🎞 ${quality}</span>
 
-            </div>
+<span>⏱ ${runtime} min</span>
 
-        </section>
-    `;
+</div>
+
+<p>
+
+<strong>Genres:</strong>
+
+${genres}
+
+</p>
+
+<p>
+
+<strong>Translator:</strong>
+
+${translator}
+
+</p>
+
+<div class="watch-buttons">
+
+<button
+id="favoriteBtn"
+class="btn btn-primary">
+
+❤️ Favorite
+
+</button>
+
+<button
+id="watchLaterBtn"
+class="btn btn-secondary">
+
+➕ Watch Later
+
+</button>
+
+</div>
+
+${createDownloadButtons(movie)}
+
+</div>
+
+</div>
+
+${trailer}
+
+</div>
+
+</div>
+
+</section>
+`;
+
 }
+function createDownloadButtons(movie) {
 
+    if (!movie.download_links)
+        return "";
+
+    let links = movie.download_links;
+
+    // Handle JSON string if necessary
+    if (typeof links === "string") {
+
+        try {
+            links = JSON.parse(links);
+        } catch (e) {
+            return "";
+        }
+
+    }
+
+    let html = `
+    <div class="download-section">
+
+        <h2>⬇ Download</h2>
+
+        <div class="download-buttons">
+    `;
+
+    Object.entries(links).forEach(([quality, url]) => {
+
+        html += `
+            <a
+                href="${url}"
+                target="_blank"
+                class="btn btn-success">
+
+                ${quality}
+
+            </a>
+        `;
+
+    });
+
+    html += `
+        </div>
+    </div>
+    `;
+
+    return html;
+
+}
 function createDownloadButtons(movie){
 
     if(!movie.download_links)
