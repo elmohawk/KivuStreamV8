@@ -1,270 +1,477 @@
+/* ===========================================
+   KIVUSTREAM PRO UI ENGINE
+=========================================== */
 
-function createMovieCard(movie){
+import { CONFIG } from "./config.js";
 
-    const poster = movie.poster_path
-        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-        : "assets/poster.jpg";
+/* ===========================================
+   HELPERS
+=========================================== */
 
-    const year = movie.release_date
-        ? movie.release_date.substring(0,4)
-        : "";
+function $(id) {
+    return document.getElementById(id);
+}
 
-    const rating = movie.vote_average
-        ? movie.vote_average.toFixed(1)
+function truncate(text = "", length = 120) {
+    if (text.length <= length) return text;
+    return text.substring(0, length) + "...";
+}
+
+/* ===========================================
+   MOVIE CARD
+=========================================== */
+
+export function createMovieCard(movie) {
+
+    const poster =
+        movie.poster ||
+        movie.image ||
+        CONFIG.PLACEHOLDER;
+
+    const year =
+        (movie.year || "")
+        .toString()
+        .substring(0,4);
+
+    const rating =
+        movie.rating
+        ? Number(movie.rating).toFixed(1)
         : "N/A";
 
     return `
 
-<a href="watch.html?id=${movie.id}" class="movie-card">
+<a class="movie-card"
 
-    <div class="movie-poster">
+href="watch.html?id=${movie.id}">
 
-        <img src="${poster}" alt="${movie.title}">
+<div class="movie-poster">
 
-        <span class="badge-year">
-            ${year}
-        </span>
+<img
 
-        <span class="badge-translator">
-            ${movie.translator || "Sub"}
-        </span>
+loading="lazy"
 
-        <div class="movie-overlay">
+src="${poster}"
 
-            <button class="play-circle">
-                ▶
-            </button>
+alt="${movie.title}"
 
-        </div>
+onerror="this.src='${CONFIG.PLACEHOLDER}'"
 
-    </div>
+>
 
-    <div class="movie-info">
+<div class="movie-overlay">
 
-        <h3>${movie.title}</h3>
+<button class="play-circle">
 
-        <p>
+▶
 
-            ⭐ ${rating}
+</button>
 
-        </p>
+</div>
 
-    </div>
+<div class="badge-year">
+
+${year || "2025"}
+
+</div>
+
+<div class="badge-translator">
+
+${movie.translator || "KivuStream"}
+
+</div>
+
+</div>
+
+<div class="movie-info">
+
+<h3>
+
+${movie.title}
+
+</h3>
+
+<p>
+
+⭐ ${rating}
+
+</p>
+
+</div>
 
 </a>
 
 `;
 
 }
-function renderMovie(movie) {
 
-    const hero = document.getElementById("movieHero");
+/* ===========================================
+   RENDER ROW
+=========================================== */
 
-    const backdrop = movie.backdrop_path
-        ? `${CONFIG.TMDB_IMAGE_URL}${movie.backdrop_path}`
-        : "assets/poster.jpg";
+export function renderRow(containerId,movies=[]){
 
-    const poster = movie.poster_path
-        ? `${CONFIG.TMDB_IMAGE_URL}${movie.poster_path}`
-        : "assets/poster.jpg";
+    const container=$(containerId);
 
-    const title = movie.title || "Untitled";
+    if(!container) return;
 
-    const overview = movie.overview || "No description available.";
+    if(movies.length===0){
 
-    const rating = movie.vote_average
-        ? Number(movie.vote_average).toFixed(1)
-        : "N/A";
+        container.innerHTML=
 
-    const date = movie.release_date || "Unknown";
+        `<div class="empty">
 
-    const runtime = movie.runtime || "N/A";
+        No content available.
 
-    const genres = movie.genres || "Unknown";
+        </div>`;
 
-    const translator = movie.translator || "Unknown";
-
-    const quality = movie.quality || "HD";
-
-    const trailer = movie.trailer_key
-        ? `
-        <div class="trailer-section">
-            <h2>🎬 Trailer</h2>
-
-            <iframe
-                width="100%"
-                height="500"
-                src="https://www.youtube.com/embed/${movie.trailer_key}"
-                allowfullscreen>
-            </iframe>
-        </div>
-        `
-        : "";
-
-    hero.innerHTML = `
-<section class="watch-hero"
-style="background-image:url('${backdrop}')">
-
-<div class="watch-overlay">
-
-<div class="container">
-
-<div class="watch-content">
-
-<div class="watch-poster">
-
-<img src="${poster}" alt="${title}">
-
-</div>
-
-<div class="watch-details">
-
-<h1>${title}</h1>
-
-<p class="overview">
-${overview}
-</p>
-
-<div class="movie-meta">
-
-<span>⭐ ${rating}</span>
-
-<span>📅 ${date}</span>
-
-<span>🎞 ${quality}</span>
-
-<span>⏱ ${runtime} min</span>
-
-</div>
-
-<p>
-
-<strong>Genres:</strong>
-
-${genres}
-
-</p>
-
-<p>
-
-<strong>Translator:</strong>
-
-${translator}
-
-</p>
-
-<div class="watch-buttons">
-
-<button
-id="favoriteBtn"
-class="btn btn-primary">
-
-❤️ Favorite
-
-</button>
-
-<button
-id="watchLaterBtn"
-class="btn btn-secondary">
-
-➕ Watch Later
-
-</button>
-
-</div>
-
-${createDownloadButtons(movie)}
-
-</div>
-
-</div>
-
-${trailer}
-
-</div>
-
-</div>
-
-</section>
-`;
-
-}
-function createDownloadButtons(movie) {
-
-    if (!movie.download_links)
-        return "";
-
-    let links = movie.download_links;
-
-    // Handle JSON string if necessary
-    if (typeof links === "string") {
-
-        try {
-            links = JSON.parse(links);
-        } catch (e) {
-            return "";
-        }
+        return;
 
     }
 
-    let html = `
-    <div class="download-section">
+    container.innerHTML=
 
-        <h2>⬇ Download</h2>
+        movies
 
-        <div class="download-buttons">
-    `;
+        .map(createMovieCard)
 
-    Object.entries(links).forEach(([quality, url]) => {
+        .join("");
 
-        html += `
-            <a
-                href="${url}"
-                target="_blank"
-                class="btn btn-success">
+}
 
-                ${quality}
+/* ===========================================
+   HERO
+=========================================== */
 
-            </a>
-        `;
+let heroMovies=[];
+
+let heroIndex=0;
+
+let heroTimer=null;
+
+export function renderHero(items=[]){
+
+    heroMovies=items;
+
+    heroIndex=0;
+
+    updateHero();
+
+    clearInterval(heroTimer);
+
+    heroTimer=setInterval(nextHero,
+
+        CONFIG.HERO_INTERVAL
+
+    );
+
+}
+
+function updateHero(){
+
+    if(heroMovies.length===0) return;
+
+    const movie=heroMovies[heroIndex];
+
+    const banner=
+
+        movie.banner||
+
+        movie.poster||
+
+        movie.image||
+
+        CONFIG.PLACEHOLDER;
+
+    $("heroBanner").style.backgroundImage=
+
+`linear-gradient(
+
+rgba(0,0,0,.70),
+
+rgba(0,0,0,.35)
+
+),
+
+url(${banner})`;
+
+    $("heroTitle").textContent=
+
+        movie.title;
+
+    $("heroOverview").textContent=
+
+        truncate(
+
+            movie.description||
+
+            movie.overview||
+
+            "",
+
+            180
+
+        );
+
+    $("watchNowBtn").href=
+
+        `watch.html?id=${movie.id}`;
+
+}
+
+export function nextHero(){
+
+    heroIndex++;
+
+    if(heroIndex>=heroMovies.length){
+
+        heroIndex=0;
+
+    }
+
+    updateHero();
+
+}
+
+export function previousHero(){
+
+    heroIndex--;
+
+    if(heroIndex<0){
+
+        heroIndex=
+
+        heroMovies.length-1;
+
+    }
+
+    updateHero();
+
+}
+
+/* ===========================================
+   VIEW ALL BUTTON
+=========================================== */
+
+export function renderSection(
+
+containerId,
+
+movies,
+
+type
+
+){
+
+    const container=$(containerId);
+
+    if(!container) return;
+
+    const limit=
+
+        CONFIG.MOVIES_PER_ROW;
+
+    const visible=
+
+        movies.slice(0,limit);
+
+    container.innerHTML=
+
+        visible
+
+        .map(createMovieCard)
+
+        .join("");
+
+    if(movies.length>limit){
+
+        const button=
+
+            document.createElement("button");
+
+        button.className=
+
+            "view-all-btn";
+
+        button.textContent=
+
+            "View All →";
+
+        button.onclick=()=>{
+
+            localStorage.setItem(
+
+                "viewAll",
+
+                JSON.stringify(movies)
+
+            );
+
+            location.href=
+
+                `viewall.html?type=${type}`;
+
+        };
+
+        container.appendChild(button);
+
+    }
+
+}
+
+/* ===========================================
+   LOADER
+=========================================== */
+
+export function showLoader(){
+
+    const loader=$("loader");
+
+    if(loader){
+
+        loader.style.display="flex";
+
+    }
+
+}
+
+export function hideLoader(){
+
+    const loader=$("loader");
+
+    if(loader){
+
+        loader.style.display="none";
+
+    }
+
+}
+
+/* ===========================================
+   TOAST
+=========================================== */
+
+export function toast(message){
+
+    const toast=
+
+    document.createElement("div");
+
+    toast.className="toast";
+
+    toast.innerHTML=message;
+
+    document.body.appendChild(toast);
+
+    requestAnimationFrame(()=>{
+
+        toast.classList.add("show");
 
     });
 
-    html += `
-        </div>
-    </div>
-    `;
+    setTimeout(()=>{
 
-    return html;
+        toast.classList.remove("show");
+
+        setTimeout(()=>{
+
+            toast.remove();
+
+        },300);
+
+    },3000);
 
 }
-function createDownloadButtons(movie){
 
-    if(!movie.download_links)
-        return "";
+/* ===========================================
+   SKELETON
+=========================================== */
 
-    let html="<div class='downloads'>";
+export function renderSkeleton(
 
-    Object.entries(movie.download_links)
-    .forEach(([quality,url])=>{
+containerId,
+
+count=12
+
+){
+
+    const container=$(containerId);
+
+    if(!container) return;
+
+    let html="";
+
+    for(let i=0;i<count;i++){
 
         html+=`
 
-<a
-href="${url}"
-target="_blank"
-class="btn btn-secondary">
+<div class="movie-card skeleton">
 
-⬇ ${quality}
+<div class="movie-poster"></div>
 
-</a>
+<div class="movie-info">
+
+<div class="line"></div>
+
+<div class="line short"></div>
+
+</div>
+
+</div>
 
 `;
 
-    });
+    }
 
-    html+="</div>";
+    container.innerHTML=html;
 
-    return html;
+}
+
+/* ===========================================
+   IMAGE LAZY LOAD
+=========================================== */
+
+const observer=
+
+new IntersectionObserver(
+
+entries=>{
+
+entries.forEach(entry=>{
+
+if(entry.isIntersecting){
+
+const img=
+
+entry.target;
+
+img.src=
+
+img.dataset.src;
+
+observer.unobserve(img);
+
+}
+
+});
+
+}
+
+);
+
+export function enableLazyImages(){
+
+document
+
+.querySelectorAll(
+
+"img[data-src]"
+
+)
+
+.forEach(img=>{
+
+observer.observe(img);
+
+});
 
 }
