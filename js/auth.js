@@ -1,11 +1,12 @@
 import { supabase } from "./supabase.js";
-async function getCurrentUser() {
-    const { data } = await supabaseClient.auth.getUser();
+
+export async function getCurrentUser() {
+    const { data } = await supabase.auth.getUser();
     return data?.user;
 }
-async function register(name, email, password) {
 
-    const { data, error } = await supabaseClient.auth.signUp({
+export async function register(name, email, password) {
+    const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -15,43 +16,33 @@ async function register(name, email, password) {
         }
     });
 
-    if (error) {
-        return { data, error };
-    }
+    if (error) return { data, error };
 
     if (data.user) {
-
-      await supabaseClient
-    .from("profiles")
-    .insert({
-        id: data.user.id,
-        full_name: name
-    });
-
+        await supabase
+            .from("profiles")
+            .insert({
+                id: data.user.id,
+                full_name: name
+            });
     }
 
     return { data, error };
-
 }
-async function login(email, password) {
 
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
+export async function login(email, password) {
+    return await supabase.auth.signInWithPassword({
         email,
         password
     });
-
-    return { data, error };
 }
 
-async function logout() {
-
-    await supabaseClient.auth.signOut();
-
+export async function logout() {
+    await supabase.auth.signOut();
     window.location.href = "index.html";
 }
 
-
-async function requireAuth() {
-  const { data } = await supabaseClient.auth.getUser();
-  return data?.user || null;
+export async function requireAuth() {
+    const { data } = await supabase.auth.getUser();
+    return data?.user || null;
 }
