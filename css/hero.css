@@ -1,7 +1,64 @@
 /* =====================================================
    KIVUSTREAM HERO
    ===================================================== */
+.hero{
+    position:relative;
+    height:100vh;
+    overflow:hidden;
+    background:#000;
+}
 
+/* TRAILER VIDEO */
+.hero-trailer{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    z-index:0;
+
+    opacity:0;
+    transform:scale(1.05);
+
+    transition:opacity 1s ease, transform 8s ease;
+}
+
+/* active state */
+.hero-trailer.active{
+    opacity:1;
+    transform:scale(1);
+}
+
+/* dark cinematic overlay */
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:1;
+
+    background:
+    linear-gradient(
+        to right,
+        rgba(0,0,0,.85) 20%,
+        rgba(0,0,0,.5) 60%,
+        rgba(0,0,0,.9)
+    );
+}
+
+.hero-overlay{
+    position:relative;
+    z-index:2;
+    height:100%;
+    display:flex;
+    align-items:center;
+}
+
+.hero-content{
+    max-width:600px;
+}
 /* =========================
    HERO
 ========================= */
