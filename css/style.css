@@ -1,203 +1,194 @@
-.hero-banner{
-    position:relative;
-    height:85vh;
-    min-height:700px;
+/* ===================================
+   KIVUSTREAM DESIGN SYSTEM
+=================================== */
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+:root{
 
-    text-align:center;
+    --primary:#16f2c2;
+    --primary-dark:#0fd4ae;
 
-    overflow:hidden;
+    --bg:#05070d;
+    --bg-card:#0d1320;
+    --bg-soft:#111827;
+
+    --text:#ffffff;
+    --text-muted:#94a3b8;
+
+    --border:rgba(255,255,255,.08);
+
+    --radius-sm:12px;
+    --radius-md:18px;
+    --radius-lg:24px;
+
+    --shadow:
+    0 15px 40px rgba(0,0,0,.35);
+
+    --transition:.3s ease;
 }
 
-.hero-banner::before{
-    content:"";
-    position:absolute;
-    inset:0;
+/* RESET */
 
-    background:
-    linear-gradient(
-        rgba(0,0,0,.45),
-        rgba(0,0,0,.85)
-    );
-
-    z-index:1;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-.hero-content{
-    position:relative;
-    z-index:2;
-    max-width:900px;
-}
-.container{
-    width:min(95%,1300px);
-    margin:auto;
+html{
+    scroll-behavior:smooth;
 }
 
-.section{
-    padding:80px 0;
-}
-
-.section-title{
-    font-size:2rem;
-    margin-bottom:30px;
-}
-
-.btn{
-    padding:14px 28px;
-    border-radius:6px;
-    font-weight:bold;
-    transition:.3s;
-}
-
-.btn-primary{
-    background:#E50914;
-    color:#fff;
-}
-
-.btn-primary:hover{
-    background:#b20710;
-}
-
-.btn-secondary{
-    background:#fff;
-    color:#000;
-}
 body{
 
+    font-family:"Poppins",sans-serif;
+
+    color:var(--text);
+
     background:
-        radial-gradient(circle at top,
+    radial-gradient(
+        circle at top,
         #17203d 0%,
         #090d17 35%,
-        #040507 100%);
+        #040507 100%
+    );
 
-    color:white;
+    min-height:100vh;
 
-    font-family:"Poppins",;
-
+    overflow-x:hidden;
 }
 
-.section{
+body::before{
 
-    padding:70px 0;
+    content:"";
 
+    position:fixed;
+
+    width:600px;
+    height:600px;
+
+    top:-250px;
+    right:-150px;
+
+    background:
+    rgba(22,242,194,.08);
+
+    border-radius:50%;
+
+    filter:blur(140px);
+
+    z-index:-1;
 }
+
+/* CONTAINER */
 
 .container{
 
     width:min(92%,1450px);
 
     margin:auto;
+}
 
+/* SECTION */
+
+.section{
+
+    padding:80px 0;
 }
 
 .section-title{
 
-    font-size:34px;
+    font-size:2.2rem;
 
-    margin-bottom:35px;
+    font-weight:800;
 
-    font-weight:700;
+    margin-bottom:30px;
 
-}
-.admin-link {
-    display: none;
-}
-.translator-section{
-
-    padding:50px 60px;
-
+    letter-spacing:.5px;
 }
 
-.section-header{
+/* BUTTONS */
 
-    display:flex;
+.btn{
+
+    display:inline-flex;
+
     align-items:center;
-    gap:15px;
-    margin-bottom:25px;
 
-}
+    justify-content:center;
 
-.live-badge{
+    gap:10px;
 
-    background:#00d26a;
-    color:#fff;
-    padding:4px 14px;
-    border-radius:20px;
-    font-size:13px;
-    font-weight:600;
+    padding:14px 28px;
 
-}
+    border:none;
 
-.translator-slider{
-
-    display:flex;
-    gap:22px;
-
-    overflow-x:auto;
-
-    scrollbar-width:none;
-
-    scroll-behavior:smooth;
-
-}
-
-.translator-slider::-webkit-scrollbar{
-
-    display:none;
-
-}
-
-.translator-card{
-
-    min-width:120px;
-
-    text-align:center;
+    border-radius:50px;
 
     cursor:pointer;
 
+    text-decoration:none;
+
+    font-weight:700;
+
+    transition:var(--transition);
 }
 
-.translator-avatar{
+.btn-primary{
 
-    width:90px;
-    height:90px;
+    background:var(--primary);
 
-    border-radius:50%;
-
-    border:3px solid #00d26a;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    font-size:34px;
-    font-weight:bold;
-
-    margin:auto;
-
-    background:#111;
-
-    transition:.3s;
-
+    color:#000;
 }
 
-.translator-card:hover .translator-avatar{
+.btn-primary:hover{
 
-    transform:scale(1.08);
+    transform:translateY(-3px);
 
-    box-shadow:0 0 25px #00d26a;
-
+    box-shadow:
+    0 10px 30px rgba(22,242,194,.35);
 }
 
-.translator-name{
+.btn-secondary{
 
-    margin-top:12px;
+    background:
+    rgba(255,255,255,.08);
 
-    font-size:14px;
+    color:white;
 
-    color:#ddd;
+    backdrop-filter:blur(15px);
 
+    border:
+    1px solid rgba(255,255,255,.08);
+}
+
+/* CARDS */
+
+.glass-card{
+
+    background:
+    rgba(255,255,255,.04);
+
+    backdrop-filter:blur(20px);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:24px;
+}
+
+/* SCROLLBAR */
+
+::-webkit-scrollbar{
+    width:10px;
+}
+
+::-webkit-scrollbar-track{
+    background:#06080f;
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:var(--primary);
+
+    border-radius:20px;
 }
