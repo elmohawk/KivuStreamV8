@@ -1,65 +1,460 @@
+/* ==========================================
+   KIVUSTREAM PREMIUM WATCH PAGE
+========================================== */
+
+/* HERO */
+
 .watch-hero{
+    position:relative;
 
-background-size:cover;
+    min-height:100vh;
 
-background-position:center;
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
 
-min-height:100vh;
+    display:flex;
+    align-items:center;
+}
 
-position:relative;
+.watch-hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
 
-display:flex;
-
-align-items:center;
-
+    background:
+    linear-gradient(
+        to right,
+        rgba(0,0,0,.92) 20%,
+        rgba(0,0,0,.75) 60%,
+        rgba(0,0,0,.95)
+    );
 }
 
 .watch-overlay{
+    position:relative;
+    z-index:2;
 
-background:rgba(0,0,0,.8);
+    width:100%;
 
-width:100%;
-
-padding:120px 0;
-
+    padding:120px 0 80px;
 }
 
-.watch-overlay h1{
+/* ==========================================
+   MAIN LAYOUT
+========================================== */
 
-font-size:3rem;
+.watch-layout{
 
-margin-bottom:20px;
+    display:grid;
 
+    grid-template-columns:
+    minmax(0,1fr)
+    320px;
+
+    gap:30px;
 }
 
-.watch-overlay p{
+/* ==========================================
+   CONTENT PANEL
+========================================== */
 
-margin:15px 0;
+.watch-content{
 
-line-height:1.8;
+    background:
+    rgba(255,255,255,.04);
 
-max-width:900px;
+    backdrop-filter:blur(20px);
 
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:24px;
+
+    padding:30px;
 }
+
+/* ==========================================
+   TITLE
+========================================== */
+
+.watch-title{
+
+    font-size:3rem;
+
+    font-weight:900;
+
+    line-height:1.1;
+
+    margin-bottom:15px;
+}
+
+.watch-description{
+
+    color:#cbd5e1;
+
+    line-height:1.9;
+
+    margin-top:20px;
+}
+
+/* ==========================================
+   META
+========================================== */
+
+.watch-meta{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+    margin:20px 0;
+}
+
+.watch-meta span{
+
+    background:
+    rgba(255,255,255,.08);
+
+    border:
+    1px solid rgba(255,255,255,.1);
+
+    padding:10px 16px;
+
+    border-radius:50px;
+
+    font-size:.9rem;
+
+    font-weight:600;
+}
+
+/* ==========================================
+   BUTTONS
+========================================== */
 
 .watch-buttons{
 
-margin:30px 0;
+    display:flex;
 
-display:flex;
+    flex-wrap:wrap;
 
-gap:15px;
+    gap:15px;
 
-flex-wrap:wrap;
-
+    margin:30px 0;
 }
 
-iframe{
+.watch-btn{
 
-margin-top:40px;
+    display:flex;
 
-border:none;
+    align-items:center;
 
-border-radius:12px;
+    gap:10px;
 
+    padding:14px 26px;
+
+    border:none;
+
+    border-radius:50px;
+
+    cursor:pointer;
+
+    text-decoration:none;
+
+    font-weight:700;
+
+    transition:.3s;
+}
+
+.play-btn{
+
+    background:#16f2c2;
+
+    color:#000;
+}
+
+.play-btn:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:
+    0 15px 35px rgba(22,242,194,.3);
+}
+
+.download-btn{
+
+    background:
+    rgba(255,255,255,.08);
+
+    color:#fff;
+
+    border:
+    1px solid rgba(255,255,255,.08);
+}
+
+.download-btn:hover{
+
+    background:
+    rgba(255,255,255,.15);
+}
+
+/* ==========================================
+   PLAYER
+========================================== */
+
+.player-wrapper{
+
+    margin-top:35px;
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 25px 50px rgba(0,0,0,.4);
+}
+
+.player-wrapper iframe{
+
+    width:100%;
+
+    aspect-ratio:16/9;
+
+    display:block;
+
+    border:none;
+}
+
+/* ==========================================
+   STATS
+========================================== */
+
+.movie-stats{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+    margin-top:25px;
+}
+
+.stat{
+
+    background:
+    rgba(255,255,255,.06);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:50px;
+
+    padding:12px 18px;
+}
+
+/* ==========================================
+   SIDEBAR
+========================================== */
+
+.related-sidebar{
+
+    background:
+    rgba(255,255,255,.04);
+
+    backdrop-filter:blur(20px);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:24px;
+
+    padding:20px;
+
+    height:fit-content;
+}
+
+.related-sidebar h3{
+
+    margin-bottom:20px;
+
+    font-size:1.3rem;
+}
+
+/* ==========================================
+   RELATED MOVIES
+========================================== */
+
+.related-item{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-bottom:16px;
+
+    text-decoration:none;
+
+    color:white;
+
+    transition:.3s;
+}
+
+.related-item:hover{
+
+    transform:translateX(5px);
+}
+
+.related-item img{
+
+    width:90px;
+
+    height:120px;
+
+    object-fit:cover;
+
+    border-radius:12px;
+}
+
+.related-info h4{
+
+    font-size:14px;
+
+    margin-bottom:8px;
+}
+
+.related-info p{
+
+    color:#94a3b8;
+
+    font-size:13px;
+}
+
+/* ==========================================
+   BADGES
+========================================== */
+
+.watch-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    padding:7px 14px;
+
+    border-radius:50px;
+
+    background:#16f2c2;
+
+    color:#000;
+
+    font-size:12px;
+
+    font-weight:700;
+}
+
+/* ==========================================
+   LOADER
+========================================== */
+
+.watch-loader{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    min-height:400px;
+}
+
+.watch-loader::after{
+
+    content:"";
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:50%;
+
+    border:5px solid #222;
+
+    border-top-color:#16f2c2;
+
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media(max-width:1100px){
+
+    .watch-layout{
+
+        grid-template-columns:1fr;
+    }
+
+    .related-sidebar{
+
+        order:2;
+    }
+}
+
+@media(max-width:768px){
+
+    .watch-title{
+
+        font-size:2rem;
+    }
+
+    .watch-content{
+
+        padding:20px;
+    }
+
+    .watch-buttons{
+
+        flex-direction:column;
+    }
+
+    .watch-btn{
+
+        justify-content:center;
+    }
+}
+
+@media(max-width:480px){
+
+    .watch-overlay{
+
+        padding-top:100px;
+    }
+
+    .watch-title{
+
+        font-size:1.7rem;
+    }
+
+    .watch-meta{
+
+        gap:8px;
+    }
+
+    .watch-meta span{
+
+        padding:8px 12px;
+
+        font-size:.8rem;
+    }
 }
