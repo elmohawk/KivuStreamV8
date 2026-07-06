@@ -146,3 +146,34 @@ function renderMovie(movie, credits = {}, videos = {}) {
         </section>
     `;
 }
+
+function createDownloadButtons(movie){
+
+    if(!movie.download_links)
+        return "";
+
+    let html="<div class='downloads'>";
+
+    Object.entries(movie.download_links)
+    .forEach(([quality,url])=>{
+
+        html+=`
+
+<a
+href="${url}"
+target="_blank"
+class="btn btn-secondary">
+
+⬇ ${quality}
+
+</a>
+
+`;
+
+    });
+
+    html+="</div>";
+
+    return html;
+
+}
