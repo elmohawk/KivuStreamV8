@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         loadPopularMovies(),
         loadTopRated(),
         loadSeries()
+        await loadLatestMovies();
     ]);
 
 });
