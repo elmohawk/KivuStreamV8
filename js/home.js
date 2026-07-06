@@ -149,13 +149,21 @@ function renderMovies(containerId, movies) {
 
 async function loadHero() {
 
-    const { data, error } = await supabaseClient
-        .from("movies")
-        .select("*")
-        .eq("featured", true)
-        .eq("is_active", true)
-        .limit(1)
-        .single();
+   const { data, error } = await supabaseClient
+  .from("movies")
+  .select("*")
+  .eq("id", id)
+  .maybeSingle();
+
+if (error) {
+    console.error(error);
+    return;
+}
+
+if (!data) {
+    console.warn("Movie not found");
+    return;
+}
 
     if (error || !data) return;
 
