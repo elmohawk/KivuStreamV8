@@ -1,90 +1,315 @@
+/* ===========================================
+   KIVUSTREAM PRO TMDB API
+=========================================== */
 
-const API_KEY = CONFIG.TMDB_API_KEY;
-const BASE_URL = CONFIG.TMDB_BASE_URL;
+import { TMDB } from "./config.js";
 
-async function request(endpoint, params = "") {
+/* ===========================================
+   CACHE
+=========================================== */
 
-    const url = `${BASE_URL}${endpoint}?api_key=${API_KEY}${params}`;
+const cache = new Map();
+
+/* ===========================================
+   FETCH JSON
+=========================================== */
+
+async function fetchJSON(url) {
 
     try {
 
         const response = await fetch(url);
 
         if (!response.ok) {
-            throw new Error(`HTTP Error ${response.status}`);
+            throw new Error(response.status);
         }
 
         return await response.json();
 
     } catch (error) {
 
-        console.error("TMDB Error:", error);
+        console.error("TMDB:", error);
+
         return null;
+
     }
+
 }
 
-/* ================= HOME ================= */
+/* ===========================================
+   SEARCH MOVIE
+=========================================== */
 
-const getTrendingMovies = () =>
-    request("/trending/movie/week");
+async function searchMovie(title) {
 
-const getPopularMovies = () =>
-    request("/movie/popular");
+    const data = await fetchJSON(
 
-const getTopRatedMovies = () =>
-    request("/movie/top_rated");
+        `${TMDB.BASE}/search/movie?api_key=${TMDB.API_KEY}&query=${encodeURIComponent(title)}`
 
-const getUpcomingMovies = () =>
-    request("/movie/upcoming");
+    );
 
-const getPopularSeries = () =>
-    request("/tv/popular");
+    return data?.results?.[0] || null;
 
-/* ================= MOVIE ================= */
+}
 
-const getMovieDetails = (id) =>
-    request(`/movie/${id}`, "&append_to_response=videos,credits,recommendations");
+/* ===========================================
+   SEARCH TV
+=========================================== */
 
-/* ================= SEARCH ================= */
+async function searchTV(title) {
 
-const searchMovies = (query) =>
-    request("/search/movie", `&query=${encodeURIComponent(query)}`);
+    const data = await fetchJSON(
 
-const searchMoviesPage = (query, page = 1) =>
-    request("/search/movie", `&query=${encodeURIComponent(query)}&page=${page}`);
+        `${TMDB.BASE}/search/tv?api_key=${TMDB.API_KEY}&query=${encodeURIComponent(title)}`
 
-/* ================= PAGINATION ================= */
+    );
 
-const getPopularMoviesPage = (page = 1) =>
-    request("/movie/popular", `&page=${page}`);
-const getSeriesDetails = (id) =>
-    request(`/tv/${id}`);
+    return data?.results?.[0] || null;
 
-const getPopularSeriesPage = (page = 1) =>
-    request("/tv/popular", `&page=${page}`);
+}
 
-const searchSeries = (query) =>
-    request("/search/tv", `&query=${encodeURIComponent(query)}`);
+/* ===========================================
+   MOVIE DETAILS
+=========================================== */
 
-const searchSeriesPage = (query, page = 1) =>
-    request("/search/tv", `&query=${encodeURIComponent(query)}&page=${page}`);
+async function getMovie(id) {
 
-const getSeriesRecommendations = (id) =>
-    request(`/tv/${id}/recommendations`);
-async function getTmdbDetails(id, type = "movie") {
+    return await fetchJSON(
 
-    if (!id) {
-        console.warn("Missing TMDB ID");
-        return null;
+        `${TMDB.BASE}/movie/${id}?api_key=${TMDB.API_KEY}&append_to_response=videos`
+
+    );
+
+}
+
+/* ===========================================
+   TV DETAILS
+=========================================== */
+
+async function getTV(id) {
+
+    return await fetchJSON(
+
+        `${TMDB.BASE}/tv/${id}?api_key=${TMDB.API_KEY}&append_to_response=videos`
+
+    );
+
+}
+
+/* ===========================================
+   TRAILER
+=========================================== */
+
+function trailerKey(videos) {
+
+    if (!videos) return null;
+
+    const trailer = videos.results.find(
+
+        video =>
+            video.site === "YouTube" &&
+            video.type === "Trailer"
+
+    );
+
+    return trailer?.key || null;
+
+}
+
+/* ===========================================
+   ENRICH CONTENT
+=========================================== */
+
+export async function enrich(item) {
+
+    if (!item) return item;
+
+    if (!item.title) return item;
+
+    const cacheKey = `${item.type}-${item.title}`;
+
+    if (cache.has(cacheKey)) {
+
+        return cache.get(cacheKey);
+
     }
 
-    const endpoint =
-        type === "series"
-            ? `/tv/${id}`
-            : `/movie/${id}`;
+    let searchResult;
 
-    return await request(
-        endpoint,
-        "&append_to_response=videos,credits"
+    if (item.type === "series") {
+
+        searchResult = await searchTV(item.title);
+
+    } else {
+
+        searchResult = await searchMovie(item.title);
+
+    }
+
+    if (!searchResult) {
+
+        cache.set(cacheKey, item);
+
+        return item;
+
+    }
+
+    let details;
+
+    if (item.type === "series") {
+
+        details = await getTV(searchResult.id);
+
+    } else {
+
+        details = await getMovie(searchResult.id);
+
+    }
+
+    if (!details) {
+
+        cache.set(cacheKey, item);
+
+        return item;
+
+    }
+
+    const enriched = {
+
+        ...item,
+
+        tmdbId: details.id,
+
+        title:
+
+            details.title ||
+
+            details.name ||
+
+            item.title,
+
+        description:
+
+            details.overview ||
+
+            item.description ||
+
+            "",
+
+        overview:
+
+            details.overview ||
+
+            item.description ||
+
+            "",
+
+        poster:
+
+            details.poster_path
+
+                ? TMDB.POSTER + details.poster_path
+
+                : item.image,
+
+        banner:
+
+            details.backdrop_path
+
+                ? TMDB.BACKDROP + details.backdrop_path
+
+                : item.banner ||
+
+                  item.image,
+
+        rating:
+
+            details.vote_average ||
+
+            item.rating ||
+
+            0,
+
+        votes:
+
+            details.vote_count ||
+
+            0,
+
+        year:
+
+            details.release_date ||
+
+            details.first_air_date ||
+
+            "",
+
+        genres:
+
+            details.genres || [],
+
+        language:
+
+            details.original_language ||
+
+            "",
+
+        runtime:
+
+            details.runtime ||
+
+            null,
+
+        seasons:
+
+            details.number_of_seasons ||
+
+            null,
+
+        episodes:
+
+            details.number_of_episodes ||
+
+            null,
+
+        trailer:
+
+            trailerKey(details.videos),
+
+        popularity:
+
+            details.popularity ||
+
+            0
+
+    };
+
+    cache.set(cacheKey, enriched);
+
+    return enriched;
+
+}
+
+/* ===========================================
+   ENRICH ARRAY
+=========================================== */
+
+export async function enrichAll(items = []) {
+
+    return Promise.all(
+
+        items.map(enrich)
+
     );
+
+}
+
+/* ===========================================
+   CLEAR CACHE
+=========================================== */
+
+export function clearCache() {
+
+    cache.clear();
+
 }
