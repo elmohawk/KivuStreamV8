@@ -23,33 +23,27 @@ async function init() {
 // =====================================
 // LOAD MOVIE
 // =====================================
-
 async function loadMovie(id) {
 
-    // 1. Get your data from Supabase
-    const { data: movie } = await supabaseClient
+    const { data, error } = await supabaseClient
         .from("movies")
         .select("*")
         .eq("id", id)
         .single();
 
-    if (!movie) return;
+    if (error || !data) {
 
-    // 2. Get TMDB details
-    const tmdb = await getTmdbDetails(
-        movie.tmdb_id,
-        movie.category
-    );
+        alert("Movie not found");
 
-    // 3. Merge data
-    const fullData = {
-        ...tmdb,
-        ...movie
-    };
+        return;
 
-    renderMovie(fullData);
+    }
+
+    renderMovie(data);
+
+    setupMovieActions(id);
+
 }
-
 // =====================================
 // RECOMMENDATIONS (SUPABASE)
 // =====================================
