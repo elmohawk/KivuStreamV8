@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View All | KivuStream</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Header -->
+    <section class="viewall-header">
+        <h1>Browse All Content</h1>
+        <p>Discover Movies, Series and Trending Entertainment</p>
+    </section>
+
+    <!-- Filters -->
+    <section class="filters">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search movies...">
+
+        <select id="genreFilter">
+            <option value="">All Genres</option>
+        </select>
+
+        <select id="countryFilter">
+            <option value="">All Countries</option>
+        </select>
+
+        <select id="sortFilter">
+            <option value="latest">Latest</option>
+            <option value="popular">Popular</option>
+            <option value="az">A - Z</option>
+        </select>
+
+    </section>
+
+    <!-- Results -->
+    <section class="content-grid" id="contentGrid">
+
+        <!-- Movies inserted by JavaScript -->
+
+    </section>
+
+    <!-- Load More -->
+    <div class="load-more-container">
+        <button id="loadMoreBtn">
+            Load More
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <script src="js/viewall.js"></script>
+
+</body>
+</html>
