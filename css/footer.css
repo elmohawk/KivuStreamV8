@@ -155,14 +155,18 @@
 }
 
 .social-pro .label{
-    font-size:.8rem;
+    display:none;
 }
-
 .social-pro:hover{
     transform:translateY(-4px);
     background:rgba(22,242,194,.08);
     border-color:rgba(22,242,194,.25);
     box-shadow:0 10px 25px rgba(0,0,0,.3);
+}
+.social-pro i{
+    font-size:18px;
+    width:22px;
+    text-align:center;
 }
 /* BOTTOM */
 .footer-bottom-links{
