@@ -4,13 +4,13 @@
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-    await Promise.all([
-        loadFeatured(),
-        loadPopularMovies(),
-        loadTopRated(),
-        loadSeries()
-        await loadLatestMovies();
-    ]);
+await Promise.all([
+    loadFeatured(),
+    loadPopularMovies(),
+    loadTopRated(),
+    loadSeries(),
+    loadLatestMovies()
+]);
 
 });
 
