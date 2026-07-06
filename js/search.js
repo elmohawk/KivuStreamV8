@@ -25,65 +25,82 @@ async function loadMovies(append = false) {
 
     // SEARCH (IMPROVED)
     const searchBox = document.getElementById("searchBox");
-    const keyword = searchBox?.value?.trim();
+  const keyword = searchBox?.value?.trim();
 
-    if (keyword && keyword.length > 0) {
-        query = query.or(
-            `title.ilike.%${keyword}%,description.ilike.%${keyword}%`
-        );
-    }
+let query = supabaseClient
+    .from("movies")
+    .select("*")
+    .eq("is_active", true);
 
-    // PAGINATION
-    const from = (currentPage - 1) * pageSize;
-    const to = from + pageSize - 1;
+// AI MODE ON
+if (keyword) {
 
-    query = query
-        .order("created_at", { ascending: false })
-        .range(from, to);
+    const ai = parseAIQuery(keyword);
 
-    const { data, error } = await query;
+    query = buildAIQuery(query, ai);
 
-    if (error) {
-        console.error(error);
-        grid.innerHTML = `<div class="empty-state">Error loading movies</div>`;
-        return;
-    }
+    // fallback text search
+    query = query.or(`
+        title.ilike.%${ai.raw}%,
+        description.ilike.%${ai.raw}%
+    `);
 
-    if (!data || data.length === 0) {
-
-        if (!append) {
-            grid.innerHTML = `
-                <div class="empty-state">
-                    <h2>No results found</h2>
-                    <p>Try another keyword</p>
-                </div>
-            `;
-        }
-
-        return;
-    }
-
-    if (!append) grid.innerHTML = "";
-
-    grid.innerHTML += data.map(createMovieCard).join("");
 }
-let searchTimer = null;
+    function parseAIQuery(input) {
 
-const searchBox = document.getElementById("searchBox");
+    const text = input.toLowerCase();
 
-if (searchBox) {
+    return {
+        raw: input,
 
-    searchBox.addEventListener("input", () => {
+        isAction: text.includes("action"),
+        isComedy: text.includes("comedy") || text.includes("funny"),
+        isHorror: text.includes("horror") || text.includes("scary"),
+        isRomance: text.includes("romance") || text.includes("love"),
 
-        clearTimeout(searchTimer);
+        isSeries: text.includes("series") || text.includes("tv"),
+        isMovie: text.includes("movie"),
 
-        searchTimer = setTimeout(() => {
+        country: extractCountry(text),
+        language: extractLanguage(text)
+    };
+}
 
-            currentPage = 1;
-            loadMovies();
+function extractCountry(text) {
 
-        }, 400); // debounce
+    if (text.includes("india")) return "India";
+    if (text.includes("usa") || text.includes("american")) return "USA";
+    if (text.includes("uk") || text.includes("british")) return "UK";
 
-    });
+    return null;
+}
 
+function extractLanguage(text) {
+
+    if (text.includes("english")) return "English";
+    if (text.includes("french")) return "French";
+
+    return null;
+}
+    function buildAIQuery(baseQuery, filters) {
+
+    let query = baseQuery;
+
+    // Genre boost
+    if (filters.isAction) query = query.eq("category", "Action");
+    if (filters.isComedy) query = query.eq("category", "Comedy");
+    if (filters.isHorror) query = query.eq("category", "Horror");
+    if (filters.isRomance) query = query.eq("category", "Romance");
+
+    // Type filtering
+    if (filters.isSeries) query = query.eq("type", "series");
+    if (filters.isMovie) query = query.eq("type", "movie");
+
+    // Country filter
+    if (filters.country) query = query.eq("country", filters.country);
+
+    // Language filter
+    if (filters.language) query = query.eq("language", filters.language);
+
+    return query;
 }
