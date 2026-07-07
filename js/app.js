@@ -1,5 +1,4 @@
-import { supabase } from "./supabase.js";
-import { getCurrentUser, logout } from "./auth.js";
+
 // Load HTML components (navbar, footer)
 async function loadComponent(id, file) {
     const element = document.getElementById(id);
