@@ -2,7 +2,6 @@
    KIVUSTREAM PRO UI ENGINE
 =========================================== */
 
-import { CONFIG } from "./config.js";
 /* ===========================================
    HELPERS
 =========================================== */
@@ -20,7 +19,7 @@ function truncate(text = "", length = 120) {
    MOVIE CARD
 =========================================== */
 
-export function createMovieCard(movie) {
+ function createMovieCard(movie) {
 
     const poster =
         movie.poster ||
@@ -106,8 +105,7 @@ ${movie.title}
 /* ===========================================
    RENDER ROW
 =========================================== */
-
-export function renderRow(containerId,movies=[]){
+ function renderRow(containerId,movies=[]){
 
     const container=$(containerId);
 
@@ -147,7 +145,7 @@ let heroIndex=0;
 
 let heroTimer=null;
 
-export function renderHero(items=[]){
+function renderHero(items=[]){
 
     heroMovies=items;
 
@@ -217,7 +215,7 @@ url(${banner})`;
 
 }
 
-export function nextHero(){
+ function nextHero(){
 
     heroIndex++;
 
@@ -231,7 +229,7 @@ export function nextHero(){
 
 }
 
-export function previousHero(){
+ function previousHero(){
 
     heroIndex--;
 
@@ -251,7 +249,7 @@ export function previousHero(){
    VIEW ALL BUTTON
 =========================================== */
 
-export function renderSection(
+ function renderSection(
 
 containerId,
 
@@ -321,7 +319,7 @@ type
    LOADER
 =========================================== */
 
-export function showLoader(){
+ function showLoader(){
 
     const loader=$("loader");
 
@@ -333,7 +331,7 @@ export function showLoader(){
 
 }
 
-export function hideLoader(){
+ function hideLoader(){
 
     const loader=$("loader");
 
@@ -348,8 +346,7 @@ export function hideLoader(){
 /* ===========================================
    TOAST
 =========================================== */
-
-export function toast(message){
+ function toast(message){
 
     const toast=
 
@@ -385,7 +382,7 @@ export function toast(message){
    SKELETON
 =========================================== */
 
-export function renderSkeleton(
+ function renderSkeleton(
 
 containerId,
 
@@ -457,7 +454,7 @@ observer.unobserve(img);
 
 );
 
-export function enableLazyImages(){
+ function enableLazyImages(){
 
 document
 
