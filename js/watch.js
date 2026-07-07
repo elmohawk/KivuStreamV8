@@ -1,343 +1,365 @@
-/* ===========================================
-   KIVUSTREAM - PRO STREAMING ENGINE
-=========================================== */
+/* ==========================================================
+   KIVUSTREAM PRO WATCH PAGE
+   VERSION 2.0
+========================================================== */
 
-import { supabase } from "./supabase.js";
-import { toast } from "./ui.js";
+"use strict";
 
-/* ---------------------------
-   GLOBAL STATE (PRO)
-----------------------------*/
-const state = {
-  movie: null,
-  episodes: [],
-  currentSeason: null
+/* ==========================================================
+   GLOBAL STATE
+========================================================== */
+
+let currentMovie = null;
+
+let tmdbData = null;
+
+let movieId = null;
+
+let player = null;
+
+let currentEpisode = null;
+
+let playbackTimer = null;
+
+let theaterMode = false;
+
+/* ==========================================================
+   DOM
+========================================================== */
+
+const $ = (id) => document.getElementById(id);
+
+/* ==========================================================
+   INIT
+========================================================== */
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    player = $("player");
+
+    const params = new URLSearchParams(window.location.search);
+
+    movieId = params.get("id");
+
+    if (!movieId) {
+
+        window.location.href = "index.html";
+
+        return;
+
+    }
+
+    showLoading();
+
+    await loadMovie();
+
+    hideLoading();
+
+    setupPlayer();
+
+    setupButtons();
+
+    setupKeyboard();
+
+});
+/* ==========================================================
+   LOAD MOVIE
+========================================================== */
+
+async function loadMovie(){
+
+try{
+
+let movie=null;
+
+/* SEARCH MOVIES */
+
+let result=
+await supabaseClient
+.from("movies")
+.select("*")
+.eq("id",movieId)
+.maybeSingle();
+
+movie=result.data;
+
+/* SEARCH SERIES */
+
+if(!movie){
+
+result=
+await supabaseClient
+.from("series")
+.select("*")
+.eq("id",movieId)
+.maybeSingle();
+
+movie=result.data;
+
+}
+
+if(!movie){
+
+alert("Content not found");
+
+window.location.href="index.html";
+
+return;
+
+}
+
+currentMovie=movie;
+
+/* TMDB */
+
+tmdbData=
+await enrichTMDB(movie);
+
+/* UI */
+
+renderHero();
+
+renderDetails();
+
+renderDownloads();
+
+renderCast();
+
+renderRecommendations();
+
+loadComments();
+
+if(movie.type==="series"){
+
+loadEpisodes();
+
+}
+
+}catch(err){
+
+console.error(err);
+
+}
+}
+/* ==========================================================
+   TMDB
+========================================================== */
+
+async function enrichTMDB(movie){
+
+try{
+
+const results=
+await searchTMDB(movie.title);
+
+if(!results.length){
+
+return null;
+
+}
+
+const id=results[0].id;
+
+if(movie.type==="series"){
+
+return await getSeriesDetails(id);
+
+}
+
+return await getMovieDetails(id);
+
+}catch(e){
+
+console.error(e);
+
+return null;
+
+}
+
+}
+/* ==========================================================
+   HERO
+========================================================== */
+
+function renderHero(){
+
+const backdrop=
+
+tmdbData?.backdrop ||
+
+currentMovie.banner ||
+
+currentMovie.image;
+
+$("watchHero").style.backgroundImage=`
+
+linear-gradient(
+rgba(0,0,0,.2),
+rgba(0,0,0,.9)
+),
+
+url(${backdrop})
+
+`;
+
+$("moviePoster").src=
+
+tmdbData?.poster ||
+
+currentMovie.image ||
+
+"assets/logo.png";
+
+$("movieTitle").textContent=
+
+currentMovie.title;
+
+$("movieDescription").textContent=
+
+tmdbData?.overview ||
+
+currentMovie.description ||
+
+"No description.";
+
+$("movieCategory").textContent=
+
+currentMovie.category || "";
+
+$("movieRuntime").textContent=
+
+tmdbData?.runtime
+
+? tmdbData.runtime+" min"
+
+:"";
+
+$("movieTranslator").textContent=
+
+currentMovie.translator ||
+
+"KivuStream";
+
+$("movieYear").textContent=
+
+tmdbData?.year ||
+
+currentMovie.year ||
+
+"";
+
+}
+/* ==========================================================
+   DETAILS
+========================================================== */
+
+function renderDetails(){
+
+$("detailGenre").textContent=
+
+tmdbData?.genres?.join(", ") ||
+
+currentMovie.category;
+
+$("detailCountry").textContent=
+
+tmdbData?.country ||
+
+"Unknown";
+
+$("detailLanguage").textContent=
+
+tmdbData?.language ||
+
+"Unknown";
+
+$("detailRuntime").textContent=
+
+tmdbData?.runtime
+
+? tmdbData.runtime+" min"
+
+:"";
+
+$("detailTranslator").textContent=
+
+currentMovie.translator ||
+
+"KivuStream";
+
+$("detailViews").textContent=
+
+currentMovie.views || 0;
+
+$("detailLikes").textContent=
+
+currentMovie.likes || 0;
+
+$("detailRelease").textContent=
+
+tmdbData?.year ||
+
+"";
+}
+/* ==========================================================
+   LOADING
+========================================================== */
+
+function showLoading(){
+
+document.body.classList.add("loading");
+
+}
+
+function hideLoading(){
+
+document.body.classList.remove("loading");
+
+}
+/* ==========================================================
+   CONTINUE WATCHING
+========================================================== */
+
+function savePlayback(){
+
+if(!player)return;
+
+const progress={
+
+id:currentMovie.id,
+
+time:player.currentTime
+
 };
 
-const db = supabase;
+localStorage.setItem(
 
-/* ---------------------------
-   INIT
-----------------------------*/
-document.addEventListener("DOMContentLoaded", init);
+"watch_"+currentMovie.id,
 
-async function init() {
-  const id = getQueryId();
+JSON.stringify(progress)
 
-  if (!id) return showError("Missing movie ID");
+);
 
-  try {
-    await loadMovie(id);
-  } catch (err) {
-    console.error(err);
-    showError("Failed to load content");
-  }
 }
 
-/* ---------------------------
-   QUERY HELPER
-----------------------------*/
-function getQueryId() {
-  return new URLSearchParams(location.search).get("id");
+function resumePlayback(){
+
+const saved=
+
+JSON.parse(
+
+localStorage.getItem(
+
+"watch_"+currentMovie.id
+
+)
+
+);
+
+if(!saved)return;
+
+player.currentTime=saved.time;
+
 }
 
-/* ---------------------------
-   SAFE DB WRAPPER
-----------------------------*/
-async function query(promise) {
-  const { data, error } = await promise;
-
-  if (error) {
-    console.error("DB ERROR:", error);
-    throw error;
-  }
-
-  return data;
-}
-
-/* ---------------------------
-   LOAD MOVIE
-----------------------------*/
-async function loadMovie(id) {
-  state.movie = await query(
-    db.from("movies")
-      .select("*")
-      .eq("id", id)
-      .single()
-  );
-
-  renderMovie(state.movie);
-
-  await Promise.all([
-    loadComments(id),
-    loadRecommended()
-  ]);
-
-  if (state.movie.type === "series") {
-    await loadEpisodes(id);
-  }
-}
-
-/* ---------------------------
-   RENDER MOVIE (ONE TIME DOM BIND)
-----------------------------*/
-function renderMovie(movie) {
-  document.title = movie.title || "Watch";
-
-  set("movie-title", movie.title);
-  set("movie-description", movie.description);
-  set("movie-category", `🎭 ${movie.category || "Entertainment"}`);
-  set("movie-translator", `🎙 ${movie.translator || "KivuStream"}`);
-  set("movie-type", movie.type === "series" ? "📺 Series" : "🎬 Movie");
-  set("movie-status", movie.status || "🔥 Trending");
-
-  setAttr("movie-poster", "src", movie.image || "./logo.png");
-
-  setBackdrop(movie.banner || movie.image);
-
-  bindActions(movie);
-}
-
-/* ---------------------------
-   BACKDROP HANDLING
-----------------------------*/
-function setBackdrop(url) {
-  const el = document.querySelector(".hero-backdrop");
-
-  if (el) el.style.backgroundImage = `url(${url})`;
-
-  document.body.style.setProperty("--movie-bg", `url(${url})`);
-}
-
-/* ---------------------------
-   ACTIONS (PLAY / DOWNLOAD / COMMENT)
-----------------------------*/
-function bindActions(movie) {
-  document.getElementById("watch-btn")?.onclick = () =>
-    play(movie.video);
-
-  document.getElementById("download-btn")?.onclick = () => {
-    if (movie.download) window.open(movie.download, "_blank");
-  };
-
-  document.getElementById("comment-btn")?.onclick = () =>
-    postComment(movie.id);
-}
-
-/* ---------------------------
-   PLAYER ENGINE
-----------------------------*/
-function play(src) {
-  const player = document.getElementById("player");
-  if (!player || !src) return;
-
-  player.src = src;
-  player.play?.();
-  player.scrollIntoView({ behavior: "smooth" });
-}
-
-/* ---------------------------
-   EPISODES (SERIES ENGINE)
-----------------------------*/
-async function loadEpisodes(seriesId) {
-  state.episodes = await query(
-    db.from("episodes")
-      .select("*")
-      .eq("series_id", seriesId)
-      .order("season")
-  );
-
-  const seasons = [...new Set(state.episodes.map(e => e.season))];
-
-  renderSeasons(seasons);
-
-  if (seasons.length) {
-    state.currentSeason = seasons[0];
-    showSeason(seasons[0]);
-  }
-}
-
-/* ---------------------------
-   SEASONS UI
-----------------------------*/
-function renderSeasons(seasons) {
-  const container = $("#season-buttons");
-  if (!container) return;
-
-  container.innerHTML = "";
-
-  seasons.forEach(season => {
-    const btn = document.createElement("button");
-    btn.textContent = `Season ${season}`;
-    btn.onclick = () => showSeason(season);
-    container.appendChild(btn);
-  });
-}
-
-/* ---------------------------
-   EPISODE RENDER
-----------------------------*/
-function showSeason(season) {
-  state.currentSeason = season;
-
-  const container = $("#episodes-container");
-  if (!container) return;
-
-  container.innerHTML = "";
-
-  const episodes = state.episodes.filter(e => e.season == season);
-
-  episodes.forEach(ep => {
-    const el = document.createElement("div");
-    el.className = "episode-card";
-
-    el.innerHTML = `
-      <div class="episode-left">
-        <span class="episode-number">EP ${ep.episode}</span>
-        <div>
-          <h3>${ep.title}</h3>
-          <small>Season ${ep.season}</small>
-        </div>
-      </div>
-      <div class="episode-actions">
-        <button class="watch">▶</button>
-        <button class="download">⬇</button>
-      </div>
-    `;
-
-    el.querySelector(".watch").onclick = () => play(ep.video);
-    el.querySelector(".download").onclick = () =>
-      ep.download && window.open(ep.download);
-
-    container.appendChild(el);
-  });
-}
-
-/* ---------------------------
-   COMMENTS ENGINE (SAFE)
-----------------------------*/
-function escape(str = "") {
-  return str.replace(/[&<>"']/g, m => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  }[m]));
-}
-
-async function loadComments(movieId) {
-  const data = await query(
-    db.from("comments")
-      .select("*")
-      .eq("movie_id", movieId)
-      .order("created_at", { ascending: false })
-  );
-
-  const container = $("#comments-container");
-  if (!container) return;
-
-  container.innerHTML = (data || [])
-    .map(c => `
-      <div class="comment">
-        <strong>${escape(c.username || "User")}</strong>
-        <p>${escape(c.text)}</p>
-        <small>${new Date(c.created_at).toLocaleString()}</small>
-      </div>
-    `)
-    .join("");
-}
-
-/* ---------------------------
-   POST COMMENT (PRO SAFE)
-----------------------------*/
-async function postComment(movieId) {
-  const input = $("#comment-input");
-  const user = $("#username-input");
-
-  const text = input?.value.trim();
-  const username = user?.value.trim() || "Guest";
-
-  if (!text) return alert("Write a comment");
-
-  const btn = $("#comment-btn");
-  btn.disabled = true;
-  btn.textContent = "Posting...";
-
-  try {
-    await query(
-      db.from("comments").insert([
-        { movie_id: movieId, username, text }
-      ])
-    );
-
-    input.value = "";
-    loadComments(movieId);
-
-  } catch (err) {
-    alert("Comment failed");
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Post";
-  }
-}
-
-/* ---------------------------
-   RECOMMENDED
-----------------------------*/
-async function loadRecommended() {
-  const data = await query(
-    db.from("movies").select("*").limit(12)
-  );
-
-  const container = $("#recommended-container");
-  if (!container) return;
-
-  container.innerHTML = "";
-
-  data.forEach(m => {
-    const card = document.createElement("div");
-    card.className = "movie-card";
-
-    card.innerHTML = `
-      <img src="${m.image}" />
-      <h3>${m.title}</h3>
-    `;
-
-    card.onclick = () =>
-      (location.href = `watch.html?id=${m.id}`);
-
-    container.appendChild(card);
-  });
-}
-
-/* ---------------------------
-   HELPERS (PRO CLEAN ACCESS)
-----------------------------*/
-function $(id) {
-  return document.getElementById(id);
-}
-
-function set(id, value) {
-  const el = $(id);
-  if (el) el.textContent = value || "";
-}
-
-function setAttr(id, attr, value) {
-  const el = $(id);
-  if (el && value) el.setAttribute(attr, value);
-}
-
-/* ---------------------------
-   ERROR HANDLER UI
-----------------------------*/
-function showError(msg) {
-  alert(msg);
-}
-
-/* ---------------------------
-   LOADER CLEANUP
-----------------------------*/
-window.addEventListener("load", () => {
-  $("#loading-screen")?.remove();
-});
+setInterval(savePlayback,5000);
