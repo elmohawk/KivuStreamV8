@@ -33,7 +33,7 @@ export const SUPABASE = {
    TMDB
 =========================================== */
 
-export const TMDB = {
+const TMDB = {
 
     API_KEY: "8b8937bf3e114fa3502358a4f090c0df",
 
