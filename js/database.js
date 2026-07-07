@@ -1,6 +1,4 @@
-import { supabase } from "./supabase.js";
-
-export async function getMovies(){
+ async function getMovies(){
 
     const {data,error}=await supabase
 
@@ -22,7 +20,7 @@ export async function getMovies(){
 
 }
 
-export async function getSeries(){
+ async function getSeries(){
 
     const {data,error}=await supabase
 
@@ -44,7 +42,7 @@ export async function getSeries(){
 
 }
 
-export async function getEpisodes(seriesId){
+async function getEpisodes(seriesId){
 
     const {data,error}=await supabase
 
