@@ -1,166 +1,362 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>KivuStream | Watch</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="icon" href="assets/favicon.ico">
+<title>KivuStream - Watch</title>
 
-<!-- CORE CSS -->
 <link rel="stylesheet" href="css/reset.css">
 <link rel="stylesheet" href="css/variables.css">
-<link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/navbar.css">
 <link rel="stylesheet" href="css/cards.css">
 <link rel="stylesheet" href="css/watch.css">
 <link rel="stylesheet" href="css/footer.css">
-<link rel="stylesheet" href="css/responsive.css">
 
-<!-- Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
 
-<!-- LOADER -->
-<div id="loading-screen">
-  <div class="loader"></div>
+<!-- NAVBAR -->
+<div id="navbar"></div>
+
+<!-- ========================= -->
+<!-- HERO -->
+<!-- ========================= -->
+
+<section id="watchHero" class="watch-hero">
+
+<div class="hero-overlay"></div>
+
+<div class="watch-container">
+
+<div class="hero-poster">
+
+<img
+id="moviePoster"
+src="assets/logo.png"
+alt="Poster">
+
 </div>
 
-<!-- HERO -->
-<header class="hero-banner">
+<div class="hero-content">
 
-  <div class="hero-backdrop"></div>
-  <div class="hero-gradient"></div>
+<div class="hero-badges">
 
-  <div class="hero-content">
+<span id="qualityBadge">HD</span>
 
-    <!-- POSTER -->
-    <div class="poster-wrapper">
-      <img id="movie-poster" class="poster" alt="poster"/>
-    </div>
+<span id="movieYear">2026</span>
 
-    <!-- DETAILS -->
-    <div class="details">
+<span id="movieStatus">Released</span>
 
-      <div class="badge-row">
-        <span class="badge" id="movie-status">🎬 MOVIE</span>
-        <span class="badge">⭐ HD</span>
-        <span class="badge" id="movie-year">2026</span>
-      </div>
+</div>
 
-      <h1 id="movie-title">Loading...</h1>
+<h1 id="movieTitle"></h1>
 
-      <div class="meta">
-        <span id="movie-category">Action</span>
-        <span id="movie-translator">KivuStream</span>
-        <span id="movie-type">Movie</span>
-      </div>
+<div class="hero-meta">
 
-      <p id="movie-description">Loading description...</p>
+<span id="movieCategory"></span>
 
-      <div class="movie-stats">
-        <div class="stat">🎬 HD Quality</div>
-        <div class="stat">⚡ Fast Streaming</div>
-        <div class="stat">🌍 Worldwide</div>
-      </div>
+<span id="movieRuntime"></span>
 
-      <div class="buttons">
-        <button id="watch-btn" class="watch-btn play-btn">▶ Watch Now</button>
-        <button id="download-btn" class="watch-btn download-btn">⬇ Download</button>
-        <button class="watch-btn wishlist-btn">❤ My List</button>
-      </div>
+<span id="movieTranslator"></span>
 
-    </div>
-  </div>
-</header>
+</div>
 
+<p id="movieDescription"></p>
+
+<div class="hero-buttons">
+
+<button id="watchBtn">
+▶ Watch
+</button>
+
+<button id="downloadBtn">
+⬇ Download
+</button>
+
+<button id="favoriteBtn">
+❤ My List
+</button>
+
+<button id="shareBtn">
+🔗 Share
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
 <!-- PLAYER -->
+<!-- ========================= -->
+
 <section class="player-section">
-  <div class="player-wrap">
-    <video id="player" controls></video>
-  </div>
+
+<div class="player-wrapper">
+
+<video
+
+id="player"
+
+controls
+
+playsinline
+
+preload="metadata"
+
+poster="">
+
+</video>
+
+<div class="player-controls">
+
+<button id="theaterBtn">
+
+🎬 Theater
+
+</button>
+
+<button id="pipBtn">
+
+📺 PiP
+
+</button>
+
+<button id="fullscreenBtn">
+
+⛶ Fullscreen
+
+</button>
+
+</div>
+
+</div>
+
 </section>
 
-<!-- SERIES -->
-<section id="series-section" style="display:none; padding:20px;">
-  <h2>📺 Episodes</h2>
-  <div id="season-buttons"></div>
-  <div id="episodes-container"></div>
+<!-- ========================= -->
+<!-- DOWNLOADS -->
+<!-- ========================= -->
+
+<section class="download-section">
+
+<h2>
+
+Downloads
+
+</h2>
+
+<div id="downloadContainer">
+
+</div>
+
 </section>
 
+<!-- ========================= -->
+<!-- EPISODES -->
+<!-- ========================= -->
+
+<section
+id="episodesSection"
+class="episodes-section">
+
+<h2>
+
+Episodes
+
+</h2>
+
+<div
+id="seasonTabs"
+class="season-tabs">
+
+</div>
+
+<div
+id="episodeGrid"
+class="episode-grid">
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- DETAILS -->
+<!-- ========================= -->
+
+<section class="details-section">
+
+<h2>
+
+Movie Details
+
+</h2>
+
+<div class="details-grid">
+
+<div>
+
+<strong>Genre</strong>
+
+<p id="detailGenre"></p>
+
+</div>
+
+<div>
+
+<strong>Country</strong>
+
+<p id="detailCountry"></p>
+
+</div>
+
+<div>
+
+<strong>Language</strong>
+
+<p id="detailLanguage"></p>
+
+</div>
+
+<div>
+
+<strong>Runtime</strong>
+
+<p id="detailRuntime"></p>
+
+</div>
+
+<div>
+
+<strong>Translator</strong>
+
+<p id="detailTranslator"></p>
+
+</div>
+
+<div>
+
+<strong>Views</strong>
+
+<p id="detailViews"></p>
+
+</div>
+
+<div>
+
+<strong>Likes</strong>
+
+<p id="detailLikes"></p>
+
+</div>
+
+<div>
+
+<strong>Release</strong>
+
+<p id="detailRelease"></p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- CAST -->
+<!-- ========================= -->
+
+<section class="cast-section">
+
+<h2>
+
+Cast
+
+</h2>
+
+<div
+id="castSlider"
+class="cast-slider">
+
+</div>
+
+</section>
+
+<!-- ========================= -->
 <!-- COMMENTS -->
+<!-- ========================= -->
+
 <section class="comments-section">
 
-  <h2 class="comments-title">💬 Community Comments</h2>
+<h2>
 
-  <div class="comment-box">
-    <input id="username-input" placeholder="Your name..." />
-    <input id="comment-input" placeholder="Write a comment..." />
-    <button id="comment-btn">🚀 Post</button>
-  </div>
+Comments
 
-  <div id="comments-container"></div>
+</h2>
+
+<div
+id="commentsList">
+
+</div>
+
+<div class="comment-box">
+
+<textarea
+
+id="commentInput"
+
+placeholder="Write a comment...">
+
+</textarea>
+
+<button
+id="sendComment">
+
+Post Comment
+
+</button>
+
+</div>
 
 </section>
 
+<!-- ========================= -->
 <!-- RECOMMENDED -->
+<!-- ========================= -->
+
 <section class="recommended-section">
-  <h2>🔥 Recommended For You</h2>
-  <div id="recommended-container" class="recommended-grid"></div>
-</section>
 
-<!-- SUPPORT -->
-<section id="support" class="support-section">
+<h2>
 
-  <h2 class="section-title">🛠 Help & Support</h2>
+Recommended
 
-  <div class="support-grid">
+</h2>
 
-    <div class="support-card"
-         onclick="window.location.href='mailto:mrhawk2007@gmail.com'">
-      <div class="support-icon">📧</div>
-      <h3>Email Support</h3>
-      <p>Get help via email anytime</p>
-    </div>
+<div
+id="recommendedSlider"
+class="movie-slider">
 
-    <div class="support-card"
-         onclick="window.open('https://wa.me/250794669266','_blank')">
-      <div class="support-icon">💬</div>
-      <h3>WhatsApp Support</h3>
-      <p>Chat with us directly</p>
-    </div>
+</div>
 
-    <div class="support-card">
-      <div class="support-icon">⚡</div>
-      <h3>Fast Response</h3>
-      <p>Usually replies within minutes</p>
-    </div>
-
-  </div>
 </section>
 
 <!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-container">
 
-    <div class="footer-brand">
-      <h2 class="footer-logo">Kivu<span>Stream</span></h2>
-      <p>Unlimited Streaming • Premium Experience</p>
-    </div>
+<div id="footer"></div>
 
-  </div>
-</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-<!-- SCRIPTS (CLEAN ORDER - VERY IMPORTANT) -->
 <script src="js/config.js"></script>
 <script src="js/supabase.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/user.js"></script>
 <script src="js/api.js"></script>
 <script src="js/ui.js"></script>
+<script src="js/navbar.js"></script>
 <script src="js/watch.js"></script>
 
 </body>
