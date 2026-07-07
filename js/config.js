@@ -3,7 +3,7 @@
    KIVUSTREAM PRO CONFIG
 =========================================== */
 
-export const CONFIG = {
+const CONFIG = {
 
     APP_NAME: "KivuStream",
 
@@ -21,7 +21,7 @@ export const CONFIG = {
    SUPABASE
 =========================================== */
 
-export const SUPABASE = {
+ const SUPABASE = {
 
     URL: "https://exjgejujfxejjlbfizgz.supabase.co",
 
@@ -49,7 +49,7 @@ const TMDB = {
    CATEGORIES
 =========================================== */
 
-export const HOME_SECTIONS = [
+ const HOME_SECTIONS = [
 
     {
         id: "featuredMovies",
