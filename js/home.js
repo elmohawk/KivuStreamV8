@@ -161,14 +161,6 @@ function loadHero(items){
 }
 const heroTrailer = document.getElementById("heroTrailer");
 
-function loadHero(movie) {
-
-    document.getElementById("heroTitle").textContent = movie.title;
-    document.getElementById("heroOverview").textContent = movie.description;
-
-    document.getElementById("watchNowBtn").href =
-        `watch.html?id=${movie.id}`;
-
     // TRAILER SYSTEM
     if (heroTrailer && movie.trailer) {
 
