@@ -1,11 +1,11 @@
-import { supabase } from "./supabase.js";
 
-export async function getCurrentUser() {
+
+async function getCurrentUser() {
     const { data } = await supabase.auth.getUser();
     return data?.user;
 }
 
-export async function register(name, email, password) {
+ async function register(name, email, password) {
     const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -30,19 +30,18 @@ export async function register(name, email, password) {
     return { data, error };
 }
 
-export async function login(email, password) {
+ async function login(email, password) {
     return await supabase.auth.signInWithPassword({
         email,
         password
     });
 }
-
-export async function logout() {
+ async function logout() {
     await supabase.auth.signOut();
     window.location.href = "index.html";
 }
 
-export async function requireAuth() {
+ async function requireAuth() {
     const { data } = await supabase.auth.getUser();
     return data?.user || null;
 }
