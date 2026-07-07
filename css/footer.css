@@ -41,8 +41,10 @@
     margin:auto;
 
     display:grid;
-    grid-template-columns: 1.6fr 1fr 1.4fr;
-    gap:80px;
+  grid-template-columns:
+repeat(auto-fit,minmax(260px,1fr));
+
+gap:24px;
 
     position:relative;
     z-index:2;
