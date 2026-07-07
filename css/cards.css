@@ -3,12 +3,13 @@
    ===================================================== */
 
 .movie-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-    gap:28px;
-    margin-top:20px;
-}
+   display:grid;
 
+grid-template-columns:
+repeat(auto-fill,minmax(220px,1fr));
+
+gap:20px;
+}
 .movie-slider{
     display:flex;
     gap:24px;
