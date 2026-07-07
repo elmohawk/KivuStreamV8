@@ -1,4 +1,4 @@
-import { supabase } from "./supabase.js";
+
 // ======================================
 // KivuStream Navbar
 // Dynamic Menus from Supabase
