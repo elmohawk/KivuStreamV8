@@ -2,7 +2,16 @@
    KIVUSTREAM PRO TMDB API
 =========================================== */
 
-import { TMDB } from "./config.js";
+async function searchTMDB(query){
+
+    const url =
+        `${TMDB_BASE}/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`;
+
+    const res = await fetch(url);
+
+    return await res.json();
+
+}
 
 /* ===========================================
    CACHE
