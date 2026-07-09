@@ -135,7 +135,7 @@ async function enrich(item){
     if (!item.title) return item;
    const title = item.title.trim();
 
-    const cacheKey = `${item.type}-${item.title}`;
+    const cacheKey = `${item.type}-${title}`;
 
     if (cache.has(cacheKey)) {
 
