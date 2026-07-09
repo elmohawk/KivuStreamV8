@@ -1,6 +1,7 @@
 const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
+    window.SUPABASE.URL,
+    window.SUPABASE.KEY
 );
 
-window.supabaseClient = supabaseClient;
+// Make global
+window.supabase = supabaseClient;
