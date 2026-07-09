@@ -128,8 +128,7 @@ function trailerKey(videos) {
 /* ===========================================
    ENRICH CONTENT
 =========================================== */
-
-export async function enrich(item) {
+async function enrich(item){
 
     if (!item) return item;
 
@@ -302,8 +301,7 @@ export async function enrich(item) {
 /* ===========================================
    ENRICH ARRAY
 =========================================== */
-
-export async function enrichAll(items = []) {
+async function enrichAll(items = []){
 
     return Promise.all(
 
@@ -316,9 +314,11 @@ export async function enrichAll(items = []) {
 /* ===========================================
    CLEAR CACHE
 =========================================== */
-
-export function clearCache() {
+function clearCache(){
 
     cache.clear();
 
 }
+window.enrich = enrich;
+window.enrichAll = enrichAll;
+window.clearCache = clearCache;
