@@ -68,19 +68,18 @@ async function loadHome(){
 
         /* TMDB */
 
-        const enriched=
+     // Show movies immediately
+window.allMovies = merged;
 
-            await enrichAll(merged);
+loadHero(merged);
+loadSections(merged);
 
-        window.allMovies=enriched;
-
-        /* Hero */
-
-        loadHero(enriched);
-
-        /* Homepage */
-
-        loadSections(enriched);
+// Enrich in the background
+enrichAll(merged).then(enriched => {
+    window.allMovies = enriched;
+    loadHero(enriched);
+    loadSections(enriched);
+});
 
         hideLoader();
 
