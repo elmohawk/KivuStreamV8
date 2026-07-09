@@ -150,7 +150,7 @@ async function enrich(item){
 
     } else {
 
-        searchResult = await searchMovie(item.title);
+        searchResult = await searchMovie(title)
 
     }
 
@@ -301,16 +301,24 @@ async function enrich(item){
 /* ===========================================
    ENRICH ARRAY
 =========================================== */
-async function enrichAll(items = []){
+async function enrichAll(items = []) {
 
-    return Promise.all(
+    const results = [];
 
-        items.map(enrich)
+    for (const item of items) {
 
-    );
+        const movie = await enrich(item);
+
+        results.push(movie);
+
+        // Wait 250ms between requests
+        await new Promise(resolve => setTimeout(resolve, 250));
+
+    }
+
+    return results;
 
 }
-
 /* ===========================================
    CLEAR CACHE
 =========================================== */
