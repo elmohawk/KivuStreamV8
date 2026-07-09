@@ -1,33 +1,7 @@
 /* ===========================================
    KIVUSTREAM PRO HOME
 =========================================== */
-
-import { getMovies, getSeries } from "./database.js";
-
-import { enrichAll } from "./api.js";
-
-import {
-
-    renderHero,
-
-    renderSection,
-
-    renderSkeleton,
-
-    showLoader,
-
-    hideLoader,
-
-    toast
-
-} from "./ui.js";
-
-import {
-
-    HOME_SECTIONS
-
-} from "./config.js";
-
+const HOME_SECTIONS = window.HOME_SECTIONS;
 /* ===========================================
    GLOBAL
 =========================================== */
