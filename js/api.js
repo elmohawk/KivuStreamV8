@@ -133,6 +133,7 @@ async function enrich(item){
     if (!item) return item;
 
     if (!item.title) return item;
+   const title = item.title.trim();
 
     const cacheKey = `${item.type}-${item.title}`;
 
@@ -146,7 +147,7 @@ async function enrich(item){
 
     if (item.type === "series") {
 
-        searchResult = await searchTV(item.title);
+        searchResult = await searchTV(title)
 
     } else {
 
