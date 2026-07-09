@@ -471,3 +471,9 @@ observer.observe(img);
 });
 
 }
+window.renderHero = renderHero;
+window.renderSection = renderSection;
+window.renderSkeleton = renderSkeleton;
+window.showLoader = showLoader;
+window.hideLoader = hideLoader;
+window.toast = toast;
