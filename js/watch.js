@@ -338,3 +338,96 @@ function renderDownloads() {
     `;
 
 }
+let currentEpisodes = [];
+let currentSeason = 1;
+
+async function loadEpisodes() {
+
+    if (currentMovie.type !== "series") {
+
+        $("episodesSection").style.display = "none";
+        return;
+
+    }
+
+    currentEpisodes = await getEpisodes(currentMovie.id);
+
+    renderSeasonTabs();
+    renderEpisodes(1);
+
+}
+function renderSeasonTabs() {
+
+    const tabs = $("seasonTabs");
+
+    tabs.innerHTML = "";
+
+    const seasons = [...new Set(
+        currentEpisodes.map(ep => ep.season)
+    )];
+
+    seasons.forEach(season => {
+
+        const button = document.createElement("button");
+
+        button.textContent = "Season " + season;
+
+        button.onclick = () => {
+
+            currentSeason = season;
+
+            renderEpisodes(season);
+
+        };
+
+        tabs.appendChild(button);
+
+    });
+
+}
+function renderEpisodes(season) {
+
+    const grid = $("episodeGrid");
+
+    grid.innerHTML = "";
+
+    currentEpisodes
+        .filter(ep => ep.season == season)
+        .forEach(ep => {
+
+            const card = document.createElement("div");
+
+            card.className = "episode-card";
+
+            card.innerHTML = `
+                <h3>Episode ${ep.episode}</h3>
+                <p>${ep.title}</p>
+
+                <button>▶ Watch</button>
+
+                <button>⬇ Download</button>
+            `;
+
+            card.querySelectorAll("button")[0].onclick = () => {
+
+                player.src = ep.video;
+
+                player.play();
+
+            };
+
+            card.querySelectorAll("button")[1].onclick = () => {
+
+                if (ep.download) {
+
+                    window.open(ep.download);
+
+                }
+
+            };
+
+            grid.appendChild(card);
+
+        });
+
+}
