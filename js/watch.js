@@ -5,7 +5,7 @@
 let currentMovie = null;
 let player = null;
 
-const $ = (id) => document.getElementById(id);
+const el = (id) => document.getElementById(id);
 
 /* ===========================
    INIT
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", init);
 
 async function init() {
 
-    player = $("player");
+    player = el("player");
 
     const params = new URLSearchParams(location.search);
 
@@ -173,7 +173,7 @@ if($("movieRating")){
 
 function renderMovie() {
 
-    $("movieTitle").textContent =
+  el("movieTitle").textContent =
         currentMovie.title || "";
 
     $("movieDescription").textContent =
@@ -185,8 +185,7 @@ function renderMovie() {
     $("movieTranslator").textContent =
         currentMovie.translator || "KivuStream";
 
-    $("moviePoster").src =
-        currentMovie.image || "assets/logo.png";
+    el("moviePoster").src = currentMovie.image; || "assets/logo.png";
 
     $("player").src =
         currentMovie.video || "";
