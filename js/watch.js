@@ -5,8 +5,6 @@
 let currentMovie = null;
 let player = null;
 
-const el = (id) => document.getElementById(id);
-
 /* ===========================
    INIT
 =========================== */
