@@ -72,7 +72,7 @@ async function loadMovie(id) {
 
     // Show Supabase data immediately
     renderMovie();
-
+    renderDownloads();
     // Load TMDB details
     await loadTMDB();
 
@@ -200,5 +200,143 @@ rgba(0,0,0,.9)
 ),
 url('${currentMovie.image}')
 `;
+
+}
+/* ==========================================
+   DOWNLOAD SYSTEM
+========================================== */
+
+function renderDownloads() {
+
+    const panel = $("downloadPanel");
+
+    if (!panel) return;
+
+    panel.innerHTML = "";
+
+    /* =====================
+       SERIES
+    ===================== */
+
+    if (currentMovie.type === "series") {
+
+        panel.innerHTML = `
+            <div class="download-info">
+                📺 Download episodes from the Episodes section below.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    /* =====================
+       MULTIPLE SERVERS
+    ===================== */
+
+    if (Array.isArray(currentMovie.downloads) &&
+        currentMovie.downloads.length) {
+
+        currentMovie.downloads.forEach((server, index) => {
+
+            const card = document.createElement("div");
+
+            card.className = "download-card";
+
+            card.innerHTML = `
+                <h3>Server ${index + 1}</h3>
+
+                <button class="download-btn">
+                    ⬇ Download
+                </button>
+            `;
+
+            card.querySelector("button").onclick = () => {
+
+                window.open(server, "_blank");
+
+            };
+
+            panel.appendChild(card);
+
+        });
+
+        return;
+
+    }
+
+    /* =====================
+       MULTI PART
+    ===================== */
+
+    if (Array.isArray(currentMovie.parts) &&
+        currentMovie.parts.length) {
+
+        currentMovie.parts.forEach((part, index) => {
+
+            const card = document.createElement("div");
+
+            card.className = "download-card";
+
+            card.innerHTML = `
+                <h3>Part ${index + 1}</h3>
+
+                <button class="download-btn">
+                    ⬇ Download Part
+                </button>
+            `;
+
+            card.querySelector("button").onclick = () => {
+
+                window.open(part, "_blank");
+
+            };
+
+            panel.appendChild(card);
+
+        });
+
+        return;
+
+    }
+
+    /* =====================
+       SINGLE DOWNLOAD
+    ===================== */
+
+    if (currentMovie.download) {
+
+        panel.innerHTML = `
+            <div class="download-card">
+
+                <h3>Movie Download</h3>
+
+                <button id="mainDownloadBtn"
+                        class="download-btn">
+
+                    ⬇ Download Movie
+
+                </button>
+
+            </div>
+        `;
+
+        $("mainDownloadBtn").onclick = () => {
+
+            window.open(currentMovie.download, "_blank");
+
+        };
+
+        return;
+
+    }
+
+    panel.innerHTML = `
+        <div class="download-info">
+
+            No download available.
+
+        </div>
+    `;
 
 }
