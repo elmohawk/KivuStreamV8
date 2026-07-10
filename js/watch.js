@@ -74,7 +74,7 @@ let movie=null;
 /* SEARCH MOVIES */
 
 let result=
-await supabaseClient
+await supabase
 .from("movies")
 .select("*")
 .eq("id",movieId)
