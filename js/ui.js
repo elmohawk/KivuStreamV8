@@ -6,9 +6,11 @@
    HELPERS
 =========================================== */
 
-function $(id) {
+function el(id) {
     return document.getElementById(id);
 }
+
+window.el = el;
 
 function truncate(text = "", length = 120) {
     if (text.length <= length) return text;
