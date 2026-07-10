@@ -40,7 +40,7 @@ async function init() {
 
 async function loadMovie(id) {
 
-    let { data } = await supabase
+    let { data, error } = await supabase
         .from("movies")
         .select("*")
         .eq("id", id)
@@ -60,7 +60,7 @@ async function loadMovie(id) {
 
     if (!data) {
 
-        alert("Movie not found.");
+        alert("Movie not found");
 
         location.href = "index.html";
 
@@ -70,10 +70,105 @@ async function loadMovie(id) {
 
     currentMovie = data;
 
+    // Show Supabase data immediately
     renderMovie();
 
-}
+    // Load TMDB details
+    await loadTMDB();
 
+}
+let tmdbData = null;
+
+async function loadTMDB() {
+
+    try {
+
+        tmdbData = await enrich(currentMovie);
+
+        renderTMDB();
+
+    }
+
+    catch(err){
+
+        console.error("TMDB Error:", err);
+
+    }
+
+}
+function renderTMDB() {
+
+    if(!tmdbData) return;
+
+    /* Hero */
+
+    if(tmdbData.banner){
+
+        $("watchHero").style.backgroundImage=`
+        linear-gradient(
+        rgba(0,0,0,.4),
+        rgba(0,0,0,.9)
+        ),
+        url(${tmdbData.banner})
+        `;
+
+    }
+
+    if(tmdbData.poster){
+
+        $("moviePoster").src=tmdbData.poster;
+
+    }
+if($("movieRating")){
+
+    $("movieRating").textContent=
+
+        "⭐ "+(tmdbData.rating || "N/A");
+
+}
+    /* Description */
+
+    $("movieDescription").textContent=
+
+        tmdbData.overview ||
+
+        currentMovie.description ||
+
+        "";
+
+    /* Details */
+
+    $("detailGenre").textContent=
+
+        tmdbData.genres
+        ?.map(g=>g.name)
+        .join(", ") ||
+
+        currentMovie.category ||
+
+        "";
+
+    $("detailLanguage").textContent=
+
+        tmdbData.language ||
+
+        "";
+
+    $("detailRuntime").textContent=
+
+        tmdbData.runtime ?
+
+        tmdbData.runtime+" min"
+
+        :"";
+
+    $("detailRelease").textContent=
+
+        tmdbData.year ||
+
+        "";
+
+}
 /* ===========================
    RENDER
 =========================== */
@@ -98,8 +193,12 @@ function renderMovie() {
     $("player").src =
         currentMovie.video || "";
 
-    $("watchHero").style.backgroundImage =
-        `linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.9)),
-        url('${currentMovie.image}')`;
+    $("watchHero").style.backgroundImage = `
+linear-gradient(
+rgba(0,0,0,.4),
+rgba(0,0,0,.9)
+),
+url('${currentMovie.image}')
+`;
 
 }
