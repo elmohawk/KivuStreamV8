@@ -2,7 +2,7 @@
    KIVUSTREAM PRO WATCH PAGE
    VERSION 2.0
 ========================================================== */
-
+let currentEpisodes = [];
 "use strict";
 /* ==========================================================
    GLOBAL STATE
@@ -592,30 +592,6 @@ function playEpisode(ep) {
         behavior: "smooth"
 
     });
-
-}
-
-/* ==========================================================
-   SHARE
-========================================================== */
-
-async function shareMovie() {
-
-    if (!currentMovie) return;
-
-    if (navigator.share) {
-
-        await navigator.share({
-
-            title: currentMovie.title,
-
-            text: currentMovie.description,
-
-            url: location.href
-
-        });
-
-    }
 
 }
 
