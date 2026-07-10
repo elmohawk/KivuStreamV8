@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadBrowseMenu() {
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
         .from("movies")
         .select("category")
         .eq("is_active", true);
@@ -64,7 +64,7 @@ async function loadBrowseMenu() {
 
 async function loadCountryMenu() {
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
         .from("movies")
         .select("country")
         .eq("is_active", true);
@@ -110,7 +110,7 @@ async function loadCountryMenu() {
 
 async function loadTranslatorMenu() {
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
         .from("movies")
         .select("translator")
         .eq("is_active", true);
